@@ -10,7 +10,7 @@ APPNAME = 'sak'
 VERSION = '0.1'
 
 wt.add_dependency('boost', 'git://github.com/steinwurf/external-waf-boost.git')
-wt.add_dependency('gtest', 'git://github.com/steinwurf/external-waf-gtest.git', 'v1.6.0')
+wt.add_dependency('gtest', 'git://github.com/steinwurf/external-waf-gtest.git')
 
 def load_helper(ctx, name):
     if ctx.is_system_dependency(name):

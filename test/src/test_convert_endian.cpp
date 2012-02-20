@@ -140,7 +140,7 @@ TEST(ConvertEndian, Convert)
         if(sak::host_endian::big_endian)
         {
             uint8_t data[8];
-            uint64_t in  = 0x1122334455667788U;
+            uint64_t in  = 0x1122334455667788ULL;
 
             // If the host is big endian the put function
             // should not change the byte order
@@ -162,7 +162,7 @@ TEST(ConvertEndian, Convert)
         else
         {
             uint8_t data[8];
-            uint64_t in  = 0x1122334455667788U;
+            uint64_t in  = 0x1122334455667788ULL;
 
             // If the host is little endian the put function
             // should change the byte order

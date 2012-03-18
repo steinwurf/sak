@@ -1,29 +1,27 @@
-// Copyright (c) 2011, Steinwurf ApS
+// Copyright (c) 2012, Steinwurf ApS
 // All rights reserved.
-// 
+
 // Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met: 
-//
-// 1. Redistributions of source code must retain the above copyright notice, this
-//    list of conditions and the following disclaimer. 
-// 2. Redistributions in binary form must reproduce the above copyright notice,
-//    this list of conditions and the following disclaimer in the documentation
-//    and/or other materials provided with the distribution. 
-//
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of Steinwurf ApS nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-// ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 // ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-// The views and conclusions contained in the software and documentation are those
-// of the authors and should not be interpreted as representing official policies, 
-// either expressed or implied, of the FreeBSD Project.
 
 #ifndef SAK_CONVERT_ENDIAN_H
 #define SAK_CONVERT_ENDIAN_H
@@ -59,7 +57,7 @@ namespace sak
             {
                 b[1] = (v & 0xFF); b[0] = (v >> 8 & 0xFF);
             }
-        
+
         static void put32(uint32_t v, uint8_t *b)
             {
                 b[3] = (v & 0xFF);         b[2] = ((v >> 8) & 0xFF);
@@ -78,7 +76,7 @@ namespace sak
             {
                 return (b[0] << 8) | b[1];
             }
-        
+
         static uint32_t get32(const uint8_t *b)
             {
                 return (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3];
@@ -100,7 +98,7 @@ namespace sak
             {
                 b[0] = (v & 0xFF); b[1] = (v >> 8 & 0xFF);
             }
-        
+
         static void put32(uint32_t v, uint8_t *b)
             {
                 b[0] = (v & 0xFF);         b[1] = ((v >> 8) & 0xFF);
@@ -119,7 +117,7 @@ namespace sak
             {
                 return (b[1] << 8) | b[0];
             }
-        
+
         static uint32_t get32(const uint8_t *b)
             {
                 return (b[3] << 24) | (b[2] << 16) | (b[1] << 8) | b[0];
@@ -133,11 +131,11 @@ namespace sak
                        (((uint64_t) b[1]) << 8)  | ((uint64_t) b[0]);
             }
 
- 
+
 
     };
 
-    // Inserts and extracts integers in big-endian format. 
+    // Inserts and extracts integers in big-endian format.
     struct big_endian
     {
         // If the host is not big endian swap becomes true
@@ -161,7 +159,7 @@ namespace sak
                 assert(buffer != 0);
                 *buffer = value;
             }
-        
+
         // Gets a 16-bit value integer which is in big-endian
         // format from a byte stream.
         static uint16_t get16(const uint8_t *buffer)
@@ -177,7 +175,7 @@ namespace sak
                 assert(buffer != 0);
                 convert::put16(value, buffer);
             }
-        
+
         // Gets a 32-bit value integer which is in big-endian
         // format from a byte stream.
         static uint32_t get32(const uint8_t *buffer)
@@ -216,10 +214,10 @@ namespace sak
         // a template determined data-type.
         template<class ValueType>
         static void put(ValueType value, uint8_t *buffer);
-        
+
         template<class ValueType>
         static ValueType get(const uint8_t *buffer);
-        
+
     };
 
     template<>
@@ -270,7 +268,7 @@ namespace sak
         return big_endian::get64(buffer);
     }
 
-    
+
 }
 
 

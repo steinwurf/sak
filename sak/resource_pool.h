@@ -1,29 +1,27 @@
-// Copyright (c) 2011, Steinwurf ApS
+// Copyright (c) 2012, Steinwurf ApS
 // All rights reserved.
-// 
+
 // Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met: 
-//
-// 1. Redistributions of source code must retain the above copyright notice, this
-//    list of conditions and the following disclaimer. 
-// 2. Redistributions in binary form must reproduce the above copyright notice,
-//    this list of conditions and the following disclaimer in the documentation
-//    and/or other materials provided with the distribution. 
-//
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of Steinwurf ApS nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-// ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 // ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-// The views and conclusions contained in the software and documentation are those
-// of the authors and should not be interpreted as representing official policies, 
-// either expressed or implied, of the FreeBSD Project.
 
 #ifndef SAK_RESOURCE_POOL_H
 #define SAK_RESOURCE_POOL_H
@@ -41,16 +39,16 @@ namespace sak
     class resource_pool
     {
     public:
-	
+
 	// the type managed
 	typedef Resource value_type;
-	
+
 	// the pointer to the resource
 	typedef boost::shared_ptr<value_type> value_ptr;
 
 	// the allocator function
 	typedef boost::function<value_ptr ()> allocator_type;
-	
+
     public:
 
 	// Create a new resource pool
@@ -58,7 +56,7 @@ namespace sak
 	    {
 		m_pool.reset( new pool_impl(allocator) );
 	    }
-	
+
 	// @returns the number of resource in use
 	uint32_t size() const
 	    {
@@ -81,7 +79,7 @@ namespace sak
 
 	struct pool_impl : public boost::enable_shared_from_this<pool_impl>
 	{
-	    
+
 	    pool_impl(const allocator_type &allocator)
 		: m_allocator(allocator),
 		  m_pool_size(0)
@@ -90,7 +88,7 @@ namespace sak
 	    value_ptr allocate()
 		{
 		    value_ptr resource;
-		    
+
 		    if(m_free_list.size() > 0)
 		    {
 			resource = m_free_list.back();
@@ -103,7 +101,7 @@ namespace sak
 		    }
 
 		    boost::shared_ptr<pool_impl> pool = pool_impl::shared_from_this();
-		    
+
 		    return value_ptr(resource.get(), deleter(pool, resource));
 		}
 
@@ -121,7 +119,7 @@ namespace sak
 		{
 		    m_free_list.push_back(resource);
 		}
-	    
+
 	private:
 
 	    // The free resource list type
@@ -129,7 +127,7 @@ namespace sak
 
 	    // Stores all the free resources
 	    resource_list m_free_list;
-	    
+
 	    // The allocator to use
 	    allocator_type m_allocator;
 
@@ -150,7 +148,7 @@ namespace sak
 		    assert(!m_pool.expired());
 		    assert(m_resource);
 		}
-	    
+
 	    void operator()(value_type *)
 		{
 		    // Place the resource in the free list
@@ -168,12 +166,12 @@ namespace sak
 	    // The resource object
 	    value_ptr m_resource;
 	};
-	
+
     private:
 
 	// The pool impl
 	boost::shared_ptr<pool_impl> m_pool;
-	
+
     };
 
 }

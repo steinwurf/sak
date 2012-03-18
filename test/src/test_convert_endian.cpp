@@ -48,7 +48,7 @@ TEST(ConvertEndian, Convert)
 
     {
         uint8_t data[1];
-        uint16_t in  = 0x11U;
+        uint8_t in  = 0x11U;
 
         // If the host is big endian the put function
         // should not change the byte order

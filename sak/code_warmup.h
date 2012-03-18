@@ -138,7 +138,7 @@ namespace sak
 
             assert(factor > 0);
 
-            return m_iterations * factor;
+            return static_cast<uint32_t>(m_iterations * factor);
         }
     }
 

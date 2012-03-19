@@ -3,17 +3,17 @@
 
 import os
 
-# Necessary since we override different Contexts 
+# Necessary since we override different Contexts
 import waflib.extras.wurftools as wt
 
 APPNAME = 'sak'
-VERSION = '1.0.0'
+VERSION = '1.1.0'
 
 wt.add_dependency('boost', 'git://github.com/steinwurf/external-boost.git',
-                  '1.1.0-boost_1_48_0')
+                  '1.1.1-boost_1_48_0')
 
 wt.add_dependency('gtest', 'git://github.com/steinwurf/external-gtest.git',
-                  '1.0.1-gtest_1_6_0')
+                  '1.0.2-gtest_1_6_0')
 
 def load_helper(ctx, name):
     if ctx.is_system_dependency(name):
@@ -52,5 +52,5 @@ def build(bld):
     # Build the tests
     bld.recurse('test')
 
-    
-    
+
+

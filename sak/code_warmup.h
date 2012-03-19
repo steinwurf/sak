@@ -44,12 +44,12 @@ namespace sak
     //        warmup.next_iteration();
     //    }
     //
-    //   // Target time of benchmark in seconds
-    //   long double target_time = 5.0;
+    //    // Target time of benchmark in seconds
+    //    long double target_time = 5.0;
     //
     //    uint32_t needed_iterations = warmup.iterations(target_time);
     //
-    //   // Now in e.g. a for loop and timing with the stop_watch
+    //    // Now in e.g. a for loop and timing with a timer
     //
     //    boost::timer::cpu_timer timer;
     //    timer.start();

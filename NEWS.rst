@@ -7,6 +7,8 @@ of every change, see the Git log.
 1.1.1
 -----
 * Updated Waf build tool
+* Bumped dependency version for gtest to 1.0.3-gtest_1_6_0
+* Bumped dependency version for boost to 1.1.2-boost_1_48_0
 
 1.1.0
 -----

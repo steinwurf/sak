@@ -4,6 +4,10 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
+1.1.1
+-----
+* Updated Waf build tool
+
 1.1.0
 -----
 * Added helper functions for profiling code

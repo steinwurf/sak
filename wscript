@@ -5,7 +5,7 @@ import os
 
 
 APPNAME = 'sak'
-VERSION = '1.1.0'
+VERSION = '1.1.1'
 
 import waflib.extras.bundle_dependency as bundle
 

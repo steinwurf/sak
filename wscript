@@ -3,44 +3,43 @@
 
 import os
 
-# Necessary since we override different Contexts
-import waflib.extras.wurftools as wt
 
 APPNAME = 'sak'
 VERSION = '1.1.0'
 
-wt.add_dependency('boost', 'git://github.com/steinwurf/external-boost.git',
-                  '1.1.1-boost_1_48_0')
+import waflib.extras.bundle_dependency as bundle
 
-wt.add_dependency('gtest', 'git://github.com/steinwurf/external-gtest.git',
-                  '1.0.2-gtest_1_6_0')
+bundle.add_dependency('boost', 'git://github.com/steinwurf/external-boost.git',
+                  '1.1.2-boost_1_48_0')
+
+bundle.add_dependency('gtest', 'git://github.com/steinwurf/external-gtest.git',
+                  '1.0.3-gtest_1_6_0')
 
 def load_helper(ctx, name):
-    if ctx.is_system_dependency(name):
+    if not ctx.has_dependency_path(name):
         ctx.fatal('Load a tool to find %s as system dependency' % name)
     else:
-        ctx.load_dependency(name)
+        p = ctx.dependency_path(name)
+        ctx.recurse(p)
 
 def options(opt):
 
-    opt.load('wurftools')
+    opt.load('toolchain_cxx')
+    opt.load('bundle_dependency')
 
-    load_helper(opt, 'boost')
-    load_helper(opt, 'gtest')
 
 def configure(conf):
 
-    conf.load('wurftools')
+    conf.load('toolchain_cxx')
+    conf.load('bundle_dependency')
 
     load_helper(conf, 'boost')
     load_helper(conf, 'gtest')
 
 
-
-
 def build(bld):
 
-    bld.load('wurftools')
+    bld.load('bundle_dependency')
 
     load_helper(bld, 'boost')
     load_helper(bld, 'gtest')

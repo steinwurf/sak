@@ -1,5 +1,7 @@
-// Copyright (c) 2012, Steinwurf ApS
-// All rights reserved.
+// Copyright Steinwurf APS 2011-2012.
+// Distributed under the "STEINWURF RESEARCH LICENSE 1.0".
+// See accompanying file LICENSE.rst or
+// http://www.steinwurf.com/licensing
 
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:

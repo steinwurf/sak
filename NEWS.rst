@@ -4,6 +4,12 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
+2.0.0
+-----
+* Updated Waf build tool to handle dependencies better. The new tools
+  used are not compatible with the old versions so we have to bump the
+  major version.
+
 1.1.1
 -----
 * Updated Waf build tool

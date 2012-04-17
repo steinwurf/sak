@@ -16,7 +16,7 @@ def recurse_helper(ctx, name):
 def options(opt):
 
     opt.load('toolchain_cxx')
-    opt.load('bundle_dependency')
+    opt.load('dependency_bundle')
 
     import waflib.extras.dependency_bundle as bundle
     import waflib.extras.dependency_resolve as resolve

@@ -4,6 +4,14 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
+tbd (master)
+------------
+* To avoid having include path point to the root of the project we have
+  moved the source files to src/sak instead of just sak/.
+* Removed obsolete code benchmarking functionality, now replaced by the
+  cxx-gauge project.
+* Added storage implementation.
+
 2.0.0
 -----
 * Updated Waf build tool to handle dependencies better. The new tools

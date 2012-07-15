@@ -6,6 +6,10 @@ of every change, see the Git log.
 
 tbd (master)
 ------------
+* tbd
+
+3.0.0
+-----
 * To avoid having include path point to the root of the project we have
   moved the source files to src/sak instead of just sak/.
 * Removed obsolete code benchmarking functionality, now replaced by the

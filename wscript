@@ -45,8 +45,8 @@ def configure(conf):
 
 def build(bld):
 
-    bld(includes = '.',
-        export_includes = '.',
+    bld(includes = 'src',
+        export_includes = 'src',
         name = 'sak_includes')
 
     if bld.is_toplevel():

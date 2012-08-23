@@ -28,6 +28,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <cassert>
 
 namespace sak
 {

@@ -1,0 +1,9 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+bld.stlib(features        = 'cxx',
+          source          = ['endian_buffer.cpp'],
+          target          = 'sak',
+          cxxflags        = bld.toolchain_cxx_flags(),
+          export_includes = '..',
+          use             = ['boost_includes'])

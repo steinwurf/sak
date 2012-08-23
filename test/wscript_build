@@ -6,7 +6,7 @@ bld.program(
     source   = ['sak_tests.cpp'] + bld.path.ant_glob('src/*.cpp'),
     target   = 'sak_tests',
     cxxflags = bld.toolchain_cxx_flags(),
-    use      = ['sak_includes', 'gtest',
+    use      = ['sak', 'gtest',
                 'boost_includes', 'boost_timer', 'boost_chrono',
                 'boost_system'])
 

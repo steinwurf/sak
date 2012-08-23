@@ -27,11 +27,45 @@
 #include <sak/endian_buffer.h>
 
 
-TEST(EndianBuffer, Create)
+TEST(EndianBuffer, create_buffer)
 {
     const unsigned int size = 1024;
     unsigned char* buffer = new unsigned char[size];
 
-    sak::endian_buffer ebuffer(buffer, size);
+    sak::endian_buffer endian_buffer(buffer, size);
+
+    delete buffer;
+}
+
+TEST(EndianBuffer, read_write_u8)
+{
+    const unsigned int size = 1024;
+    unsigned char* buffer = new unsigned char[size];
+
+    sak::endian_buffer endian_buffer(buffer, size);
+
+    // Highest possible value
+    uint8_t value = 255;
+
+    for(uint32_t i = 0; i < size; i++) {
+        endian_buffer.write_u8(value);
+    }
+
+    for(uint32_t i = 0; i < size; i++) {
+        EXPECT_EQ(endian_buffer.read_u8(), value);
+    }
+
+    // Lowest possible value
+    value = 0;
+
+    for(uint32_t i = 0; i < size; i++) {
+        endian_buffer.write_u8(value);
+    }
+
+    for(uint32_t i = 0; i < size; i++) {
+        EXPECT_EQ(endian_buffer.read_u8(), value);
+    }
+
+    delete buffer;
 }
 

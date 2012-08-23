@@ -88,6 +88,22 @@ namespace sak
         /// @return the size of the buffer in bytes
         uint32_t size() const;
 
+        /// @return pointer to the front of the data buffer corresponds
+        ///         to the data() pointer
+        uint8_t* front();
+
+        /// @return pointer to the front of the data buffer corresponds
+        ///         to the data() pointer
+        const uint8_t* front() const;
+
+        /// @return pointer to the front of the data buffer corresponds
+        ///         to the data() + size() pointer
+        uint8_t* back();
+
+        /// @return pointer to the front of the data buffer corresponds
+        ///         to the data() + size() pointer
+        const uint8_t* back() const;
+
         /// Re-sizes the front of the buffer
         /// @param size the new size of the buffer
         void resize_front(uint32_t size);
@@ -188,6 +204,26 @@ namespace sak
     inline const uint8_t* duplex_buffer::data() const
     {
         return &m_buffer[0] + m_front_capacity;
+    }
+
+    inline uint8_t* duplex_buffer::front()
+    {
+        return data();
+    }
+
+    inline const uint8_t* duplex_buffer::front() const
+    {
+        return data();
+    }
+
+    inline uint8_t* duplex_buffer::back()
+    {
+        return data() + size();
+    }
+
+    inline const uint8_t* duplex_buffer::back() const
+    {
+        return data() + size();
     }
 
     inline void duplex_buffer::resize_front(uint32_t size)

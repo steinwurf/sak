@@ -302,7 +302,8 @@ namespace sak
         m_data_size += size;
     }
 
-    inline void duplex_buffer::realloc(uint32_t front_capacity, uint32_t back_capacity)
+    inline void duplex_buffer::realloc(uint32_t front_capacity,
+                                       uint32_t back_capacity)
     {
         uint32_t total_size = front_capacity + m_data_size + back_capacity;
 

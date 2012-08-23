@@ -28,7 +28,6 @@
 
 #include <cstdint>
 #include <vector>
-#include <cassert>
 
 namespace sak
 {
@@ -167,7 +166,6 @@ namespace sak
         /// The size in bytes of the data stored in the
         /// buffer
         uint32_t m_data_size;
-
     };
 
     inline duplex_buffer::duplex_buffer(uint32_t size)
@@ -294,7 +292,6 @@ namespace sak
         m_data_size -= size;
     }
 
-
     inline void duplex_buffer::add_to_front(uint32_t size)
     {
         if(size > m_front_capacity)
@@ -331,8 +328,8 @@ namespace sak
         m_data_size += size;
     }
 
-    inline void duplex_buffer::realloc(uint32_t front_capacity,
-                                       uint32_t back_capacity)
+
+    void duplex_buffer::realloc(uint32_t front_capacity, uint32_t back_capacity)
     {
         uint32_t total_size = front_capacity + m_data_size + back_capacity;
 
@@ -347,7 +344,6 @@ namespace sak
         m_front_capacity = front_capacity;
         m_back_capacity  = back_capacity;
     }
-
 }
 
 #endif

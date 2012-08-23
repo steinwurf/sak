@@ -27,6 +27,7 @@
 #define SAK_CONVERT_ENDIAN_H
 
 #include <stdint.h>
+#include <assert.h>
 #include <boost/detail/endian.hpp>
 
 namespace sak

@@ -112,6 +112,17 @@ namespace sak
         /// @param size the new size of the buffer
         void resize_back(uint32_t size);
 
+        /// Re-sizes the buffer to the specified size with a minimum front
+        /// and back capacity.
+        /// @param size the buffer size
+        /// @param min_front_capacity the minimum size to reserve for the front
+        ///        of the buffer
+        /// @param min_back_capacity the minimum size to reserve for the back
+        ///        of the buffer
+        void resize(uint32_t size,
+                    uint32_t min_front_capacity,
+                    uint32_t min_back_capacity);
+
     private:
 
         /// @param size the number of bytes to shrink the buffer
@@ -156,6 +167,7 @@ namespace sak
         /// The size in bytes of the data stored in the
         /// buffer
         uint32_t m_data_size;
+
     };
 
     inline duplex_buffer::duplex_buffer(uint32_t size)
@@ -248,6 +260,23 @@ namespace sak
         {
             add_to_back(size - m_data_size);
         }
+    }
+
+    inline void duplex_buffer::resize(uint32_t size,
+                                      uint32_t min_front_capacity,
+                                      uint32_t min_back_capacity)
+    {
+        uint32_t total_size = min_front_capacity + size + min_back_capacity;
+
+        if(m_buffer.size() < total_size)
+        {
+            m_buffer.resize(total_size);
+        }
+
+        uint32_t extra_space = m_buffer.size() - total_size;
+        m_front_capacity = min_front_capacity;
+        m_data_size = size;
+        m_back_capacity = min_back_capacity + extra_space;
     }
 
     inline uint32_t duplex_buffer::size() const

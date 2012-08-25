@@ -15,7 +15,7 @@
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+// DISCLAIMED. IN NO EVENT SHALL Steinwurf ApS BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -26,29 +26,73 @@
 #ifndef SAK_ENDIAN_BUFFER_H
 #define SAK_ENDIAN_BUFFER_H
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace sak {
+
+    /// The idea behind the endian_buffer is to provide a simple interface for
+    /// writing to and reading from a buffer. All complexity regarding endianess
+    /// is encapsulated.
     class endian_buffer {
+
     public:
+
+        /// Creates an endian buffer on top of a preallocated buffer of the
+        /// specified size
+        /// @param buffer a pointer to the buffer
+        /// @param size the i size of the buffer
         endian_buffer(uint8_t* buffer, uint32_t size);
+
+        /// Writes 8 bits to the buffer
+        /// @param v the value to write
         void write_u8(uint8_t v);
+
+        /// Writes 16 bits to the buffer
+        /// @param v the value to write
         void write_u16(uint16_t v);
+
+        /// Writes 32 bits to the buffer
+        /// @param v the value to write
         void write_u32(uint32_t v);
+
+        /// Writes 64 bits to the buffer
+        /// @param v the value to write
         void write_u64(uint64_t v);
 
+        /// Reads 8 bits from the buffer, and moves the write position.
+        /// @return the next 8 bits
         uint8_t read_u8();
+
+        /// Reads 16 bits from the buffer, and moves the write position.
+        /// @return the next 16 bits
         uint16_t read_u16();
+
+        /// Reads 32 bits from the buffer, and moves the write position.
+        /// @return the next 32 bits
         uint32_t read_u32();
+
+        /// Reads 64 bits from the buffer, and moves the write position.
+        /// @return the next 64 bits
         uint64_t read_u64();
 
-        uint32_t size();
-        uint32_t position();
+        /// Gets the size of the buffer
+        /// @return the size of the buffer
+        uint32_t size() const;
+
+        /// Gets the current read/write position of the buffer
+        /// @return the current position
+        uint32_t position() const;
 
     private:
+
+        /// Pointer to the buffer
         uint8_t* m_buffer;
+
+        /// The current position
         uint32_t m_position;
-        uint32_t m_size;
+
+        /// The size of the buffer
+        const uint32_t m_size;
     };
 }
 

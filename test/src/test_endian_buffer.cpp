@@ -77,7 +77,7 @@ TEST(EndianBuffer, read_write_u8)
         EXPECT_EQ(values[i], endian_buffer.read_u8());
     }
 
-    delete buffer;
+    delete[] buffer;
 }
 
 TEST(EndianBuffer, read_write_u16)
@@ -121,7 +121,7 @@ TEST(EndianBuffer, read_write_u16)
         EXPECT_EQ(values[i], endian_buffer.read_u16());
     }
 
-    delete buffer;
+    delete[] buffer;
 }
 
 
@@ -166,7 +166,7 @@ TEST(EndianBuffer, read_write_u32)
         EXPECT_EQ(values[i], endian_buffer.read_u32());
     }
 
-    delete buffer;
+    delete[] buffer;
 }
 
 
@@ -211,7 +211,7 @@ TEST(EndianBuffer, read_write_u64)
         EXPECT_EQ(values[i], endian_buffer.read_u64());
     }
 
-    delete buffer;
+    delete[] buffer;
 }
 
 
@@ -265,5 +265,5 @@ TEST(EndianBuffer, various_read_write)
         }
     }
 
-    delete buffer;
+    delete[] buffer;
 }

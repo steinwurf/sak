@@ -35,7 +35,7 @@ TEST(EndianBuffer, create_buffer)
 
     sak::endian_buffer endian_buffer(buffer, size);
 
-    delete buffer;
+    delete[] buffer;
 }
 
 TEST(EndianBuffer, read_write_u8)

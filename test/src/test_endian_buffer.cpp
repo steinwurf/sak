@@ -85,7 +85,7 @@ TEST(EndianBuffer, read_write_u16)
     const uint32_t size = 1024;
     uint8_t* buffer = new uint8_t[size*2]; //We need twice the memory
 
-    sak::endian_buffer endian_buffer(buffer, size);
+    sak::endian_buffer endian_buffer(buffer, size*2);
 
     uint16_t lowest_value = 0;
     uint16_t highest_value = UINT16_MAX;
@@ -109,7 +109,7 @@ TEST(EndianBuffer, read_write_u16)
 
     std::vector<uint16_t> values(size);
 
-    /* initialize random seed with the hardcoded seed */
+    /* initialize random with the hardcoded seed */
     srand(1337);
 
     for(uint32_t i = 0; i < size; i++) {
@@ -130,7 +130,7 @@ TEST(EndianBuffer, read_write_u32)
     const uint32_t size = 1024;
     uint8_t* buffer = new uint8_t[size*4]; //We need 4 times the memory
 
-    sak::endian_buffer endian_buffer(buffer, size);
+    sak::endian_buffer endian_buffer(buffer, size*4);
 
     uint32_t lowest_value = 0;
     uint32_t highest_value = UINT32_MAX;
@@ -154,7 +154,7 @@ TEST(EndianBuffer, read_write_u32)
 
     std::vector<uint32_t> values(size);
 
-    /* initialize random seed with the hardcoded seed */
+    /* initialize random with the hardcoded seed */
     srand(1337);
 
     for(uint32_t i = 0; i < size; i++) {
@@ -175,7 +175,7 @@ TEST(EndianBuffer, read_write_u64)
     const uint32_t size = 1024;
     uint8_t* buffer = new uint8_t[size*8]; //We need 8 times the memory
 
-    sak::endian_buffer endian_buffer(buffer, size);
+    sak::endian_buffer endian_buffer(buffer, size*8);
 
     uint64_t lowest_value = 0;
     uint64_t highest_value = UINT64_MAX;
@@ -199,7 +199,7 @@ TEST(EndianBuffer, read_write_u64)
 
     std::vector<uint64_t> values(size);
 
-    /* initialize random seed with the hardcoded seed */
+    /* initialize random with the hardcoded seed */
     srand(1337);
 
     for(uint32_t i = 0; i < size; i++) {
@@ -220,11 +220,11 @@ TEST(EndianBuffer, various_read_write)
     const uint32_t size = 1024;
     uint8_t* buffer = new uint8_t[size*8]; //We need at most 8 times the memory
 
-    sak::endian_buffer endian_buffer(buffer, size);
+    sak::endian_buffer endian_buffer(buffer, size*8);
 
     std::vector<uint64_t> values(size);
 
-    /* initialize random seed with the hardcoded seed */
+    /* initialize random with the hardcoded seed */
     srand(1337);
 
     for(uint32_t i = 0; i < size; i++) {

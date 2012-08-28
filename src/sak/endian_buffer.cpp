@@ -43,26 +43,37 @@ namespace sak
 
     void endian_buffer::write_u8(uint8_t v)
     {
-        big_endian::put<uint8_t>(v, m_buffer+m_position);
+        uint8_t* write_position = m_buffer+m_position;
         m_position += sizeof(uint8_t);
+        assert(m_position <= m_size);
+        big_endian::put<uint8_t>(v, write_position);
     }
 
     void endian_buffer::write_u16(uint16_t v)
     {
-        big_endian::put<uint16_t>(v, m_buffer+m_position);
+        uint8_t* write_position = m_buffer+m_position;
         m_position += sizeof(uint16_t);
+        assert(m_position <= m_size);
+        big_endian::put<uint16_t>(v, write_position);
+
     }
 
     void endian_buffer::write_u32(uint32_t v)
     {
-        big_endian::put<uint32_t>(v, m_buffer+m_position);
+        uint8_t* write_position = m_buffer+m_position;
         m_position += sizeof(uint32_t);
+        assert(m_position <= m_size);
+        big_endian::put<uint32_t>(v, write_position);
+
     }
 
     void endian_buffer::write_u64(uint64_t v)
     {
-        big_endian::put<uint64_t>(v, m_buffer+m_position);
+        uint8_t* write_position = m_buffer+m_position;
         m_position += sizeof(uint64_t);
+        assert(m_position <= m_size);
+        big_endian::put<uint64_t>(v, write_position);
+
     }
 
     uint8_t endian_buffer::read_u8()

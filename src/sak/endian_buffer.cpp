@@ -37,7 +37,6 @@ namespace sak
           m_size(size)
     {
         assert(m_buffer != 0);
-        assert(m_position == 0);
         assert(m_size);
     }
 

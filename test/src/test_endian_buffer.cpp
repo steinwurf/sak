@@ -31,239 +31,139 @@
 TEST(EndianBuffer, create_buffer)
 {
     const uint32_t size = 1024;
-    uint8_t* buffer = new uint8_t[size];
+    std::vector<uint8_t> buffer;
+    buffer.reserve(size);
 
-    sak::endian_buffer endian_buffer(buffer, size);
+    sak::endian_buffer endian_buffer(&buffer.front(), size);
+}
+template<class ValueType>
+void write_read_test()
+{
+    const uint32_t elements = 1024;       //no. of elements
+    const uint32_t size = 1024*sizeof(ValueType); //size in bytes
+    std::vector<uint8_t> buffer;
+    buffer.reserve(size);
+    sak::endian_buffer endian_buffer(&buffer.front(), size);
 
-    delete[] buffer;
+    uint8_t lowest_value = 0;
+    uint8_t highest_value = std::numeric_limits<ValueType>::max();
+
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        endian_buffer.write<ValueType>(highest_value);
+    }
+
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        EXPECT_EQ(highest_value, endian_buffer.read<ValueType>());
+    }
+
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        endian_buffer.write<ValueType>(lowest_value);
+    }
+
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        EXPECT_EQ(lowest_value, endian_buffer.read<ValueType>());
+    }
+
+    std::vector<ValueType> values;
+    values.reserve(elements);
+
+    /* initialize random seed with the hardcoded seed */
+    srand(1337);
+
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        values[i] = rand() % (highest_value+1);
+        endian_buffer.write<ValueType>(values[i]);
+    }
+
+    for(int32_t i = elements-1; i >= 0; --i)
+    {
+        std::cout << i << std::endl;
+
+        EXPECT_EQ(values[i], endian_buffer.read<ValueType>());
+    }
 }
 
 TEST(EndianBuffer, read_write_u8)
 {
-    const uint32_t size = 1024;
-    uint8_t* buffer = new uint8_t[size];
-
-    sak::endian_buffer endian_buffer(buffer, size);
-
-    uint8_t lowest_value = 0;
-    uint8_t highest_value = UINT8_MAX;
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u8(highest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(highest_value, endian_buffer.read_u8());
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u8(lowest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(lowest_value, endian_buffer.read_u8());
-    }
-
-    std::vector<uint8_t> values(size);
-    /* initialize random seed with the hardcoded seed */
-    srand(1337);
-
-    for(uint32_t i = 0; i < size; i++) {
-        values[i] = rand() % highest_value+1;
-        endian_buffer.write_u8(values[i]);
-    }
-
-    for(uint32_t i = size-1; i > 0; i--) {
-        EXPECT_EQ(values[i], endian_buffer.read_u8());
-    }
-
-    delete[] buffer;
+    write_read_test<uint8_t>();
 }
 
 TEST(EndianBuffer, read_write_u16)
 {
-    const uint32_t size = 1024;
-    uint8_t* buffer = new uint8_t[size*2]; //We need twice the memory
-
-    sak::endian_buffer endian_buffer(buffer, size*2);
-
-    uint16_t lowest_value = 0;
-    uint16_t highest_value = UINT16_MAX;
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u16(highest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(highest_value, endian_buffer.read_u16());
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u16(lowest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(lowest_value, endian_buffer.read_u16());
-    }
-
-
-    std::vector<uint16_t> values(size);
-
-    /* initialize random with the hardcoded seed */
-    srand(1337);
-
-    for(uint32_t i = 0; i < size; i++) {
-        values[i] = rand() % highest_value+1;
-        endian_buffer.write_u16(values[i]);
-    }
-
-    for(uint32_t i = size-1; i > 0; i--) {
-        EXPECT_EQ(values[i], endian_buffer.read_u16());
-    }
-
-    delete[] buffer;
+    write_read_test<uint16_t>();
 }
 
 
 TEST(EndianBuffer, read_write_u32)
 {
-    const uint32_t size = 1024;
-    uint8_t* buffer = new uint8_t[size*4]; //We need 4 times the memory
-
-    sak::endian_buffer endian_buffer(buffer, size*4);
-
-    uint32_t lowest_value = 0;
-    uint32_t highest_value = UINT32_MAX;
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u32(highest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(highest_value, endian_buffer.read_u32());
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u32(lowest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(lowest_value, endian_buffer.read_u32());
-    }
-
-
-    std::vector<uint32_t> values(size);
-
-    /* initialize random with the hardcoded seed */
-    srand(1337);
-
-    for(uint32_t i = 0; i < size; i++) {
-        values[i] = rand() % highest_value+1;
-        endian_buffer.write_u32(values[i]);
-    }
-
-    for(uint32_t i = size-1; i > 0; i--) {
-        EXPECT_EQ(values[i], endian_buffer.read_u32());
-    }
-
-    delete[] buffer;
+    write_read_test<uint32_t>();
 }
 
 
 TEST(EndianBuffer, read_write_u64)
 {
-    const uint32_t size = 1024;
-    uint8_t* buffer = new uint8_t[size*8]; //We need 8 times the memory
-
-    sak::endian_buffer endian_buffer(buffer, size*8);
-
-    uint64_t lowest_value = 0;
-    uint64_t highest_value = UINT64_MAX;
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u64(highest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(highest_value, endian_buffer.read_u64());
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        endian_buffer.write_u64(lowest_value);
-    }
-
-    for(uint32_t i = 0; i < size; i++) {
-        EXPECT_EQ(lowest_value, endian_buffer.read_u64());
-    }
-
-
-    std::vector<uint64_t> values(size);
-
-    /* initialize random with the hardcoded seed */
-    srand(1337);
-
-    for(uint32_t i = 0; i < size; i++) {
-        values[i] = rand() % highest_value+1;
-        endian_buffer.write_u64(values[i]);
-    }
-
-    for(uint32_t i = size-1; i > 0; i--) {
-        EXPECT_EQ(values[i], endian_buffer.read_u64());
-    }
-
-    delete[] buffer;
+    write_read_test<uint64_t>();
 }
 
 
 TEST(EndianBuffer, various_read_write)
 {
-    const uint32_t size = 1024;
-    uint8_t* buffer = new uint8_t[size*8]; //We need at most 8 times the memory
+    const uint32_t elements = 1024;
+    const uint32_t size = 1024*sizeof(uint64_t);
+    std::vector<uint8_t> buffer;
+    buffer.reserve(size);
 
-    sak::endian_buffer endian_buffer(buffer, size*8);
+    sak::endian_buffer endian_buffer(&buffer.front(), size);
 
-    std::vector<uint64_t> values(size);
+    std::vector<uint64_t> values(elements);
 
     /* initialize random with the hardcoded seed */
     srand(1337);
 
-    for(uint32_t i = 0; i < size; i++) {
-        switch(i % 4) {
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        switch(i % 4)
+        {
             case 0:
-                values[i] = rand() % UINT8_MAX;
-                endian_buffer.write_u8(values[i]);
+                values[i] = rand() % std::numeric_limits<uint8_t>::max();
+                endian_buffer.write<uint8_t>(values[i]);
                 break;
             case 1:
-                values[i] = rand() % UINT16_MAX;
-                endian_buffer.write_u16(values[i]);
+                values[i] = rand() % std::numeric_limits<uint16_t>::max();
+                endian_buffer.write<uint16_t>(values[i]);
                 break;
             case 2:
-                values[i] = rand() % UINT32_MAX;
-                endian_buffer.write_u32(values[i]);
+                values[i] = rand() % std::numeric_limits<uint32_t>::max();
+                endian_buffer.write<uint32_t>(values[i]);
                 break;
             case 3:
-                values[i] = rand() % UINT64_MAX;
-                endian_buffer.write_u64(values[i]);
+                values[i] = rand() % std::numeric_limits<uint64_t>::max();
+                endian_buffer.write<uint64_t>(values[i]);
                 break;
         }
     }
 
-    for(uint32_t i = size-1; i > 0; i--) {
-        switch(i % 4) {
+    for(uint32_t i = elements-1; i > 0; i--)
+    {
+        switch(i % 4)
+        {
             case 0:
-                EXPECT_EQ(values[i], endian_buffer.read_u8());
+                EXPECT_EQ(values[i], endian_buffer.read<uint8_t>());
                 break;
             case 1:
-                EXPECT_EQ(values[i], endian_buffer.read_u16());
+                EXPECT_EQ(values[i], endian_buffer.read<uint16_t>());
                 break;
             case 2:
-                EXPECT_EQ(values[i], endian_buffer.read_u32());
+                EXPECT_EQ(values[i], endian_buffer.read<uint32_t>());
                 break;
             case 3:
-                EXPECT_EQ(values[i], endian_buffer.read_u64());
+                EXPECT_EQ(values[i], endian_buffer.read<uint64_t>());
                 break;
         }
     }
-
-    delete[] buffer;
 }

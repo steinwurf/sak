@@ -25,10 +25,6 @@
 
 #include "endian_buffer.hpp"
 
-#include "convert_endian.h"
-
-#include <cassert>
-
 namespace sak
 {
     endian_buffer::endian_buffer(uint8_t* buffer, uint32_t size)
@@ -38,65 +34,6 @@ namespace sak
     {
         assert(m_buffer != 0);
         assert(m_size);
-    }
-
-    void endian_buffer::write_u8(uint8_t v)
-    {
-        uint8_t* write_position = m_buffer+m_position;
-        m_position += sizeof(uint8_t);
-        assert(m_position <= m_size);
-        big_endian::put<uint8_t>(v, write_position);
-    }
-
-    void endian_buffer::write_u16(uint16_t v)
-    {
-        uint8_t* write_position = m_buffer+m_position;
-        m_position += sizeof(uint16_t);
-        assert(m_position <= m_size);
-        big_endian::put<uint16_t>(v, write_position);
-
-    }
-
-    void endian_buffer::write_u32(uint32_t v)
-    {
-        uint8_t* write_position = m_buffer+m_position;
-        m_position += sizeof(uint32_t);
-        assert(m_position <= m_size);
-        big_endian::put<uint32_t>(v, write_position);
-
-    }
-
-    void endian_buffer::write_u64(uint64_t v)
-    {
-        uint8_t* write_position = m_buffer+m_position;
-        m_position += sizeof(uint64_t);
-        assert(m_position <= m_size);
-        big_endian::put<uint64_t>(v, write_position);
-
-    }
-
-    uint8_t endian_buffer::read_u8()
-    {
-        m_position -= sizeof(uint8_t);
-        return big_endian::get<uint8_t>(m_buffer + m_position);
-    }
-
-    uint16_t endian_buffer::read_u16()
-    {
-        m_position -= sizeof(uint16_t);
-        return big_endian::get<uint16_t>(m_buffer +  m_position);
-    }
-
-    uint32_t endian_buffer::read_u32()
-    {
-        m_position -= sizeof(uint32_t);
-        return big_endian::get<uint32_t>(m_buffer + m_position);
-    }
-
-    uint64_t endian_buffer::read_u64()
-    {
-        m_position -= sizeof(uint64_t);
-        return big_endian::get<uint64_t>(m_buffer + m_position);
     }
 
     uint32_t endian_buffer::size() const

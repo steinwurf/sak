@@ -36,11 +36,14 @@ TEST(EndianBuffer, create_buffer)
 
     sak::endian_buffer endian_buffer(&buffer.front(), size);
 }
+
+/// Test helper functions
+
 template<class ValueType>
 void write_read_test()
 {
-    const uint32_t elements = 1024;       //no. of elements
-    const uint32_t size = 1024*sizeof(ValueType); //size in bytes
+    const uint32_t elements = 1024;               ///no. of elements
+    const uint32_t size = 1024*sizeof(ValueType); ///size in bytes
     std::vector<uint8_t> buffer;
     buffer.reserve(size);
     sak::endian_buffer endian_buffer(&buffer.front(), size);
@@ -67,12 +70,30 @@ void write_read_test()
     {
         EXPECT_EQ(lowest_value, endian_buffer.read<ValueType>());
     }
+}
+
+template<class ValueType>
+void random_write_read_test(bool pseudorandom)
+{
+    const uint32_t elements = 1024;               /// no. of elements
+    const uint32_t size = 1024*sizeof(ValueType); /// size in bytes
+    std::vector<uint8_t> buffer;
+    buffer.reserve(size);
+    sak::endian_buffer endian_buffer(&buffer.front(), size);
+
+    uint8_t highest_value = std::numeric_limits<ValueType>::max();
 
     std::vector<ValueType> values;
     values.reserve(elements);
 
-    /* initialize random seed with the hardcoded seed */
-    srand(1337);
+    if(pseudorandom)
+    {
+        srand(1337);
+    }
+    else
+    {
+        srand(static_cast<uint32_t>(time(0)));
+    }
 
     for(uint32_t i = 0; i < elements; i++)
     {
@@ -88,30 +109,7 @@ void write_read_test()
     }
 }
 
-TEST(EndianBuffer, read_write_u8)
-{
-    write_read_test<uint8_t>();
-}
-
-TEST(EndianBuffer, read_write_u16)
-{
-    write_read_test<uint16_t>();
-}
-
-
-TEST(EndianBuffer, read_write_u32)
-{
-    write_read_test<uint32_t>();
-}
-
-
-TEST(EndianBuffer, read_write_u64)
-{
-    write_read_test<uint64_t>();
-}
-
-
-TEST(EndianBuffer, various_read_write)
+void various_write_read_test(bool pseudorandom)
 {
     const uint32_t elements = 1024;
     const uint32_t size = 1024*sizeof(uint64_t);
@@ -122,8 +120,14 @@ TEST(EndianBuffer, various_read_write)
 
     std::vector<uint64_t> values(elements);
 
-    /* initialize random with the hardcoded seed */
-    srand(1337);
+    if(pseudorandom)
+    {
+        srand(1337);
+    }
+    else
+    {
+        srand(static_cast<uint32_t>(time(0)));
+    }
 
     for(uint32_t i = 0; i < elements; i++)
     {
@@ -166,4 +170,82 @@ TEST(EndianBuffer, various_read_write)
                 break;
         }
     }
+}
+
+/// Write read tests
+
+TEST(EndianBuffer, read_write_u8)
+{
+    write_read_test<uint8_t>();
+}
+
+TEST(EndianBuffer, read_write_u16)
+{
+    write_read_test<uint16_t>();
+}
+
+TEST(EndianBuffer, read_write_u32)
+{
+    write_read_test<uint32_t>();
+}
+
+TEST(EndianBuffer, read_write_u64)
+{
+    write_read_test<uint64_t>();
+}
+
+/// Pseudorandom write read tests
+
+TEST(EndianBuffer, pseudorandom_read_write_u8)
+{
+    random_write_read_test<uint8_t>(true);
+}
+
+TEST(EndianBuffer, pseudorandom_read_write_u16)
+{
+    random_write_read_test<uint16_t>(true);
+}
+
+TEST(EndianBuffer, pseudorandom_read_write_u32)
+{
+    random_write_read_test<uint32_t>(true);
+}
+
+TEST(EndianBuffer, pseudorandom_read_write_u64)
+{
+    random_write_read_test<uint64_t>(true);
+}
+
+/// Random write read tests
+
+TEST(EndianBuffer, random_read_write_u8)
+{
+    random_write_read_test<uint8_t>(false);
+}
+
+TEST(EndianBuffer, random_read_write_u16)
+{
+    random_write_read_test<uint16_t>(false);
+}
+
+TEST(EndianBuffer, random_read_write_u32)
+{
+    random_write_read_test<uint32_t>(false);
+}
+
+TEST(EndianBuffer, random_read_write_u64)
+{
+    random_write_read_test<uint64_t>(false);
+}
+
+/// Various read writes
+
+TEST(EndianBuffer, pseudorandom_various_read_write)
+{
+    various_write_read_test(true);
+}
+
+TEST(EndianBuffer, random_various_read_write)
+{
+    various_write_read_test(false);
 }

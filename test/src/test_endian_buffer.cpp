@@ -32,7 +32,7 @@ TEST(EndianBuffer, create_buffer)
 {
     const uint32_t size = 1024;
     std::vector<uint8_t> buffer;
-    buffer.reserve(size);
+    buffer.resize(size);
 
     sak::endian_buffer endian_buffer(&buffer.front(), size);
 }
@@ -45,7 +45,7 @@ void write_read_test()
     const uint32_t elements = 1024;               ///no. of elements
     const uint32_t size = 1024*sizeof(ValueType); ///size in bytes
     std::vector<uint8_t> buffer;
-    buffer.reserve(size);
+    buffer.resize(size);
     sak::endian_buffer endian_buffer(&buffer.front(), size);
 
     uint8_t lowest_value = 0;
@@ -78,13 +78,13 @@ void random_write_read_test(bool pseudorandom)
     const uint32_t elements = 1024;               /// no. of elements
     const uint32_t size = 1024*sizeof(ValueType); /// size in bytes
     std::vector<uint8_t> buffer;
-    buffer.reserve(size);
+    buffer.resize(size);
     sak::endian_buffer endian_buffer(&buffer.front(), size);
 
     uint8_t highest_value = std::numeric_limits<ValueType>::max();
 
     std::vector<ValueType> values;
-    values.reserve(elements);
+    values.resize(elements);
 
     if(pseudorandom)
     {
@@ -114,11 +114,12 @@ void various_write_read_test(bool pseudorandom)
     const uint32_t elements = 1024;
     const uint32_t size = 1024*sizeof(uint64_t);
     std::vector<uint8_t> buffer;
-    buffer.reserve(size);
+    buffer.resize(size);
 
     sak::endian_buffer endian_buffer(&buffer.front(), size);
 
-    std::vector<uint64_t> values(elements);
+    std::vector<uint64_t> values;
+    values.resize(elements);
 
     if(pseudorandom)
     {

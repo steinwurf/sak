@@ -28,6 +28,10 @@
 
 #include <cstdint>
 
+#include "convert_endian.h"
+
+#include <cassert>
+
 namespace sak {
 
     /// The idea behind the endian_buffer is to provide a simple interface for
@@ -43,37 +47,26 @@ namespace sak {
         /// @param size the i size of the buffer
         endian_buffer(uint8_t* buffer, uint32_t size);
 
-        /// Writes 8 bits to the buffer
-        /// @param v the value to write
-        void write_u8(uint8_t v);
+        /// Writes a value of the size of ValueType to the buffer
+        /// @param value the value to write
+        template<class ValueType>
+        void write(ValueType value)
+        {
+            uint8_t* write_position = m_buffer+m_position;
+            m_position += sizeof(ValueType);
+            assert(m_position <= m_size);
+            big_endian::put<ValueType>(value, write_position);
+        }
 
-        /// Writes 16 bits to the buffer
-        /// @param v the value to write
-        void write_u16(uint16_t v);
-
-        /// Writes 32 bits to the buffer
-        /// @param v the value to write
-        void write_u32(uint32_t v);
-
-        /// Writes 64 bits to the buffer
-        /// @param v the value to write
-        void write_u64(uint64_t v);
-
-        /// Reads 8 bits from the buffer, and moves the write position.
-        /// @return the next 8 bits
-        uint8_t read_u8();
-
-        /// Reads 16 bits from the buffer, and moves the write position.
-        /// @return the next 16 bits
-        uint16_t read_u16();
-
-        /// Reads 32 bits from the buffer, and moves the write position.
-        /// @return the next 32 bits
-        uint32_t read_u32();
-
-        /// Reads 64 bits from the buffer, and moves the write position.
-        /// @return the next 64 bits
-        uint64_t read_u64();
+        /// Reads from the buffer and moves the write position.
+        /// @return a value of the size of ValueType
+        template<class ValueType>
+        ValueType read()
+        {
+            assert(m_position >= sizeof(ValueType));
+            m_position -= sizeof(ValueType);
+            return big_endian::get<ValueType>(m_buffer + m_position);
+        }
 
         /// Gets the size of the buffer
         /// @return the size of the buffer

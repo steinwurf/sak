@@ -62,5 +62,7 @@ def build(bld):
 
         bld.recurse('test')
 
+    bld.recurse('src/sak')
+
 
 

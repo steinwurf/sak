@@ -1,6 +1,6 @@
-// Copyright (c) 2012, Steinwurf ApS
-// All rights reserved.
-//
+// Copyright (c) 2011-2012 Steinwurf ApS
+// All Rights Reserved
+
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //     * Redistributions of source code must retain the above copyright
@@ -11,7 +11,7 @@
 //     * Neither the name of Steinwurf ApS nor the
 //       names of its contributors may be used to endorse or promote products
 //       derived from this software without specific prior written permission.
-//
+
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -23,13 +23,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <gtest/gtest.h>
-#include <stdint.h>
-#include <time.h>
+#include "endian_buffer.hpp"
 
-GTEST_API_ int main(int argc, char **argv)
+namespace sak
 {
-    testing::InitGoogleTest(&argc, argv);
+    endian_buffer::endian_buffer(uint8_t* buffer, uint32_t size)
+        : m_buffer(buffer),
+          m_position(0),
+          m_size(size)
+    {
+        assert(m_buffer != 0);
+        assert(m_size);
+    }
 
-    return RUN_ALL_TESTS();
+    uint32_t endian_buffer::size() const
+    {
+        return m_size;
+    }
+
+    uint32_t endian_buffer::position() const
+    {
+        return m_position;
+    }
 }

@@ -128,25 +128,25 @@ namespace sak
         ///        from the front i.e. subtract 4
         ///        Before: | ...... | ... data ... | ...... |
         ///        After:  | .......... | . data . | ...... |
-        void subtract_from_front(uint32_t size);
+        void shrink_front(uint32_t size);
 
-        /// @param size the number of bytes to grow the buffer
+        /// @param size the number of bytes to expand the buffer
         ///        from the front i.e. add 4
         ///        Before: | ...... | ... data ... | ...... |
         ///        After:  | .. | ..... data ..... | ...... |
-        void add_to_front(uint32_t size);
+        void expand_front(uint32_t size);
 
         /// @param size the number of bytes to shrink the buffer
         ///        from the back i.e. subtract 4
         ///        Before: | ...... | ... data ... | ...... |
         ///        After:  | ...... | . data . | .......... |
-        void subtract_from_back(uint32_t size);
+        void shrink_back(uint32_t size);
 
-        /// @param size the number of bytes to grow the buffer from
+        /// @param size the number of bytes to expand the buffer from
         ///        from the back i.e. add 4
         ///        Before: | ...... | ... data ... | ...... |
         ///        After:  | ...... | ..... data ..... | .. |
-        void add_to_back(uint32_t size);
+        void expand_back(uint32_t size);
 
         /// Reallocates the buffer making sure that the front and
         /// back capacities are as specified

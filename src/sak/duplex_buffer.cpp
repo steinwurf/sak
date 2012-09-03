@@ -101,11 +101,11 @@ namespace sak
     {
         if(size < m_data_size)
         {
-            subtract_from_front(m_data_size - size);
+            shrink_front(m_data_size - size);
         }
         else if(size > m_data_size)
         {
-            add_to_front(size - m_data_size);
+            expand_front(size - m_data_size);
         }
     }
 
@@ -113,11 +113,11 @@ namespace sak
     {
         if(size < m_data_size)
         {
-            subtract_from_back(m_data_size - size);
+            shrink_back(m_data_size - size);
         }
         else if(size > m_data_size)
         {
-            add_to_back(size - m_data_size);
+            expand_back(size - m_data_size);
         }
     }
 
@@ -143,7 +143,7 @@ namespace sak
         return m_data_size;
     }
 
-    void duplex_buffer::subtract_from_front(uint32_t size)
+    void duplex_buffer::shrink_front(uint32_t size)
     {
         assert(size <= m_data_size);
 
@@ -153,7 +153,7 @@ namespace sak
         m_data_size -= size;
     }
 
-    void duplex_buffer::add_to_front(uint32_t size)
+    void duplex_buffer::expand_front(uint32_t size)
     {
         if(size > m_front_capacity)
         {
@@ -166,7 +166,7 @@ namespace sak
         m_data_size += size;
     }
 
-    void duplex_buffer::subtract_from_back(uint32_t size)
+    void duplex_buffer::shrink_back(uint32_t size)
     {
         assert(size <= m_data_size);
 
@@ -176,7 +176,7 @@ namespace sak
         m_data_size -= size;
     }
 
-    void duplex_buffer::add_to_back(uint32_t size)
+    void duplex_buffer::expand_back(uint32_t size)
     {
         if(size > m_back_capacity)
         {

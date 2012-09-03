@@ -103,8 +103,6 @@ void random_write_read_test(bool pseudorandom)
 
     for(int32_t i = elements-1; i >= 0; --i)
     {
-        std::cout << i << std::endl;
-
         EXPECT_EQ(values[i], endian_buffer.read<ValueType>());
     }
 }

@@ -25,7 +25,7 @@
 
 #include <stdint.h>
 #include <gtest/gtest.h>
-#include <sak/resource_pool.h>
+#include <sak/resource_pool.hpp>
 
 struct dummy_object
 {

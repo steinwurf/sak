@@ -27,12 +27,12 @@
 #define SAK_ENDIAN_BUFFER_H
 
 #include <cstdint>
-
-#include "convert_endian.h"
-
 #include <cassert>
 
-namespace sak {
+#include "convert_endian.hpp"
+
+namespace sak
+{
 
     /// The idea behind the endian_buffer is to provide a simple interface for
     /// writing to and reading from a buffer. All complexity regarding endianess

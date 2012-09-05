@@ -24,7 +24,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
-#include <sak/storage.h>
+#include <sak/storage.hpp>
 
 
 template<class PodType>

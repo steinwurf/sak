@@ -24,7 +24,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
-#include <sak/convert_endian.h>
+#include <sak/convert_endian.hpp>
 
 // From test proposed here:
 // http://stackoverflow.com/questions/1001307/

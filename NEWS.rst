@@ -8,6 +8,15 @@ tbd (master)
 ------------
 * tbd
 
+4.0.0
+-----
+* Changing header extension to .hpp from .h which makes it easier to
+  differentiate between C and C++ code.
+* Added ``endian_buffer`` class for easy serializing and deserializing of
+  multibyte values
+* Added the ``duplex_buffer`` class as a container for data which supports
+  efficient prepending and appending of data.
+
 3.0.0
 -----
 * To avoid having include path point to the root of the project we have

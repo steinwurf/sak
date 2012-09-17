@@ -6,6 +6,10 @@ of every change, see the Git log.
 
 tbd (master)
 ------------
+* tbd
+
+4.1.0
+------------
 * Adding aligned allocator + several utility functions for dealing
   with aligned memory.
 

@@ -4,7 +4,7 @@
 import os
 
 APPNAME = 'sak'
-VERSION = '4.0.0'
+nVERSION = '4.0.0'
 
 def recurse_helper(ctx, name):
     if not ctx.has_dependency_path(name):
@@ -15,6 +15,7 @@ def recurse_helper(ctx, name):
 
 def options(opt):
 
+    opt.load('waf_unit_test_v2')
     opt.load('toolchain_cxx')
     opt.load('dependency_bundle')
 
@@ -37,6 +38,7 @@ def configure(conf):
 
     if conf.is_toplevel():
 
+        conf.load('waf_unit_test_v2')
         conf.load('toolchain_cxx')
         conf.load('dependency_bundle')
 
@@ -61,6 +63,11 @@ def build(bld):
         # in a recurse call
 
         bld.recurse('test')
+
+        from waflib.extras import waf_unit_test_v2
+        bld.add_post_fun(waf_unit_test_v2.summary)
+        bld.add_post_fun(waf_unit_test_v2.set_exit_code)
+
 
     bld.recurse('src/sak')
 

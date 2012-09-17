@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 bld.program(
-    features = 'cxx',
+    features = 'cxx test',
     source   = ['sak_tests.cpp'] + bld.path.ant_glob('src/*.cpp'),
     target   = 'sak_tests',
     cxxflags = bld.toolchain_cxx_flags(),

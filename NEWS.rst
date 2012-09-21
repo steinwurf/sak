@@ -6,8 +6,11 @@ of every change, see the Git log.
 
 tbd (master)
 ------------
-* Added object agregation functionality
+* tbd
 
+4.2.0
+-----
+* Added object agregation functionality
 
 4.1.0
 ------------

@@ -220,7 +220,7 @@ public:
 /// Test that all objects are correctly deleted
 TEST(Object, destructor)
 {
-    uint32_t counter;
+    uint32_t counter = 0;
 
     {
         boost::shared_ptr<a> a1

@@ -6,7 +6,7 @@ of every change, see the Git log.
 
 tbd (master)
 ------------
-* tbd
+* Fixed missing include in object.h
 
 4.2.0
 -----

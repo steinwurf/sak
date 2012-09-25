@@ -163,10 +163,16 @@ namespace sak
             }
 
         /// initialize elements of allocated storage p with value value
-        void construct(pointer p, const T& value)
+        // void construct(pointer p, const T& value)
+        //     {
+        //         // initialize memory with placement new
+        //         new((void*)p)T(value);
+        //     }
+
+        template<class U, class... Args>
+        void construct(U* p, Args&&... args)
             {
-                // initialize memory with placement new
-                new((void*)p)T(value);
+                ::new(static_cast<void*>(p)) U(std::forward<Args>(args)...);
             }
 
         /// destroy elements of initialized storage p

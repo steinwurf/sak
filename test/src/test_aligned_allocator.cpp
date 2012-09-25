@@ -77,6 +77,27 @@ TEST(TestAlignedAllocator, vector)
 
 }
 
+TEST(TestAlignedAllocator, vector_resize)
+{
+    typedef std::vector<uint8_t, sak::aligned_allocator<uint8_t> >
+        aligned_vector;
 
+    aligned_vector v;
+
+    v.resize(100);
+
+    EXPECT_EQ(v.size(), 100U);
+    v[10] = 0;
+}
+
+
+TEST(TestAlignedAllocator, vector_zero_size)
+{
+    typedef std::vector<uint8_t, sak::aligned_allocator<uint8_t> >
+        aligned_vector;
+
+    aligned_vector v(0);
+    EXPECT_EQ(v.size(), 0U);
+}
 
 

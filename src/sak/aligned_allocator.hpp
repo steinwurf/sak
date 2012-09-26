@@ -162,18 +162,28 @@ namespace sak
                 return ptr + (Alignment - (p % Alignment));
             }
 
-        /// initialize elements of allocated storage p with value value
-        // void construct(pointer p, const T& value)
-        //     {
-        //         // initialize memory with placement new
-        //         new((void*)p)T(value);
-        //     }
+        // Unfortunately no Microsoft Visual studio compilers support
+        // variadic templates. So we only enable the new type of construct
+        // for other compilers. When a version of msvc comes out that support
+        // variadic templates remove this.
+        #ifdef _MSC_VER
 
-        template<class U, class... Args>
-        void construct(U* p, Args&&... args)
-            {
-                ::new(static_cast<void*>(p)) U(std::forward<Args>(args)...);
-            }
+            /// initialize elements of allocated storage p with value value
+            void construct(pointer p, const T& value)
+                {
+                    // initialize memory with placement new
+                    ::new(static_cast<void*>(p)) T(value);
+                }
+
+        #else
+
+            template<class U, class... Args>
+            void construct(U* p, Args&&... args)
+                {
+                    ::new(static_cast<void*>(p)) U(std::forward<Args>(args)...);
+                }
+
+        #endif
 
         /// destroy elements of initialized storage p
         void destroy (pointer p)

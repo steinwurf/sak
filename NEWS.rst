@@ -4,8 +4,12 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest (bug fix release)
-------------------------
+Latest
+------
+* tbd
+
+4.2.2
+-----
 * Fixed custom allocator support for C++11. For win32 a preprocessor define is
   used until variadic template is supported in Visual Studio.
 

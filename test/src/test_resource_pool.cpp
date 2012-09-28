@@ -60,44 +60,44 @@ TEST(TestResourcePool, Construct)
     {
 	sak::resource_pool<dummy_object> pool( boost::bind(make_dummy) );
 
-	ASSERT_TRUE(pool.size() == 0);
-	ASSERT_TRUE(pool.free() == 0);
+	EXPECT_EQ(pool.size(), 0U);
+	EXPECT_EQ(pool.free(), 0U);
 
 	{
 	    dummy_ptr d1 = pool.allocate();
 
-	    ASSERT_TRUE(pool.size() == 1);
-	    ASSERT_TRUE(pool.free() == 0);
+	    EXPECT_EQ(pool.size(), 1U);
+	    EXPECT_EQ(pool.free(), 0U);
 	}
 
-	ASSERT_TRUE(pool.size() == 1);
-	ASSERT_TRUE(pool.free() == 1);
+	EXPECT_EQ(pool.size(), 1U);
+	EXPECT_EQ(pool.free(), 1U);
 
 	dummy_ptr d2 = pool.allocate();
 
-	ASSERT_TRUE(pool.size() == 1);
-	ASSERT_TRUE(pool.free() == 0);
+	EXPECT_EQ(pool.size(), 1U);
+	EXPECT_EQ(pool.free(), 0U);
 
 	dummy_ptr d3 = pool.allocate();
 
-	ASSERT_TRUE(pool.size() == 2);
-	ASSERT_TRUE(pool.free() == 0);
+	EXPECT_EQ(pool.size(), 2U);
+	EXPECT_EQ(pool.free(), 0U);
 
-	ASSERT_TRUE(dummy_object::m_count == 2);
+	EXPECT_EQ(dummy_object::m_count, 2);
 
 	{
 	    dummy_ptr d4 = pool.allocate();
 
-	    ASSERT_TRUE(pool.size() == 3);
-	    ASSERT_TRUE(pool.free() == 0);
+	    EXPECT_EQ(pool.size(), 3U);
+	    EXPECT_EQ(pool.free(), 0U);
 	}
 
-	ASSERT_TRUE(pool.size() == 3);
-	ASSERT_TRUE(pool.free() == 1);
+	EXPECT_EQ(pool.size(), 3U);
+	EXPECT_EQ(pool.free(), 1U);
 
     }
 
-    ASSERT_TRUE(dummy_object::m_count == 0);
+    EXPECT_EQ(dummy_object::m_count, 0);
 
 }
 

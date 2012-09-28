@@ -25,6 +25,9 @@
 
 #include <gtest/gtest.h>
 #include <sak/object.hpp>
+#include <sak/object_factory.hpp>
+
+#include "test_object_xyz_lib_b/test_object_xyz_lib_b.hpp"
 
 class sender : public sak::object
 {
@@ -263,4 +266,61 @@ TEST(Object, destructor)
 
 //     EXPECT_TRUE(a2.get() != 0);
 // }
+
+
+class rate_socket_factory : public sak::object
+{
+public:
+
+    typedef rate_socket object_type;
+
+    static sak::object_id* id()
+        {
+            using namespace sak;
+            static object_id id = object_id(object::register_type())
+                .set_parent(object::id())
+                .set_name("rate_socket_factory");
+
+            return &id;
+        }
+
+
+    boost::shared_ptr<rate_socket> build()
+        {
+            std::cout << "Building rate socket" << std::endl;
+            return boost::make_shared<rate_socket>();
+        }
+
+};
+
+
+TEST(ObjectFactory, register_type)
+{
+//    auto loop = sak::create<event_loop>();
+
+
+    auto registery = sak::factory_registry::instance();
+    registery->set_factory<rate_socket_factory>();
+
+    auto s = sak::create<socket>();
+
+    auto f = sak::get_factory<rate_socket_factory>();
+
+    s = f->build();
+
+//    loop->run();
+
+}
+
+
+
+TEST(ObjectFactory, register_type_from_lib)
+{
+
+    auto a = sak::create<duck>();
+
+    std::cout << a->eat() << std::endl;
+}
+
+
 

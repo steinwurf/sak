@@ -23,10 +23,11 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef IMP_OBJECT_HPP
-#define IMP_OBJECT_HPP
+#ifndef SAK_OBJECT_HPP
+#define SAK_OBJECT_HPP
 
 #include <cstdint>
+#include <cstring>
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
@@ -35,10 +36,17 @@ namespace sak
 {
     struct object_id
     {
+        object_id()
+            : m_id(0), m_parent(0), m_name("")
+            {}
+
         object_id(uint16_t id)
             : m_id(id), m_parent(0), m_name("")
             {}
 
+        object_id(const object_id &id)
+            : m_id(id.m_id), m_parent(id.m_parent), m_name(id.m_name)
+            {}
 
         object_id& set_parent(object_id *parent)
             {
@@ -69,6 +77,9 @@ namespace sak
 
         const char* m_name;
     };
+
+
+
 
     /// Object aggregation facility allows objects to be merged, accessed from
     /// all other aggregated objects
@@ -181,6 +192,54 @@ namespace sak
         object_storage m_object_storage;
 
     };
+
+
+    inline bool are_related(const object_id *id_a, const object_id *id_b)
+    {
+        const object_id *current_a = id_a;
+        const object_id *current_b = id_b;
+
+        const object_id *object_id = object::id();
+
+        while(current_a->m_id != object_id->m_id)
+        {
+            while(current_b->m_id != object_id->m_id)
+            {
+                if(current_a->m_id == current_b->m_id)
+                    return true;
+
+                current_b = current_b->m_parent;
+            }
+
+            current_a = current_a->m_parent;
+            current_b = id_b;
+        }
+
+        return false;
+    }
+
+    inline bool operator<(const object_id &id_a, const object_id &id_b)
+    {
+        std::cout << "CMP " << id_a.m_name << " " << id_b.m_name << std::endl;
+
+        std::cout << "Are related " << are_related(&id_a, &id_b) << std::endl;
+
+        if(are_related(&id_a, &id_b))
+            return false;
+
+        if(id_a.m_id < id_b.m_id)
+            return true;
+        if(id_a.m_id > id_b.m_id)
+            return false;
+        if(strcmp(id_a.m_name, id_b.m_name) < 0)
+            return true;
+        if(strcmp(id_a.m_name, id_b.m_name) < 0)
+            return false;
+
+        return false;
+    }
+
+
 }
 
 #endif

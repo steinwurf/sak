@@ -56,7 +56,8 @@ sak::object_id* duck::id()
 std::string duck::eat()
 {
     auto f = sak::create<fruit>();
-    return "duck eats fruit which is " + f->color();
+    std::string color = f->color();
+    return "duck eats fruit which is " + color;
 }
 
 //

@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2012 Steinwurf ApS
+// Copyright (c) 2012 Steinwurf ApS
 // All Rights Reserved
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,70 +23,37 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "test_object_xyz_lib_a.hpp"
-#include <sak/object_factory.hpp>
+#ifndef SAK_OBJECT_FACTORY_IMPL_HPP
+#define SAK_OBJECT_FACTORY_IMPL_HPP
 
-//
-// Fruit
-//
+#include "object_factory.hpp"
 
-sak::object_id* fruit::id()
+namespace sak
 {
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("fruit");
 
-    return &id;
+    /// Object factory used to embed a concrete factory
+    template<class Factory>
+    struct object_factory_impl : public object_factory
+    {
+
+        /// @return an object created using the user provided
+        ///         factory
+        virtual boost::shared_ptr<object> build()
+            {
+                if(!m_factory)
+                {
+                    m_factory = boost::make_shared<Factory>();
+                }
+
+                return m_factory->build();
+            }
+
+        /// The user provided factory
+        boost::shared_ptr<Factory> m_factory;
+
+    };
+
 }
 
-//
-// Apple
-//
-
-sak::object_id* apple::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(fruit::id())
-        .set_name("apple");
-
-    return &id;
-}
-
-std::string apple::color()
-{
-    return "red";
-}
-
-//
-// Apple Factory
-//
-
-sak::object_id* apple_factory::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("apple_factory");
-
-    return &id;
-}
-
-boost::shared_ptr<apple> apple_factory::build()
-{
-    std::cout << "building apple" << std::endl;
-    return boost::make_shared<apple>();
-}
-
-REGISTER_FACTORY(apple_factory)
-
-
-
-
-
-
-
-
-
+#endif
 

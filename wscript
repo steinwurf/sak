@@ -63,8 +63,7 @@ def build(bld):
         # in a recurse call
 
         bld.recurse('test')
-        bld.recurse('test/src/test_object_xyz_lib_a')
-        bld.recurse('test/src/test_object_xyz_lib_b')
+        bld.recurse('test/src/test_object_xyz_lib')
 
         from waflib.extras import waf_unit_test_v2
         bld.add_post_fun(waf_unit_test_v2.summary)

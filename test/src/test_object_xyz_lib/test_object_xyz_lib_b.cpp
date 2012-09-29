@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Steinwurf ApS
+// Copyright (c) 2011-2012 Steinwurf ApS
 // All Rights Reserved
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,25 +23,70 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_OBJECT_FACTORY_HPP
-#define SAK_OBJECT_FACTORY_HPP
+#include "test_object_xyz_lib_b.hpp"
+#include <sak/object_registry.hpp>
 
-#include <cstdint>
-#include <map>
+//
+// Bird
+//
 
-namespace sak
+sak::object_id* bird::id()
 {
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+        .set_parent(object::id())
+        .set_name("bird");
 
-    /// Base class for an object factory
-    class object_factory
-    {
-    public:
-
-        /// @return an object of the specified type
-        virtual boost::shared_ptr<object> build() = 0;
-    };
-
+    return &id;
 }
 
-#endif
+//
+// Duck
+//
+
+sak::object_id* duck::id()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+        .set_parent(bird::id())
+        .set_name("duck");
+
+    return &id;
+}
+
+std::string duck::eat()
+{
+    auto f = sak::create<fruit>();
+    return std::string("duck eats fruit which is ").append(f->color());
+}
+
+//
+// Duck Factory
+//
+
+sak::object_id* duck_factory::id()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+        .set_parent(object::id())
+        .set_name("duck_factory");
+
+    return &id;
+}
+
+boost::shared_ptr<duck> duck_factory::build()
+{
+    return boost::make_shared<duck>();
+}
+
+REGISTER_FACTORY(duck_factory)
+
+
+
+
+
+
+
+
+
 

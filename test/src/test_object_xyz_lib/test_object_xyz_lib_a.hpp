@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Steinwurf ApS
+// Copyright (c) 2011-2012 Steinwurf ApS
 // All Rights Reserved
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,25 +23,73 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_OBJECT_FACTORY_HPP
-#define SAK_OBJECT_FACTORY_HPP
+#ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
+#define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
 
-#include <cstdint>
-#include <map>
+#include <sak/object.hpp>
 
-namespace sak
+class fruit : public sak::object
 {
+public:
 
-    /// Base class for an object factory
-    class object_factory
-    {
-    public:
+    static sak::object_id* id();
+    virtual std::string color() = 0;
 
-        /// @return an object of the specified type
-        virtual boost::shared_ptr<object> build() = 0;
-    };
+};
 
-}
+class apple : public fruit
+{
+public:
+
+    static sak::object_id* id();
+    std::string color();
+
+};
+
+class apple_factory : public sak::object
+{
+public:
+
+    /// Required used to register the type created by the factory
+    typedef apple object_type;
+
+    static sak::object_id* id();
+    static uint32_t category();
+
+    boost::shared_ptr<apple> build();
+};
+
+class pear : public fruit
+{
+public:
+
+    static sak::object_id* id();
+    std::string color();
+
+};
+
+class pear_factory : public sak::object
+{
+public:
+
+    /// Required used to register the type created by the factory
+    typedef pear object_type;
+
+    static sak::object_id* id();
+    static uint32_t category();
+
+    boost::shared_ptr<pear> build();
+};
+
+
 
 #endif
+
+
+
+
+
+
+
+
 

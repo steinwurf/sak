@@ -25,9 +25,9 @@
 
 #include <gtest/gtest.h>
 #include <sak/object.hpp>
-#include <sak/object_factory.hpp>
+#include <sak/object_registry.hpp>
 
-#include "test_object_xyz_lib_b/test_object_xyz_lib_b.hpp"
+#include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
 class sender : public sak::object
 {
@@ -287,7 +287,6 @@ public:
 
     boost::shared_ptr<rate_socket> build()
         {
-            std::cout << "Building rate socket" << std::endl;
             return boost::make_shared<rate_socket>();
         }
 
@@ -299,7 +298,7 @@ TEST(ObjectFactory, register_type)
 //    auto loop = sak::create<event_loop>();
 
 
-    auto registery = sak::factory_registry::instance();
+    auto registery = sak::object_registry::instance();
     registery->set_factory<rate_socket_factory>();
 
     auto s = sak::create<socket>();
@@ -316,10 +315,15 @@ TEST(ObjectFactory, register_type)
 
 TEST(ObjectFactory, register_type_from_lib)
 {
-
+    sak::set_factory_category(pear_factory::category());
     auto a = sak::create<duck>();
 
-    std::cout << a->eat() << std::endl;
+    EXPECT_EQ("duck eats fruit which is green", a->eat());
+
+    sak::set_factory_category(apple_factory::category());
+    a = sak::create<duck>();
+
+    EXPECT_EQ("duck eats fruit which is red", a->eat());
 }
 
 

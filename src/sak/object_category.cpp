@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2012 Steinwurf ApS
+// Copyright (c) 2012 Steinwurf ApS
 // All Rights Reserved
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,48 +23,24 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
-#define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
+#include "object_category.hpp"
 
-#include <sak/object.hpp>
-#include "../test_object_xyz_lib_a/test_object_xyz_lib_a.hpp"
-
-class bird : public sak::object
+namespace sak
 {
-public:
 
-    static sak::object_id* id();
-    virtual std::string eat() = 0;
+    uint32_t object_category::register_id()
+    {
+        static uint32_t ids = 0;
+        return ids++;
+    }
 
-};
+    uint32_t object_category::default_id()
+    {
+        static uint32_t id = register_id();
+        return id;
+    }
 
-class duck : public bird
-{
-public:
-
-    static sak::object_id* id();
-    std::string eat();
-
-};
-
-class duck_factory : public sak::object
-{
-public:
-
-    /// Required used to register the type created by the factory
-    typedef duck object_type;
-
-    static sak::object_id* id();
-    boost::shared_ptr<duck> build();
-};
-
-
-
-#endif
-
-
-
-
+}
 
 
 

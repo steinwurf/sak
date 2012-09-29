@@ -2,7 +2,19 @@
 # encoding: utf-8
 
 bld.stlib(features        = 'cxx',
+          source          = ['test_object_xyz_lib_a.cpp'],
+          target          = 'test_object_xyz_lib_a',
+          cxxflags        = bld.toolchain_cxx_flags(),
+          use             = ['sak'])
+
+
+bld.stlib(features        = 'cxx',
           source          = ['test_object_xyz_lib_b.cpp'],
           target          = 'test_object_xyz_lib_b',
           cxxflags        = bld.toolchain_cxx_flags(),
           use             = ['sak', 'test_object_xyz_lib_a'])
+
+
+
+
+

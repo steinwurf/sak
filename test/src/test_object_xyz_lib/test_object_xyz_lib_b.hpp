@@ -23,39 +23,39 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
-#define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
+#ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
+#define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
 
 #include <sak/object.hpp>
+#include "test_object_xyz_lib_a.hpp"
 
-class fruit : public sak::object
+class bird : public sak::object
 {
 public:
 
     static sak::object_id* id();
-    virtual std::string color() = 0;
+    virtual std::string eat() = 0;
 
 };
 
-class apple : public fruit
+class duck : public bird
 {
 public:
 
     static sak::object_id* id();
-    std::string color();
+    std::string eat();
 
 };
 
-class apple_factory : public sak::object
+class duck_factory : public sak::object
 {
 public:
 
     /// Required used to register the type created by the factory
-    typedef apple object_type;
+    typedef duck object_type;
 
     static sak::object_id* id();
-
-    boost::shared_ptr<apple> build();
+    boost::shared_ptr<duck> build();
 };
 
 

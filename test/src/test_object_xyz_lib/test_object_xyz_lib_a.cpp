@@ -23,63 +23,118 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "test_object_xyz_lib_b.hpp"
-#include <sak/object_factory.hpp>
+#include "test_object_xyz_lib_a.hpp"
+#include <sak/object_registry.hpp>
 
 //
-// Bird
+// Fruit
 //
-sak::object_id* bird::id()
+
+sak::object_id* fruit::id()
 {
     using namespace sak;
     static object_id id = object_id(object::register_type())
         .set_parent(object::id())
-        .set_name("bird");
+        .set_name("fruit");
 
     return &id;
 }
 
 //
-// Duck
+// Apple
 //
 
-sak::object_id* duck::id()
+sak::object_id* apple::id()
 {
     using namespace sak;
     static object_id id = object_id(object::register_type())
-        .set_parent(bird::id())
-        .set_name("duck");
+        .set_parent(fruit::id())
+        .set_name("apple")
+        .set_category(apple_factory::category());
 
     return &id;
 }
 
-std::string duck::eat()
+std::string apple::color()
 {
-    auto f = sak::create<fruit>();
-    return std::string("duck eats fruit which is ").append(f->color());
+    return "red";
 }
 
 //
-// Duck Factory
+// Apple Factory
 //
 
-sak::object_id* duck_factory::id()
+sak::object_id* apple_factory::id()
 {
     using namespace sak;
     static object_id id = object_id(object::register_type())
         .set_parent(object::id())
-        .set_name("duck_factory");
+        .set_name("apple_factory")
+        .set_category(apple_factory::category());
 
     return &id;
 }
 
-boost::shared_ptr<duck> duck_factory::build()
+uint32_t apple_factory::category()
 {
-    std::cout << "building duck" << std::endl;
-    return boost::make_shared<duck>();
+    static uint32_t id = sak::object_category::register_id();
+    return id;
 }
 
-REGISTER_FACTORY(duck_factory)
+boost::shared_ptr<apple> apple_factory::build()
+{
+    return boost::make_shared<apple>();
+}
+
+REGISTER_FACTORY(apple_factory)
+
+//
+// Pear
+//
+
+sak::object_id* pear::id()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+        .set_parent(fruit::id())
+        .set_name("pear")
+        .set_category(pear_factory::category());
+
+    return &id;
+}
+
+std::string pear::color()
+{
+    return "green";
+}
+
+//
+// Pear Factory
+//
+
+sak::object_id* pear_factory::id()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+        .set_parent(object::id())
+        .set_name("pear_factory")
+        .set_category(pear_factory::category());
+
+    return &id;
+}
+
+uint32_t pear_factory::category()
+{
+    static uint32_t id = sak::object_category::register_id();
+    return id;
+}
+
+boost::shared_ptr<pear> pear_factory::build()
+{
+    return boost::make_shared<pear>();
+}
+
+REGISTER_FACTORY(pear_factory)
 
 
 

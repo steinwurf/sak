@@ -23,22 +23,29 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_OBJECT_FACTORY_HPP
-#define SAK_OBJECT_FACTORY_HPP
+#ifndef SAK_OBJECT_CATEGORY_HPP
+#define SAK_OBJECT_CATEGORY_HPP
 
 #include <cstdint>
-#include <map>
 
 namespace sak
 {
 
-    /// Base class for an object factory
-    class object_factory
+    /// The object category allows you to register category
+    /// id for your objects
+    class object_category
     {
     public:
 
-        /// @return an object of the specified type
-        virtual boost::shared_ptr<object> build() = 0;
+        /// Registers a new category id, all categories must
+        /// use this function to obtain an unique id.
+        /// @return the id of the category
+        static uint32_t register_id();
+
+        /// Returns the id of the default category. If the object does not
+        /// belong to a specific category the default id can be used.
+        /// @return the default factory category
+        static uint32_t default_id();
     };
 
 }

@@ -4,8 +4,12 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest (feature release)
-------------------------
+Latest
+------
+* tbd
+
+4.3.0
+-----
 * Added the object registry, which allows management and access to
   object factories.
 

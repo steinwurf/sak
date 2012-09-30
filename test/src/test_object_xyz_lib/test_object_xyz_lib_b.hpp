@@ -51,9 +51,6 @@ class duck_factory : public sak::object
 {
 public:
 
-    /// Required used to register the type created by the factory
-    typedef duck object_type;
-
     static sak::object_id* id();
     boost::shared_ptr<duck> build();
 };

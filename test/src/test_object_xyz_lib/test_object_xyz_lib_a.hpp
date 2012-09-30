@@ -50,9 +50,6 @@ class apple_factory : public sak::object
 {
 public:
 
-    /// Required used to register the type created by the factory
-    typedef apple object_type;
-
     static sak::object_id* id();
     static uint32_t category();
 
@@ -71,9 +68,6 @@ public:
 class pear_factory : public sak::object
 {
 public:
-
-    /// Required used to register the type created by the factory
-    typedef pear object_type;
 
     static sak::object_id* id();
     static uint32_t category();

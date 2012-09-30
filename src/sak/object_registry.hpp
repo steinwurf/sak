@@ -26,6 +26,8 @@
 #ifndef SAK_OBJECT_REGISTRY_HPP
 #define SAK_OBJECT_REGISTRY_HPP
 
+#include <map>
+
 #include "object_factory_impl.hpp"
 
 namespace sak
@@ -81,7 +83,7 @@ namespace sak
         template<class Factory>
         boost::shared_ptr<Factory> get_factory()
             {
-                auto factory_id = get_factory_id<Factory>();
+                auto factory_id = get_object_id<Factory>();
                 auto factory = find_factory(m_lookup_by_factory_id, factory_id);
 
                 assert(factory);
@@ -98,13 +100,17 @@ namespace sak
         /// Once a factory has been registered objects can be created using
         /// the sak::create<object_type>() function. Factory registration
         /// should be done using the REGISTER_FACTORY(...) macro,
-        template<class Factory>
+        template<class Factory, class Object>
         void set_factory()
             {
-                auto factory_id  = get_factory_id<Factory>();
-                auto object_id   = get_object_id<Factory>();
 
-                assert(!has_in_category(m_lookup_by_factory_id, object_id));
+                auto factory_id  = get_object_id<Factory>();
+                auto object_id   = get_object_id<Object>();
+
+                // The object and factory should have the same category id
+                assert(factory_id.m_category_id == object_id.m_category_id);
+
+                assert(!has_in_category(m_lookup_by_factory_id, factory_id));
                 assert(!has_in_category(m_lookup_by_object_id, object_id));
 
                 auto factory = boost::make_shared< object_factory_impl<Factory> >();
@@ -143,30 +149,17 @@ namespace sak
                 return has_in_category(map, id, id.m_category_id);
             }
 
-        /// @return the object_id of the factory
-        template<class Factory>
-        object_id get_factory_id() const
-            {
-                return *Factory::id();
-            }
-
-        /// @return the object_id of the object created by the factory
-        template<class Factory>
+        template<class Object>
         object_id get_object_id() const
             {
-                typedef typename Factory::object_type object_type;
-
-                // The object and factory should have the same category id
-                assert(Factory::id()->m_category_id == object_type::id()->m_category_id);
-
-                return *object_type::id();
+                return *Object::id();
             }
 
         /// @return the category id of the factory
-        template<class Factory>
+        template<class Object>
         uint32_t get_category_id() const
             {
-                return get_factory_id<Factory>().m_category_id;
+                return Object::id()->m_category_id;
             }
 
         /// Finds and returns an object factory in the given map with a
@@ -233,12 +226,13 @@ namespace sak
 }
 
 /// Macro for registering a factory with the object registry
-#define REGISTER_FACTORY(factoryclass)                                      \
+#define REGISTER_FACTORY(factoryclass, objectclass)                         \
     static struct __##factoryclass##_factory                                \
     {                                                                       \
         __##factoryclass##_factory()                                        \
         {                                                                   \
-            sak::object_registry::instance()->set_factory<factoryclass>();  \
+            sak::object_registry::instance()                                \
+                ->set_factory<factoryclass, objectclass>();                 \
         }                                                                   \
     } x_##factoryclass##_RegClass ;                                         \
 

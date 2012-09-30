@@ -299,7 +299,7 @@ TEST(ObjectFactory, register_type)
 
 
     auto registery = sak::object_registry::instance();
-    registery->set_factory<rate_socket_factory>();
+    registery->set_factory<rate_socket_factory, rate_socket>();
 
     auto s = sak::create<socket>();
 
@@ -325,6 +325,62 @@ TEST(ObjectFactory, register_type_from_lib)
 
     EXPECT_EQ("duck eats fruit which is red", a->eat());
 }
+
+#include <boost/thread/tss.hpp>
+#include <boost/thread/thread.hpp>
+
+struct printer
+{
+    printer()
+        {
+            std::cout << "printer()" << std::endl;
+        }
+
+    ~printer()
+        {
+            std::cout << "~printer()" << std::endl;
+        }
+
+};
+
+struct dummy
+{
+    dummy()
+        {
+
+        }
+
+    static void access_printer()
+        {
+            static boost::thread_specific_ptr<printer> printer_ptr;
+
+            printer* p = printer_ptr.get();
+            if(!p)
+            {
+                p = new printer;
+                printer_ptr.reset(p);
+            }
+        }
+
+
+};
+
+void go_thread()
+{
+    dummy::access_printer();
+}
+
+TEST(ObjectFactory, temporary_test_delete)
+{
+
+    dummy::access_printer();
+    boost::thread w1(go_thread);
+    w1.join();
+
+}
+
+
+
 
 
 

@@ -8,7 +8,7 @@ bld.program(
     cxxflags = bld.toolchain_cxx_flags(),
     use      = ['sak', 'gtest',
                 'boost_includes', 'boost_timer', 'boost_chrono',
-                'boost_system', 'test_object_xyz_lib_b'])
+                'boost_system', 'boost_thread', 'test_object_xyz_lib_b'])
 
 
 

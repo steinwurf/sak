@@ -26,8 +26,9 @@
 #ifndef SAK_OBJECT_FACTORY_HPP
 #define SAK_OBJECT_FACTORY_HPP
 
-#include <cstdint>
-#include <map>
+#include <boost/shared_ptr.hpp>
+
+#include "object.hpp"
 
 namespace sak
 {

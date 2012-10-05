@@ -3,11 +3,7 @@
 
 
 bld.stlib(features        = 'cxx',
-          source          = ['endian_buffer.cpp',
-                             'duplex_buffer.cpp',
-                             'platform.cpp',
-                             'object_id.cpp',
-                             'object_category.cpp'],
+          source          = bld.path.ant_glob('**/*.cpp'),
           target          = 'sak',
           cxxflags        = bld.toolchain_cxx_flags(),
           export_includes = '..',

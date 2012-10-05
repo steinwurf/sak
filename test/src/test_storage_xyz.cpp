@@ -35,16 +35,12 @@ void test_vector_helper(uint32_t vector_size)
     sak::const_storage cs = sak::storage(v);
     EXPECT_EQ(cs.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(cs), &v[0]);
+    EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1U);
 
     sak::mutable_storage ms = sak::storage(v);
     EXPECT_EQ(ms.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v[0]);
-
-    sak::const_storage_list csl = sak::storage_list(v);
-    EXPECT_EQ(std::distance(csl.begin(), csl.end()), 1U);
-
-    sak::mutable_storage_list msl = sak::storage_list(v);
-    EXPECT_EQ(std::distance(msl.begin(), msl.end()), 1U);
+    EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1U);
 
     // Check const
     const std::vector<PodType> &v_ref = v;
@@ -52,9 +48,7 @@ void test_vector_helper(uint32_t vector_size)
     sak::const_storage const_cs = sak::storage(v_ref);
     EXPECT_EQ(const_cs.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(const_cs), &v_ref[0]);
-
-    sak::const_storage_list const_csl = sak::storage_list(v_ref);
-    EXPECT_EQ(std::distance(const_csl.begin(), const_csl.end()), 1U);
+    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1U);
 }
 
 TEST(TestStorage, test_storage_function_vector)
@@ -81,16 +75,13 @@ void test_buffer_helper(uint32_t vector_size)
     sak::const_storage cs = sak::storage(v_data, v_size);
     EXPECT_EQ(cs.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(cs), &v_data[0]);
+    EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1U);
+
 
     sak::mutable_storage ms = sak::storage(v_data, v_size);
     EXPECT_EQ(ms.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v_data[0]);
-
-    sak::const_storage_list csl = sak::storage_list(v_data, v_size);
-    EXPECT_EQ(std::distance(csl.begin(), csl.end()), 1U);
-
-    sak::mutable_storage_list msl = sak::storage_list(v_data, v_size);
-    EXPECT_EQ(std::distance(msl.begin(), msl.end()), 1U);
+    EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1U);
 
     // Check const
     const PodType *v_data_const = v_data;
@@ -98,9 +89,7 @@ void test_buffer_helper(uint32_t vector_size)
     sak::const_storage const_cs = sak::storage(v_data_const, v_size);
     EXPECT_EQ(const_cs.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(const_cs), &v_data_const[0]);
-
-    sak::const_storage_list const_csl = sak::storage_list(v_data_const, v_size);
-    EXPECT_EQ(std::distance(const_csl.begin(), const_csl.end()), 1U);
+    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1U);
 }
 
 TEST(TestStorage, test_storage_function_buffer)
@@ -124,11 +113,6 @@ TEST(TestStorage, test_mutable_to_const_conversion)
     sak::mutable_storage ms = sak::storage(v);
     sak::const_storage cs = ms;
     cs = ms;
-
-    sak::mutable_storage_list msl = sak::storage_list(v);
-    sak::const_storage_list csl = msl;
-    csl = msl;
-
 }
 
 

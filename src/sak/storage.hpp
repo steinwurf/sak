@@ -30,7 +30,8 @@
 /// This implementation was inspired by the boost::asio buffer.h as
 /// a way of providing an abstraction for storage / buffers.
 
-#include <stdint.h>
+#include <cstdint>
+#include <cassert>
 
 namespace sak
 {
@@ -39,9 +40,12 @@ namespace sak
     /// and size of a modifiable/mutable buffer
     struct mutable_storage
     {
-        /// The storage type
-        typedef uint8_t value_type;
-        typedef value_type* value_ptr;
+
+        /// The value type used by the iterator
+        typedef mutable_storage value_type;
+
+        /// The iterator type
+        typedef const mutable_storage* const_iterator;
 
         /// Create an empty storage object
         mutable_storage()
@@ -52,7 +56,7 @@ namespace sak
         /// Create an initialized mutable storage object
         /// @param size the size of the buffer in bytes
         /// @param data pointer to the storage buffer
-        mutable_storage(value_ptr data, uint32_t size)
+        mutable_storage(uint8_t *data, uint32_t size)
             : m_data(data),
               m_size(size)
             {
@@ -60,8 +64,23 @@ namespace sak
                 assert(m_size > 0);
             }
 
+        /// @return interator to the first element note in this
+        ///         adapter we always only have one element
+        ///         @see mutable_storage_list::end()
+        const_iterator begin() const
+            {
+                return this;
+            }
+
+        /// @return interator to the end for this adapter we
+        ///         always only have one element thus the + 1
+        const_iterator end() const
+            {
+                return this + 1;
+            }
+
         /// Pointer to the mutable buffer storage
-        value_ptr m_data;
+        uint8_t *m_data;
 
         /// The size of the mutable buffer
         uint32_t m_size;
@@ -74,9 +93,11 @@ namespace sak
     struct const_storage
     {
 
-        /// The storage type
-        typedef uint8_t value_type;
-        typedef const value_type* value_ptr;
+        /// The value type used by iterators
+        typedef const_storage value_type;
+
+        /// The iterator type
+        typedef const const_storage* const_iterator;
 
         /// Create an empty storage object
         const_storage()
@@ -87,7 +108,7 @@ namespace sak
         /// Create an initialized const storage object
         /// @param size the size of the buffer in bytes
         /// @param data pointer to the storage buffer
-        const_storage(value_ptr data, uint32_t size)
+        const_storage(const uint8_t *data, uint32_t size)
             : m_data(data),
               m_size(size)
             { }
@@ -109,64 +130,6 @@ namespace sak
                 return *this;
             }
 
-        /// Pointer to the non-mutable buffer storage
-        value_ptr m_data;
-
-        /// The size of the mutable buffer
-        uint32_t m_size;
-
-    };
-
-    /// An adapter for the mutable storage class to be used
-    /// by algorithms accepting multiple storage objects
-    struct mutable_storage_list : public mutable_storage
-    {
-
-        /// The value type
-        typedef mutable_storage value_type;
-
-        /// The iterator type
-        typedef const mutable_storage* const_iterator;
-
-        mutable_storage_list(const mutable_storage &storage)
-            : mutable_storage(storage)
-            {}
-
-        /// @return interator to the first element note in this
-        ///         adapter we always only have one element
-        ///         @see mutable_storage_list::end()
-        const_iterator begin() const
-            {
-                return this;
-            }
-
-        /// @return interator to the end for this adapter we
-        ///         always only have one element thus the + 1
-        const_iterator end() const
-            {
-                return this + 1;
-            }
-    };
-
-    /// An adapter for the const storage class to be used
-    /// by algorithms accepting multiple storage objects
-    struct const_storage_list : public const_storage
-    {
-
-        /// The value type
-        typedef const_storage value_type;
-
-        /// The iterator type
-        typedef const const_storage* const_iterator;
-
-        const_storage_list(const const_storage &storage)
-            : const_storage(storage)
-            {}
-
-        const_storage_list(const mutable_storage_list &storage_list)
-            : const_storage(storage_list)
-            {}
-
         /// @return interator to the first element note in this
         ///         adapter we always only have one element
         ///         @see const_storage_list::end()
@@ -181,6 +144,12 @@ namespace sak
             {
                 return this + 1;
             }
+
+        /// Pointer to the non-mutable buffer storage
+        const uint8_t *m_data;
+
+        /// The size of the mutable buffer
+        uint32_t m_size;
 
     };
 
@@ -318,24 +287,6 @@ namespace sak
         return mutable_storage(data, size);
     }
 
-    /// Creates a storage list adapter
-    /// @param v is a std::vector buffer
-    /// @return the storage list adapter
-    template<class PodType, class Allocator>
-    inline mutable_storage_list storage_list(std::vector<PodType, Allocator> &v)
-    {
-        return mutable_storage_list(storage(v));
-    }
-
-    /// Creates a storage list adapter
-    /// @param v is a std::vector buffer
-    /// @return the storage list adapter
-    template<class PodType, class Allocator>
-    inline const_storage_list storage_list(const std::vector<PodType, Allocator> &v)
-    {
-        return const_storage_list(storage(v));
-    }
-
     /// Storage function for pointers to const data
     /// @param data pointer to the data buffer
     /// @param size_in_bytes the size of data buffer in bytes
@@ -354,24 +305,6 @@ namespace sak
     {
         uint8_t *data_ptr = reinterpret_cast<uint8_t*>(data);
         return mutable_storage(data_ptr, size_in_bytes);
-    }
-
-    /// Storage list function for pointers to const data
-    /// @param data pointer to the data buffer
-    /// @param size_in_bytes the size of data buffer in bytes
-    /// @return the storage list adapter
-    inline const_storage_list storage_list(const void *data, uint32_t size_in_bytes)
-    {
-        return const_storage_list(storage(data, size_in_bytes));
-    }
-
-    /// Storage list function for pointers to mutable data
-    /// @param data pointer to the data buffer
-    /// @param size_in_bytes the size of data buffer in bytes
-    /// @return the storage list adapter
-    inline mutable_storage_list storage_list(void *data, uint32_t size_in_bytes)
-    {
-        return mutable_storage_list(storage(data, size_in_bytes));
     }
 
 }

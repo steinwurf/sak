@@ -8,6 +8,10 @@ Latest
 ------
 * tbd
 
+4.4.0
+-----
+* Added buffer object for simple buffer management.
+
 4.3.0
 -----
 * Added the object registry, which allows management and access to

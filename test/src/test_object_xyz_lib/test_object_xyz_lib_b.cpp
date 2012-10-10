@@ -79,7 +79,7 @@ boost::shared_ptr<duck> duck_factory::build()
     return boost::make_shared<duck>();
 }
 
-REGISTER_FACTORY(duck_factory, duck)
+
 
 
 

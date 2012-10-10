@@ -315,6 +315,10 @@ TEST(ObjectFactory, register_type)
 
 TEST(ObjectFactory, register_type_from_lib)
 {
+    sak::set_factory<apple_factory, apple>();
+    sak::set_factory<pear_factory, pear>();
+    sak::set_factory<duck_factory, duck>();
+
     sak::set_factory_category(pear_factory::category());
     auto a = sak::create<duck>();
 

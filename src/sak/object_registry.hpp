@@ -67,14 +67,14 @@ namespace sak
         /// Sets the current category - this determines precedence
         /// in how we find factories
         /// @param category_id the id of the category
-        void set_category(uint32_t category_id)
+        void set_factory_category(uint32_t category_id)
             {
                 m_current_category = category_id;
             }
 
         /// Returns the current category
         /// @return the category id of the current category
-        uint32_t get_category() const
+        uint32_t get_factory_category() const
             {
                 return m_current_category;
             }
@@ -98,8 +98,7 @@ namespace sak
 
         /// Registers an object factory with the object registry
         /// Once a factory has been registered objects can be created using
-        /// the sak::create<object_type>() function. Factory registration
-        /// should be done using the REGISTER_FACTORY(...) macro,
+        /// the sak::create<object_type>() function.
         template<class Factory, class Object>
         void set_factory()
             {
@@ -113,8 +112,11 @@ namespace sak
                 assert(!has_in_category(m_lookup_by_factory_id, factory_id));
                 assert(!has_in_category(m_lookup_by_object_id, object_id));
 
-                auto factory = boost::make_shared< object_factory_impl<Factory> >();
-                auto category_id = get_category_id<Factory>();
+                auto factory =
+                    boost::make_shared< object_factory_impl<Factory> >();
+
+                auto category_id =
+                    get_category_id<Factory>();
 
                 m_lookup_by_factory_id[category_id][factory_id] = factory;
                 m_lookup_by_object_id[category_id][object_id] = factory;
@@ -124,7 +126,9 @@ namespace sak
         template<class Object>
         boost::shared_ptr<Object> create()
             {
-                auto factory = find_factory(m_lookup_by_object_id, *Object::id());
+                auto factory =
+                    find_factory(m_lookup_by_object_id, *Object::id());
+
                 assert(factory);
 
                 auto object = factory->build();
@@ -135,10 +139,12 @@ namespace sak
     private:
 
         /// Checks if an object id is registered in a specific category
-        bool has_in_category(const category_map &map, const object_id &id, uint32_t category_id) const
+        bool has_in_category(const category_map &map, const object_id &id,
+                             uint32_t category_id) const
             {
                 if(map.find(category_id) != map.end())
-                    return map.at(category_id).find(id) != map.at(category_id).end();
+                    return map.at(category_id).find(id) !=
+                           map.at(category_id).end();
                 else
                     return false;
             }
@@ -203,38 +209,40 @@ namespace sak
 
     };
 
-    /// @return an object created by a factory stored in the registry
+    /// @see object_registry::create()
     template<class T>
     inline boost::shared_ptr<T> create()
     {
         return object_registry::instance()->create<T>();
     }
 
-    /// @return a factory stored in the object registry
+    /// @see object_registry::set_factory()
+    template<class Factory, class Object>
+    inline void set_factory()
+    {
+        return object_registry::instance()->set_factory<Factory, Object>();
+    }
+
+    /// @see object_registry::get_factory()
     template<class T>
     inline boost::shared_ptr<T> get_factory()
     {
         return object_registry::instance()->get_factory<T>();
     }
 
-    /// @param category which should be used by the object registry
+    /// @see object_registry::set_factory_category()
     inline void set_factory_category(uint32_t category)
     {
-        object_registry::instance()->set_category(category);
+        object_registry::instance()->set_factory_category(category);
+    }
+
+    /// @see object_registry::get_factory_category()
+    inline uint32_t get_factory_category()
+    {
+        return object_registry::instance()->get_factory_category();
     }
 
 }
-
-/// Macro for registering a factory with the object registry
-#define REGISTER_FACTORY(factoryclass, objectclass)                         \
-    static struct __##factoryclass##_factory                                \
-    {                                                                       \
-        __##factoryclass##_factory()                                        \
-        {                                                                   \
-            sak::object_registry::instance()                                \
-                ->set_factory<factoryclass, objectclass>();                 \
-        }                                                                   \
-    } x_##factoryclass##_RegClass ;                                         \
 
 #endif
 

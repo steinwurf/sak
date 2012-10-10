@@ -86,7 +86,6 @@ boost::shared_ptr<apple> apple_factory::build()
     return boost::make_shared<apple>();
 }
 
-REGISTER_FACTORY(apple_factory, apple)
 
 //
 // Pear
@@ -134,7 +133,7 @@ boost::shared_ptr<pear> pear_factory::build()
     return boost::make_shared<pear>();
 }
 
-REGISTER_FACTORY(pear_factory, pear)
+
 
 
 

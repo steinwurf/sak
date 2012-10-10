@@ -8,6 +8,11 @@ Latest
 ------
 * tbd
 
+4.4.1
+-----
+* Fix broken backwards compatibility introduced without bumping the
+  major version number.
+
 4.4.0
 -----
 * Added buffer object for simple buffer management.

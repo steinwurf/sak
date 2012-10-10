@@ -66,7 +66,6 @@ namespace sak
 
         /// @return interator to the first element note in this
         ///         adapter we always only have one element
-        ///         @see mutable_storage_list::end()
         const_iterator begin() const
             {
                 return this;
@@ -132,7 +131,6 @@ namespace sak
 
         /// @return interator to the first element note in this
         ///         adapter we always only have one element
-        ///         @see const_storage_list::end()
         const_iterator begin() const
             {
                 return this;
@@ -287,24 +285,6 @@ namespace sak
         return mutable_storage(data, size);
     }
 
-    /// Creates a storage list adapter
-    /// @param v is a std::vector buffer
-    /// @return the storage list adapter
-    template<class PodType, class Allocator>
-    inline mutable_storage storage_list(std::vector<PodType, Allocator> &v)
-    {
-        return storage(v);
-    }
-
-    /// Creates a storage list adapter
-    /// @param v is a std::vector buffer
-    /// @return the storage list adapter
-    template<class PodType, class Allocator>
-    inline const_storage storage_list(const std::vector<PodType, Allocator> &v)
-    {
-        return storage(v);
-    }
-
     /// Storage function for pointers to const data
     /// @param data pointer to the data buffer
     /// @param size_in_bytes the size of data buffer in bytes
@@ -323,24 +303,6 @@ namespace sak
     {
         uint8_t *data_ptr = reinterpret_cast<uint8_t*>(data);
         return mutable_storage(data_ptr, size_in_bytes);
-    }
-
-    /// Storage list function for pointers to const data
-    /// @param data pointer to the data buffer
-    /// @param size_in_bytes the size of data buffer in bytes
-    /// @return the storage list adapter
-    inline const_storage storage_list(const void *data, uint32_t size_in_bytes)
-    {
-        return storage(data, size_in_bytes);
-    }
-
-    /// Storage list function for pointers to mutable data
-    /// @param data pointer to the data buffer
-    /// @param size_in_bytes the size of data buffer in bytes
-    /// @return the storage list adapter
-    inline mutable_storage storage_list(void *data, uint32_t size_in_bytes)
-    {
-        return storage(data, size_in_bytes);
     }
 
 }

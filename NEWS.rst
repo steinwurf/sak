@@ -8,6 +8,11 @@ Latest
 ------
 * tbd
 
+5.0.0
+-----
+* Bump major version due to an backwards incompatible change in the
+  object_registry code.
+
 4.4.1
 -----
 * Fix broken backwards compatibility introduced without bumping the

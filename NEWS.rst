@@ -8,6 +8,11 @@ Latest
 ------
 * tbd
 
+6.0.0
+-----
+* Bump major version due to an backwards incompatible change in the
+  storage.hpp code. Where we have removed the storage_list() functions.
+
 5.0.0
 -----
 * Bump major version due to an backwards incompatible change in the

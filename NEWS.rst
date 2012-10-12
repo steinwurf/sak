@@ -8,6 +8,10 @@ Latest
 ------
 * tbd
 
+6.1.0
+-----
+* Adding streams, e.g. buffer_input_stream, file_input_stream.
+
 6.0.0
 -----
 * Bump major version due to an backwards incompatible change in the

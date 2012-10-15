@@ -51,8 +51,6 @@ class apple_factory : public sak::object
 public:
 
     static sak::object_id* id();
-    static uint32_t category();
-
     boost::shared_ptr<apple> build();
 };
 
@@ -70,8 +68,6 @@ class pear_factory : public sak::object
 public:
 
     static sak::object_id* id();
-    static uint32_t category();
-
     boost::shared_ptr<pear> build();
 };
 

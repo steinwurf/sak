@@ -43,14 +43,10 @@ namespace sak
         typedef std::map<object_id, boost::shared_ptr<object_factory> >
             object_map;
 
-        /// The map associating a category id to an object map
-        typedef std::map<uint32_t, object_map> category_map;
-
     private:
 
         /// Constructor of the factory registry
         object_registry()
-            : m_current_category(object_category::default_id())
             { }
 
     public:
@@ -64,20 +60,6 @@ namespace sak
                 return &registery;
             }
 
-        /// Sets the current category - this determines precedence
-        /// in how we find factories
-        /// @param category_id the id of the category
-        void set_factory_category(uint32_t category_id)
-            {
-                m_current_category = category_id;
-            }
-
-        /// Returns the current category
-        /// @return the category id of the current category
-        uint32_t get_factory_category() const
-            {
-                return m_current_category;
-            }
 
         /// @return a factory stored in the registry
         template<class Factory>
@@ -93,6 +75,8 @@ namespace sak
                 auto factory_impl =
                     boost::dynamic_pointer_cast<factory_type>(factory);
 
+                assert(factory_impl);
+                assert(factory_impl->m_factory);
                 return factory_impl->m_factory;
             }
 
@@ -106,26 +90,26 @@ namespace sak
                 auto factory_id  = get_object_id<Factory>();
                 auto object_id   = get_object_id<Object>();
 
-                // The object and factory should have the same category id
-                assert(factory_id.m_category_id == object_id.m_category_id);
-
-                assert(!has_in_category(m_lookup_by_factory_id, factory_id));
-                assert(!has_in_category(m_lookup_by_object_id, object_id));
-
                 auto factory =
                     boost::make_shared< object_factory_impl<Factory> >();
 
-                auto category_id =
-                    get_category_id<Factory>();
+                m_lookup_by_factory_id[factory_id] = factory;
+                m_lookup_by_object_id[object_id] = factory;
+            }
 
-                m_lookup_by_factory_id[category_id][factory_id] = factory;
-                m_lookup_by_object_id[category_id][object_id] = factory;
+        /// Clears all registered factories
+        void clear_factories()
+            {
+                m_lookup_by_factory_id.clear();
+                m_lookup_by_object_id.clear();
             }
 
         /// @return an object created using the registered factories
         template<class Object>
         boost::shared_ptr<Object> create()
             {
+                assert(has_object_id(m_lookup_by_object_id, *Object::id()));
+
                 auto factory =
                     find_factory(m_lookup_by_object_id, *Object::id());
 
@@ -139,20 +123,9 @@ namespace sak
     private:
 
         /// Checks if an object id is registered in a specific category
-        bool has_in_category(const category_map &map, const object_id &id,
-                             uint32_t category_id) const
+        bool has_object_id(const object_map &map, const object_id &id) const
             {
-                if(map.find(category_id) != map.end())
-                    return map.at(category_id).find(id) !=
-                           map.at(category_id).end();
-                else
-                    return false;
-            }
-
-        /// Checks if an object id is registered in a specific category
-        bool has_in_category(const category_map &map, const object_id &id) const
-            {
-                return has_in_category(map, id, id.m_category_id);
+                return map.find(id) != map.end();
             }
 
         template<class Object>
@@ -161,51 +134,22 @@ namespace sak
                 return *Object::id();
             }
 
-        /// @return the category id of the factory
-        template<class Object>
-        uint32_t get_category_id() const
-            {
-                return Object::id()->m_category_id;
-            }
-
         /// Finds and returns an object factory in the given map with a
         /// "compatible" object_id.
         boost::shared_ptr<object_factory>
-        find_factory(const category_map &map, const object_id &id) const
+        find_factory(const object_map &map, const object_id &id) const
             {
-                // First we look:
-                // 1. In the category defined by the object
-                // 2. In the current category
-                // 3. In the default category
-                if(has_in_category(map, id))
-                {
-                    return map.at(id.m_category_id).at(id);
-                }
-                else if(has_in_category(map, id, m_current_category))
-                {
-                    return map.at(m_current_category).at(id);
-                }
-                else if(has_in_category(map, id, object_category::default_id()))
-                {
-                    return map.at(object_category::default_id()).at(id);
-                }
-
-                return boost::shared_ptr<object_factory>();
-
+                assert(has_object_id(map,id));
+                return map.at(id);
             }
 
     private:
 
-        /// The current category
-        uint32_t m_current_category;
+        /// Map allowing a factory to be found based on an object's object id
+        object_map m_lookup_by_object_id;
 
-        /// Map allowing a factory to be found based on an objects
-        /// object_id
-        std::map<uint32_t, object_map> m_lookup_by_object_id;
-
-        /// Map allowing a factory to be found based on a factory's
-        /// object id
-        std::map<uint32_t, object_map> m_lookup_by_factory_id;
+        /// Map allowing a factory to be found based on a factory's object id
+        object_map m_lookup_by_factory_id;
 
     };
 
@@ -223,23 +167,17 @@ namespace sak
         return object_registry::instance()->set_factory<Factory, Object>();
     }
 
+    /// @see object_registry::clear_factories()
+    inline void clear_factories()
+    {
+        return object_registry::instance()->clear_factories();
+    }
+
     /// @see object_registry::get_factory()
     template<class T>
     inline boost::shared_ptr<T> get_factory()
     {
         return object_registry::instance()->get_factory<T>();
-    }
-
-    /// @see object_registry::set_factory_category()
-    inline void set_factory_category(uint32_t category)
-    {
-        object_registry::instance()->set_factory_category(category);
-    }
-
-    /// @see object_registry::get_factory_category()
-    inline uint32_t get_factory_category()
-    {
-        return object_registry::instance()->get_factory_category();
     }
 
 }

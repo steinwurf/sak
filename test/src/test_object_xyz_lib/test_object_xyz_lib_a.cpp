@@ -49,8 +49,7 @@ sak::object_id* apple::id()
     using namespace sak;
     static object_id id = object_id(object::register_type())
         .set_parent(fruit::id())
-        .set_name("apple")
-        .set_category(apple_factory::category());
+        .set_name("apple");
 
     return &id;
 }
@@ -69,16 +68,9 @@ sak::object_id* apple_factory::id()
     using namespace sak;
     static object_id id = object_id(object::register_type())
         .set_parent(object::id())
-        .set_name("apple_factory")
-        .set_category(apple_factory::category());
+        .set_name("apple_factory");
 
     return &id;
-}
-
-uint32_t apple_factory::category()
-{
-    static uint32_t id = sak::object_category::register_id();
-    return id;
 }
 
 boost::shared_ptr<apple> apple_factory::build()
@@ -96,8 +88,7 @@ sak::object_id* pear::id()
     using namespace sak;
     static object_id id = object_id(object::register_type())
         .set_parent(fruit::id())
-        .set_name("pear")
-        .set_category(pear_factory::category());
+        .set_name("pear");
 
     return &id;
 }
@@ -116,16 +107,9 @@ sak::object_id* pear_factory::id()
     using namespace sak;
     static object_id id = object_id(object::register_type())
         .set_parent(object::id())
-        .set_name("pear_factory")
-        .set_category(pear_factory::category());
+        .set_name("pear_factory");
 
     return &id;
-}
-
-uint32_t pear_factory::category()
-{
-    static uint32_t id = sak::object_category::register_id();
-    return id;
 }
 
 boost::shared_ptr<pear> pear_factory::build()

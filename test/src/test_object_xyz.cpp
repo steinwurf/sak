@@ -295,9 +295,6 @@ public:
 
 TEST(ObjectFactory, register_type)
 {
-//    auto loop = sak::create<event_loop>();
-
-
     auto registery = sak::object_registry::instance();
     registery->set_factory<rate_socket_factory, rate_socket>();
 
@@ -306,31 +303,37 @@ TEST(ObjectFactory, register_type)
     auto f = sak::get_factory<rate_socket_factory>();
 
     s = f->build();
-
-//    loop->run();
-
 }
 
 
 
 TEST(ObjectFactory, register_type_from_lib)
 {
-    sak::set_factory<apple_factory, apple>();
     sak::set_factory<pear_factory, pear>();
     sak::set_factory<duck_factory, duck>();
 
-    sak::set_factory_category(pear_factory::category());
     auto a = sak::create<duck>();
 
     EXPECT_EQ("duck eats fruit which is green", a->eat());
 
-    sak::set_factory_category(apple_factory::category());
+    sak::set_factory<apple_factory, apple>();
     a = sak::create<duck>();
 
     EXPECT_EQ("duck eats fruit which is red", a->eat());
 }
 
+TEST(ObjectFactory, get_factory)
+{
+    sak::clear_factories();
 
+    sak::set_factory<pear_factory, pear>();
+    sak::set_factory<duck_factory, duck>();
+
+    auto factory = sak::get_factory<duck_factory>();
+    auto d = factory->build();
+    EXPECT_EQ("duck eats fruit which is green", d->eat());
+
+}
 
 
 

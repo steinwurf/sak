@@ -36,14 +36,15 @@ namespace sak
     struct object_factory_impl : public object_factory
     {
 
+        object_factory_impl()
+            : m_factory(boost::make_shared<Factory>())
+            {}
+
         /// @return an object created using the user provided
         ///         factory
         virtual boost::shared_ptr<object> build()
             {
-                if(!m_factory)
-                {
-                    m_factory = boost::make_shared<Factory>();
-                }
+                assert(m_factory);
 
                 return m_factory->build();
             }
@@ -52,7 +53,6 @@ namespace sak
         boost::shared_ptr<Factory> m_factory;
 
     };
-
 }
 
 #endif

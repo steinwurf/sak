@@ -34,21 +34,18 @@ namespace sak
 
     object_id::object_id()
         : m_id(0),
-          m_category_id(0),
           m_parent(0),
           m_name("")
     { }
 
     object_id::object_id(uint16_t id)
         : m_id(id),
-          m_category_id(object_category::default_id()),
           m_parent(0),
           m_name("")
     { }
 
     object_id::object_id(const object_id &id)
         : m_id(id.m_id),
-          m_category_id(id.m_category_id),
           m_parent(id.m_parent),
           m_name(id.m_name)
     { }
@@ -62,12 +59,6 @@ namespace sak
     object_id& object_id::set_name(const char *name)
     {
         m_name = name;
-        return *this;
-    }
-
-    object_id& object_id::set_category(uint32_t category_id)
-    {
-        m_category_id = category_id;
         return *this;
     }
 
@@ -123,9 +114,5 @@ namespace sak
 
         return false;
     }
-
-
 }
-
-
 

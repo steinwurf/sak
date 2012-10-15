@@ -27,7 +27,6 @@
 #define SAK_OBJECT_ID_HPP
 
 #include <cstdint>
-#include "object_category.hpp"
 
 namespace sak
 {
@@ -55,10 +54,6 @@ namespace sak
         /// class/type of the object
         object_id& set_name(const char *name);
 
-        /// Set the category of the object. Categories are primarily used
-        /// to control the construction of object in the factories.
-        object_id& set_category(uint32_t category_id);
-
         /// @return true if the object_id has a parent specified
         bool has_parent();
 
@@ -69,9 +64,6 @@ namespace sak
 
         /// The id of the object
         uint16_t m_id;
-
-        /// The id of the category
-        uint32_t m_category_id;
 
         /// Pointer to the parent object
         object_id *m_parent;

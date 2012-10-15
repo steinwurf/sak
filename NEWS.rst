@@ -8,6 +8,10 @@ Latest
 ------
 * tbd
 
+7.0.0
+-----
+* Changed object model to no longer use category
+
 6.1.0
 -----
 * Adding streams, e.g. buffer_input_stream, file_input_stream.

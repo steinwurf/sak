@@ -4,9 +4,9 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest
-------
-* tbd
+Latest (minor)
+--------------
+* Allow setting a factory function on the object registry
 
 7.0.0
 -----

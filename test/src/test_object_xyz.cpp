@@ -287,24 +287,23 @@ public:
         }
 
 
-    boost::shared_ptr<rate_socket> build()
+    boost::shared_ptr<rate_socket> build(sak::object_registry &)
         {
             return boost::make_shared<rate_socket>();
         }
-
 };
 
 
 TEST(ObjectFactory, register_type)
 {
-    auto registery = sak::object_registry::instance();
-    registery->set_factory<rate_socket_factory, rate_socket>();
+    sak::object_registry registry;
+    registry.set_factory<rate_socket_factory, rate_socket>();
 
-    auto s = sak::create<socket>();
+    auto s = registry.build<socket>();
 
-    auto f = sak::get_factory<rate_socket_factory>();
+    auto f = registry.get_factory<rate_socket_factory>();
 
-    s = f->build();
+    s = f->build(registry);
 }
 
 boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry &)
@@ -315,43 +314,39 @@ boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry &)
 
 TEST(ObjectFactory, register_type_function)
 {
-    auto registery = sak::object_registry::instance();
-    registery->clear_factories();
-    registery->set_factory<rate_socket>(
+    sak::object_registry registry;
+    registry.set_factory<rate_socket>(
         boost::bind(build_rate_socket, _1));
 
-    auto s = sak::create<socket>();
+    auto s = registry.build<socket>();
 }
 
 
 TEST(ObjectFactory, register_type_from_lib)
 {
-    sak::set_factory<pear_factory, pear>();
-    sak::set_factory<duck_factory, duck>();
+    sak::object_registry registry;
+    registry.set_factory<pear_factory, pear>();
+    registry.set_factory<duck_factory, duck>();
 
-    auto a = sak::create<duck>();
+    auto a = registry.build<duck>();
 
     EXPECT_EQ("duck eats fruit which is green", a->eat());
 
-    sak::set_factory<apple_factory, apple>();
-    a = sak::create<duck>();
+    registry.set_factory<apple_factory, apple>();
+    a = registry.build<duck>();
 
     EXPECT_EQ("duck eats fruit which is red", a->eat());
 }
 
 TEST(ObjectFactory, get_factory)
 {
-    sak::clear_factories();
+    sak::object_registry registry;
+    registry.set_factory<pear_factory, pear>();
+    registry.set_factory<duck_factory, duck>();
 
-    sak::set_factory<pear_factory, pear>();
-    sak::set_factory<duck_factory, duck>();
-
-    auto factory = sak::get_factory<duck_factory>();
-    auto d = factory->build();
+    auto factory = registry.get_factory<duck_factory>();
+    auto d = factory->build(registry);
     EXPECT_EQ("duck eats fruit which is green", d->eat());
-
 }
-
-
 
 

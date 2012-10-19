@@ -28,6 +28,8 @@
 
 #include <sak/object.hpp>
 
+namespace sak { class object_registry; }
+
 class fruit : public sak::object
 {
 public:
@@ -51,7 +53,7 @@ class apple_factory : public sak::object
 public:
 
     static sak::object_id* id();
-    boost::shared_ptr<apple> build();
+    boost::shared_ptr<apple> build(sak::object_registry &);
 };
 
 class pear : public fruit
@@ -68,7 +70,7 @@ class pear_factory : public sak::object
 public:
 
     static sak::object_id* id();
-    boost::shared_ptr<pear> build();
+    boost::shared_ptr<pear> build(sak::object_registry &);
 };
 
 

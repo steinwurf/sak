@@ -41,10 +41,13 @@ public:
 class duck : public bird
 {
 public:
+    duck(sak::object_registry &registry);
 
     static sak::object_id* id();
     std::string eat();
 
+private:
+    sak::object_registry &m_registry;
 };
 
 class duck_factory : public sak::object
@@ -52,7 +55,7 @@ class duck_factory : public sak::object
 public:
 
     static sak::object_id* id();
-    boost::shared_ptr<duck> build();
+    boost::shared_ptr<duck> build(sak::object_registry &);
 };
 
 

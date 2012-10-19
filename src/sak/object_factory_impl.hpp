@@ -43,11 +43,11 @@ namespace sak
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<object> build(object_registry &)
+        virtual boost::shared_ptr<object> build(object_registry &registry)
             {
                 assert(m_factory);
 
-                return m_factory->build();
+                return m_factory->build(registry);
             }
 
         /// The user provided factory

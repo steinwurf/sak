@@ -44,6 +44,11 @@ sak::object_id* bird::id()
 // Duck
 //
 
+duck::duck(sak::object_registry &registry)
+    : m_registry(registry)
+{
+}
+
 sak::object_id* duck::id()
 {
     using namespace sak;
@@ -56,7 +61,7 @@ sak::object_id* duck::id()
 
 std::string duck::eat()
 {
-    auto f = sak::create<fruit>();
+    auto f = m_registry.build<fruit>();
     return std::string("duck eats fruit which is ").append(f->color());
 }
 
@@ -74,9 +79,9 @@ sak::object_id* duck_factory::id()
     return &id;
 }
 
-boost::shared_ptr<duck> duck_factory::build()
+boost::shared_ptr<duck> duck_factory::build(sak::object_registry &registry)
 {
-    return boost::make_shared<duck>();
+    return boost::make_shared<duck>(registry);
 }
 
 

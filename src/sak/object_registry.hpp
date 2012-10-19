@@ -45,22 +45,11 @@ namespace sak
         typedef std::map<object_id, boost::shared_ptr<object_factory> >
             object_map;
 
-    private:
+    public:
 
         /// Constructor of the factory registry
         object_registry()
             { }
-
-    public:
-
-        /// The factory registry is a singleton which can be accessed through
-        /// this function
-        /// @return the factory instance
-        static object_registry* instance()
-            {
-                static object_registry registery;
-                return &registery;
-            }
 
         /// @return a factory stored in the registry
         template<class Factory>
@@ -121,7 +110,7 @@ namespace sak
 
         /// @return an object created using the registered factories
         template<class Object>
-        boost::shared_ptr<Object> create()
+        boost::shared_ptr<Object> build()
             {
                 assert(has_object_id(m_lookup_by_object_id, *Object::id()));
 
@@ -167,34 +156,6 @@ namespace sak
         object_map m_lookup_by_factory_id;
 
     };
-
-    /// @see object_registry::create()
-    template<class T>
-    inline boost::shared_ptr<T> create()
-    {
-        return object_registry::instance()->create<T>();
-    }
-
-    /// @see object_registry::set_factory()
-    template<class Factory, class Object>
-    inline void set_factory()
-    {
-        return object_registry::instance()->set_factory<Factory, Object>();
-    }
-
-    /// @see object_registry::clear_factories()
-    inline void clear_factories()
-    {
-        return object_registry::instance()->clear_factories();
-    }
-
-    /// @see object_registry::get_factory()
-    template<class T>
-    inline boost::shared_ptr<T> get_factory()
-    {
-        return object_registry::instance()->get_factory<T>();
-    }
-
 }
 
 #endif

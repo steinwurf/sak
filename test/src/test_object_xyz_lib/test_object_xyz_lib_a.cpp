@@ -73,7 +73,7 @@ sak::object_id* apple_factory::id()
     return &id;
 }
 
-boost::shared_ptr<apple> apple_factory::build()
+boost::shared_ptr<apple> apple_factory::build(sak::object_registry &)
 {
     return boost::make_shared<apple>();
 }
@@ -112,7 +112,7 @@ sak::object_id* pear_factory::id()
     return &id;
 }
 
-boost::shared_ptr<pear> pear_factory::build()
+boost::shared_ptr<pear> pear_factory::build(sak::object_registry &)
 {
     return boost::make_shared<pear>();
 }

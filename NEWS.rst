@@ -4,9 +4,11 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest (minor)
+Latest (major)
 --------------
 * Allow setting a factory function on the object registry
+* Object registry is no longer a singleton, changed factory build methods to
+  take accept object registry reference.
 
 7.0.0
 -----

@@ -32,6 +32,7 @@
 
 namespace sak
 {
+    class object_registry;
 
     /// Base class for an object factory
     class object_factory
@@ -39,7 +40,7 @@ namespace sak
     public:
 
         /// @return an object of the specified type
-        virtual boost::shared_ptr<object> build() = 0;
+        virtual boost::shared_ptr<object> build(object_registry &) = 0;
     };
 
 }

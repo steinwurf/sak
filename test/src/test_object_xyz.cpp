@@ -27,6 +27,8 @@
 #include <sak/object.hpp>
 #include <sak/object_registry.hpp>
 
+#include <boost/bind.hpp>
+
 #include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
 class sender : public sak::object
@@ -305,6 +307,21 @@ TEST(ObjectFactory, register_type)
     s = f->build();
 }
 
+boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry &)
+{
+    return boost::make_shared<rate_socket>();
+}
+
+
+TEST(ObjectFactory, register_type_function)
+{
+    auto registery = sak::object_registry::instance();
+    registery->clear_factories();
+    registery->set_factory<rate_socket>(
+        boost::bind(build_rate_socket, _1));
+
+    auto s = sak::create<socket>();
+}
 
 
 TEST(ObjectFactory, register_type_from_lib)

@@ -28,6 +28,8 @@
 
 #include <map>
 
+#include <boost/function.hpp>
+
 #include "object_factory_impl.hpp"
 
 namespace sak
@@ -60,7 +62,6 @@ namespace sak
                 return &registery;
             }
 
-
         /// @return a factory stored in the registry
         template<class Factory>
         boost::shared_ptr<Factory> get_factory()
@@ -86,14 +87,28 @@ namespace sak
         template<class Factory, class Object>
         void set_factory()
             {
-
-                auto factory_id  = get_object_id<Factory>();
-                auto object_id   = get_object_id<Object>();
+                auto factory_id = get_object_id<Factory>();
+                auto object_id  = get_object_id<Object>();
 
                 auto factory =
                     boost::make_shared< object_factory_impl<Factory> >();
 
                 m_lookup_by_factory_id[factory_id] = factory;
+                m_lookup_by_object_id[object_id] = factory;
+            }
+
+        /// Registers an object factory function with the object registry
+        /// Once a factory function has been registered objects can be created
+        /// using the sak::create<object_type>() function.
+        template<class Object>
+        void set_factory(const boost::function<boost::shared_ptr<Object>(
+                             object_registry &)> &function)
+            {
+                auto object_id = get_object_id<Object>();
+
+                auto factory =
+                    boost::make_shared< object_factory_function<Object> >(function);
+
                 m_lookup_by_object_id[object_id] = factory;
             }
 
@@ -115,7 +130,7 @@ namespace sak
 
                 assert(factory);
 
-                auto object = factory->build();
+                auto object = factory->build(*this);
 
                 return boost::dynamic_pointer_cast<Object>(object);
             }

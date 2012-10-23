@@ -78,8 +78,6 @@ namespace sak
     /// @return true if the objects are considered less than returns
     ///         false if the object is larger or equal
     bool operator<(const object_id &id_a, const object_id &id_b);
-
-
 }
 
 #endif

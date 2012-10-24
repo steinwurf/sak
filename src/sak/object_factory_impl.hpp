@@ -78,6 +78,28 @@ namespace sak
         boost::function<boost::shared_ptr<Object>(object_registry &)> m_function;
     };
 
+    /// Object factory used to embed a concrete factory
+    template<class Factory>
+    struct object_factory_no_build : public object_factory
+    {
+
+        object_factory_no_build()
+            : m_factory(boost::make_shared<Factory>())
+            {}
+
+        /// @return an object created using the user provided
+        ///         factory
+        virtual boost::shared_ptr<object> build(object_registry &registry)
+            {
+                assert(0);
+                return boost::shared_ptr<object>();
+            }
+
+        /// The user provided factory
+        boost::shared_ptr<Factory> m_factory;
+
+    };
+
 }
 
 #endif

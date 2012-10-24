@@ -71,13 +71,15 @@ namespace sak
             }
 
         /// Registers an object factory with the object registry
-        /// Once a factory has been registered objects can be created using
-        /// the sak::create<object_type>() function.
+        /// Once a factory has been registered objects can be created
         template<class Factory, class Object>
         void set_factory()
             {
                 auto factory_id = get_object_id<Factory>();
                 auto object_id  = get_object_id<Object>();
+
+                // Did you forget to make the id function in the class Factory?
+                assert(factory_id.m_id != object::id()->m_id);
 
                 // Did you forget to make the id function in the class Object?
                 assert(object_id.m_id != object::id()->m_id);
@@ -89,9 +91,25 @@ namespace sak
                 m_lookup_by_object_id[object_id] = factory;
             }
 
+        /// Registers an object factory with the object registry. This methods
+        /// can be used for factories with a non-standard build function.
+        /// Users can call the get function and invoke the custom build function
+        template<class Factory>
+        void set_factory()
+            {
+                auto factory_id = get_object_id<Factory>();
+
+                // Did you forget to make the id function in the class Factory?
+                assert(factory_id.m_id != object::id()->m_id);
+
+                auto factory =
+                    boost::make_shared< object_factory_no_build<Factory> >();
+
+                m_lookup_by_factory_id[factory_id] = factory;
+            }
+
         /// Registers an object factory function with the object registry
         /// Once a factory function has been registered objects can be created
-        /// using the sak::create<object_type>() function.
         template<class Object>
         void set_factory(const boost::function<boost::shared_ptr<Object>(
                              object_registry &)> &function)

@@ -349,4 +349,17 @@ TEST(ObjectFactory, get_factory)
     EXPECT_EQ("duck eats fruit which is green", d->eat());
 }
 
+TEST(ObjectFactory, set_get_object)
+{
+    sak::object_registry registry;
+    registry.set_object<rate_socket>();
+
+    auto rate_socket_1 = registry.get_object<rate_socket>();
+    auto rate_socket_2 = registry.get_object<rate_socket>();
+
+    EXPECT_TRUE(rate_socket_1);
+    EXPECT_TRUE(rate_socket_2);
+    EXPECT_EQ(rate_socket_1, rate_socket_2);
+}
+
 

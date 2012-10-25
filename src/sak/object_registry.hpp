@@ -43,6 +43,10 @@ namespace sak
 
         /// The map associating an object id to an object factory
         typedef std::map<object_id, boost::shared_ptr<object_factory> >
+            factory_map;
+
+        /// The map associating an object id to an object factory
+        typedef std::map<object_id, boost::shared_ptr<object> >
             object_map;
 
     public:
@@ -56,7 +60,7 @@ namespace sak
         boost::shared_ptr<Factory> get_factory()
             {
                 auto factory_id = get_object_id<Factory>();
-                auto factory = find_factory(m_lookup_by_factory_id, factory_id);
+                auto factory = find(m_lookup_by_factory_id, factory_id);
 
                 assert(factory);
 
@@ -91,23 +95,6 @@ namespace sak
                 m_lookup_by_object_id[object_id] = factory;
             }
 
-        /// Registers an object factory with the object registry. This methods
-        /// can be used for factories with a non-standard build function.
-        /// Users can call the get function and invoke the custom build function
-        template<class Factory>
-        void set_factory()
-            {
-                auto factory_id = get_object_id<Factory>();
-
-                // Did you forget to make the id function in the class Factory?
-                assert(factory_id.m_id != object::id()->m_id);
-
-                auto factory =
-                    boost::make_shared< object_factory_no_build<Factory> >();
-
-                m_lookup_by_factory_id[factory_id] = factory;
-            }
-
         /// Registers an object factory function with the object registry
         /// Once a factory function has been registered objects can be created
         template<class Object>
@@ -125,6 +112,33 @@ namespace sak
                 m_lookup_by_object_id[object_id] = factory;
             }
 
+        /// Registers an object factory with the object registry. This methods
+        /// can be used for factories with a non-standard build function.
+        /// Users can call the get function and invoke the custom build function
+        template<class Object>
+        void set_object()
+            {
+                auto object_id = get_object_id<Object>();
+
+                // Did you forget to make the id function in the class Factory?
+                assert(object_id.m_id != object::id()->m_id);
+
+                auto object = boost::make_shared<Object>();
+
+                m_lookup_by_shared_object_id[object_id] = object;
+            }
+
+        /// @return a factory stored in the registry
+        template<class Object>
+        boost::shared_ptr<Object> get_object()
+            {
+                auto object_id = get_object_id<Object>();
+                auto object = find(m_lookup_by_shared_object_id, object_id);
+
+                assert(object);
+                return boost::dynamic_pointer_cast<Object>(object);
+            }
+
         /// Clears all registered factories
         void clear_factories()
             {
@@ -139,7 +153,7 @@ namespace sak
                 assert(has_object_id(m_lookup_by_object_id, *Object::id()));
 
                 auto factory =
-                    find_factory(m_lookup_by_object_id, *Object::id());
+                    find(m_lookup_by_object_id, *Object::id());
 
                 assert(factory);
 
@@ -151,7 +165,8 @@ namespace sak
     private:
 
         /// Checks if an object id is registered in a specific category
-        bool has_object_id(const object_map &map, const object_id &id) const
+        template<class Map>
+        bool has_object_id(const Map &map, const object_id &id) const
             {
                 return map.find(id) != map.end();
             }
@@ -165,7 +180,17 @@ namespace sak
         /// Finds and returns an object factory in the given map with a
         /// "compatible" object_id.
         boost::shared_ptr<object_factory>
-        find_factory(const object_map &map, const object_id &id) const
+        find(const factory_map &map, const object_id &id) const
+            {
+                assert(has_object_id(map,id));
+                return map.at(id);
+            }
+
+
+        /// Finds and returns an object factory in the given map with a
+        /// "compatible" object_id.
+        boost::shared_ptr<object>
+        find(const object_map &map, const object_id &id) const
             {
                 assert(has_object_id(map,id));
                 return map.at(id);
@@ -174,10 +199,13 @@ namespace sak
     private:
 
         /// Map allowing a factory to be found based on an object's object id
-        object_map m_lookup_by_object_id;
+        factory_map m_lookup_by_object_id;
+
+        /// Map allowing a shared object to be found based on an object's object id
+        object_map m_lookup_by_shared_object_id;
 
         /// Map allowing a factory to be found based on a factory's object id
-        object_map m_lookup_by_factory_id;
+        factory_map m_lookup_by_factory_id;
 
     };
 }

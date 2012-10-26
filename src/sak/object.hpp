@@ -90,7 +90,7 @@ namespace sak
         /// @return a unique numerical identifier for types in an object
         static uint16_t register_type()
             {
-                static uint16_t id = 0;
+                static uint16_t id = 1;
                 return id++;
             }
 

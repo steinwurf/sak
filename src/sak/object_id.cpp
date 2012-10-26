@@ -74,10 +74,16 @@ namespace sak
 
     bool are_related(const object_id *id_a, const object_id *id_b)
     {
+        assert(id_a != 0);
+        assert(id_b != 0);
+
         const object_id *current_a = id_a;
         const object_id *current_b = id_b;
-
         const object_id *object_id = object::id();
+
+        assert(current_a->m_id > 0);
+        assert(current_b->m_id > 0);
+        assert(object_id->m_id > 0);
 
         while(current_a->m_id != object_id->m_id)
         {
@@ -91,6 +97,9 @@ namespace sak
 
             current_a = current_a->m_parent;
             current_b = id_b;
+
+            assert(current_a != 0);
+            assert(current_b != 0);
         }
 
         return false;

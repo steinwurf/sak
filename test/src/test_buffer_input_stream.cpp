@@ -14,7 +14,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
     {
         uint32_t buffer_size = rand() % 100000;
 
-	std::vector<char> buffer(buffer_size, '\0');
+        std::vector<char> buffer(buffer_size, '\0');
 
         for(uint32_t i = 0; i < buffer_size; ++i)
         {
@@ -27,7 +27,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         ASSERT_TRUE( input_stream->size() == buffer_size );
         ASSERT_TRUE( input_stream->read_position() == 0 );
 
-	std::vector<char> buffer_out;
+        std::vector<char> buffer_out;
 
         while( input_stream->bytes_available() > 0 )
         {
@@ -36,11 +36,11 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
             uint32_t read = std::min(read_request, input_stream->bytes_available());
 
-	    std::vector<char> read_buffer(read, '\0');
+            std::vector<char> read_buffer(read, '\0');
 
             input_stream->read( reinterpret_cast<uint8_t*>(read_buffer.data()), read );
 
-	    buffer_out.insert(buffer_out.end(), read_buffer.begin(), read_buffer.end());
+            buffer_out.insert(buffer_out.end(), read_buffer.begin(), read_buffer.end());
         }
 
         ASSERT_TRUE(std::equal(buffer.begin(), buffer.end(), buffer_out.begin()));

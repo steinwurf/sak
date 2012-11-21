@@ -4,12 +4,17 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest (major)
---------------
+Latest
+------
+* tbd
+
+8.0.0
+-----
 * Allow setting a factory function on the object registry
 * Object registry is no longer a singleton, changed factory build methods to
   take accept object registry reference.
 * Added random input stream.
+* Use new mkspec system to building
 
 7.0.0
 -----

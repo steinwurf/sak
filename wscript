@@ -16,7 +16,6 @@ def recurse_helper(ctx, name):
 def options(opt):
 
     opt.load('waf_unit_test_v2')
-    opt.load('toolchain_cxx')
     opt.load('dependency_bundle')
 
     import waflib.extras.dependency_bundle as bundle
@@ -26,21 +25,29 @@ def options(opt):
         resolve.ResolveGitMajorVersion(
             name = 'gtest',
             git_repository = 'git://github.com/steinwurf/external-gtest.git',
-            major_version = 1))
+            major_version = 2))
 
     bundle.add_dependency(opt,
         resolve.ResolveGitMajorVersion(
             name = 'boost',
             git_repository = 'git://github.com/steinwurf/external-boost.git',
-            major_version = 1))
+            major_version = 3))
+
+    bundle.add_dependency(opt,
+        resolve.ResolveGitMajorVersion(
+            name='mkspec',
+            git_repository = 'git://github.com/steinwurf/external-waf-mkspec.git',
+            major_version = 2))
+
+    opt.load('wurf_cxx_mkspec')
 
 def configure(conf):
 
     if conf.is_toplevel():
 
         conf.load('waf_unit_test_v2')
-        conf.load('toolchain_cxx')
         conf.load('dependency_bundle')
+        conf.load("wurf_cxx_mkspec")
 
         recurse_helper(conf, 'boost')
         recurse_helper(conf, 'gtest')

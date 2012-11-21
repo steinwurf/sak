@@ -68,7 +68,6 @@ def build(bld):
         # Only build test are executed from the
         # top-level wscript i.e. not when included as a dependency
         # in a recurse call
-
         bld.recurse('test')
         bld.recurse('test/src/test_object_xyz_lib')
 

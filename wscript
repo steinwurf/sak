@@ -15,11 +15,15 @@ def recurse_helper(ctx, name):
 
 def options(opt):
 
-    opt.load('waf_unit_test_v2')
-    opt.load('dependency_bundle')
+    import waflib.extras.wurf_dependency_bundle as bundle
+    import waflib.extras.wurf_dependency_resolve as resolve
+    import waflib.extras.wurf_configure_output
 
-    import waflib.extras.dependency_bundle as bundle
-    import waflib.extras.dependency_resolve as resolve
+    bundle.add_dependency(opt,
+        resolve.ResolveGitMajorVersion(
+            name='waf-tools',
+            git_repository = 'git://github.com/steinwurf/external-waf-tools.git',
+            major_version = 1))
 
     bundle.add_dependency(opt,
         resolve.ResolveGitMajorVersion(
@@ -31,23 +35,20 @@ def options(opt):
         resolve.ResolveGitMajorVersion(
             name = 'boost',
             git_repository = 'git://github.com/steinwurf/external-boost.git',
-            major_version = 3))
+            major_version = 4))
 
-    bundle.add_dependency(opt,
-        resolve.ResolveGitMajorVersion(
-            name='mkspec',
-            git_repository = 'git://github.com/steinwurf/external-waf-mkspec.git',
-            major_version = 2))
-
-    opt.load('wurf_cxx_mkspec')
+    opt.load('wurf_dependency_bundle')
+    opt.load('wurf_tools')
 
 def configure(conf):
 
     if conf.is_toplevel():
 
-        conf.load('waf_unit_test_v2')
-        conf.load('dependency_bundle')
-        conf.load("wurf_cxx_mkspec")
+        conf.load('wurf_dependency_bundle')
+        conf.load('wurf_tools')
+
+        conf.load_external_tool('mkspec', 'wurf_cxx_mkspec_tool')
+        conf.load_external_tool('runners', 'wurf_runner')
 
         recurse_helper(conf, 'boost')
         recurse_helper(conf, 'gtest')
@@ -60,7 +61,7 @@ def build(bld):
 
     if bld.is_toplevel():
 
-        bld.load('dependency_bundle')
+        bld.load('wurf_dependency_bundle')
 
         recurse_helper(bld, 'boost')
         recurse_helper(bld, 'gtest')
@@ -70,12 +71,6 @@ def build(bld):
         # in a recurse call
         bld.recurse('test')
         bld.recurse('test/src/test_object_xyz_lib')
-
-        from waflib.extras import waf_unit_test_v2
-        bld.add_post_fun(waf_unit_test_v2.summary)
-        bld.add_post_fun(waf_unit_test_v2.set_exit_code)
-
-
     bld.recurse('src/sak')
 
 

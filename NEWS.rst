@@ -6,7 +6,7 @@ of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Updated to use the new external-waf-tools repository.
 
 8.0.0
 -----

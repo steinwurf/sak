@@ -139,80 +139,84 @@ namespace sak
     // Inserts and extracts integers in big-endian format.
     struct big_endian
     {
-        // If the host is not big endian swap becomes true
-        // and all values read or written will be swapped
+        /// If the host is not big endian swap becomes true
+        /// and all values read or written will be swapped
         typedef convert_endian<host_endian::big_endian == false> convert;
 
-        // Gets an 8-bit value integer from a byte stream.
-        // Only exists for convince in the template based
-        // getters and putters!!
+        /// Gets an 8-bit value integer from a byte stream. Only exists for
+        /// convince in the template based getters and putters!!
+        /// @param buffer pointer to the byte stream buffer
+        /// @return retrieved value from the byte stream
         static uint8_t get8(const uint8_t *buffer)
             {
                 assert(buffer != 0);
                 return *buffer;
             }
 
-        // Inserts an 8-bit value integer into the byte stream.
-        // Only exists for convince in the template based
-        // getters and putters!!
+        /// Inserts an 8-bit value integer into the byte stream. Only exists for
+        /// convince in the template based getters and putters
+        /// @param value to put in the stream
+        /// @param buffer pointer to the byte stream buffer
         static void put8(uint8_t value, uint8_t *buffer)
             {
                 assert(buffer != 0);
                 *buffer = value;
             }
 
-        // Gets a 16-bit value integer which is in big-endian
-        // format from a byte stream.
+        /// Gets a 16-bit value integer which is in big-endian format from a byte
+        /// stream.
+        /// @copydetails get8()
         static uint16_t get16(const uint8_t *buffer)
             {
                 assert(buffer != 0);
                 return convert::get16(buffer);
             }
 
-        // Inserts a 16-bit value into a byte stream in
-        // big-endian format.
+        /// Inserts a 16-bit value into a byte stream in big-endian format.
+        /// @copydetails put8()
         static void put16(uint16_t value, uint8_t *buffer)
             {
                 assert(buffer != 0);
                 convert::put16(value, buffer);
             }
 
-        // Gets a 32-bit value integer which is in big-endian
-        // format from a byte stream.
+        /// Gets a 32-bit value integer which is in big-endian format from a
+        /// byte stream.
+        /// @copydetails get8()
         static uint32_t get32(const uint8_t *buffer)
             {
                 assert(buffer != 0);
                 return convert::get32(buffer);
             }
 
-        // Inserts a 32-bit value into a byte stream in
-        // big-endian format.
+        /// Inserts a 32-bit value into a byte stream in big-endian format.
+        /// @copydetails put8()
         static void put32(uint32_t value, uint8_t *buffer)
             {
                 assert(buffer != 0);
                 convert::put32(value, buffer);
             }
 
-        // Gets a 64-bit value integer which is in big-endian
-        // format from a byte stream.
+        /// Gets a 64-bit value integer which is in big-endian format from a
+        /// byte stream.
+        /// @copydetails get8()
         static uint64_t get64(const uint8_t *buffer)
             {
                 assert(buffer != 0);
                 return convert::get64(buffer);
             }
 
-        // Inserts a 64-bit value into a byte stream in
-        // big-endian format.
+        /// Inserts a 64-bit value into a byte stream in big-endian format.
+        /// @copydetails put8()
         static void put64(uint64_t value, uint8_t *buffer)
             {
                 assert(buffer != 0);
                 convert::put64(value, buffer);
             }
 
-        // Template based put and get functions, the main reason
-        // for these is to allow generic code to be written where
-        // the "right" get/put function will be called based on the
-        // a template determined data-type.
+        /// Template based put and get functions, the main reason for these is
+        /// to allow generic code to be written where the "right" get/put
+        /// function will be called based on the a template determined data-type
         template<class ValueType>
         static void put(ValueType value, uint8_t *buffer);
 

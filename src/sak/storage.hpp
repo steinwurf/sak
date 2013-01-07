@@ -119,8 +119,8 @@ namespace sak
               m_size(s.m_size)
             { }
 
-        /// Assigns and converts a mutable storage buffer
-        /// into a const storage buffer
+        /// Assigns and converts a mutable storage buffer into a const storage
+        /// buffer
         /// @param s the mutable storage object
         const_storage& operator=(const mutable_storage &s)
             {
@@ -129,15 +129,15 @@ namespace sak
                 return *this;
             }
 
-        /// @return interator to the first element note in this
-        ///         adapter we always only have one element
+        /// @return interator to the first element note in this adapter we
+        ///         always only have one element
         const_iterator begin() const
             {
                 return this;
             }
 
-        /// @return interator to the end for this adapter we
-        ///         always only have one element thus the + 1
+        /// @return interator to the end for this adapter we always only have
+        ///         one element thus the + 1
         const_iterator end() const
             {
                 return this + 1;
@@ -151,20 +151,22 @@ namespace sak
 
     };
 
-    /// Defines a storage sequence i.e. a storage mapping where
-    /// buffers may be in disjoint memory locations
+    /// Defines a storage sequence i.e. a storage mapping where buffers may be
+    /// in disjoint memory locations
     template<class Storage>
     struct storage_sequence;
 
     template<>
     struct storage_sequence<const_storage>
     {
+        /// type typedef
         typedef std::vector<const_storage> type;
     };
 
     template<>
     struct storage_sequence<mutable_storage>
     {
+        /// type typedef
         typedef std::vector<mutable_storage> type;
     };
 

@@ -56,10 +56,10 @@ namespace sak
         {
         public: // From boost::system::error_category
 
-            /// @see boost::system::error_category;;name(...)
+            /// @see boost::system::error_category::name()
             const char* name() const;
 
-            /// @see boost::system::error_category;;message(...)
+            /// @see boost::system::error_category::message()
             std::string message(int /*ev*/) const;
         };
 
@@ -88,10 +88,7 @@ namespace sak
                 boost::throw_exception(e);
             }
         }
-
-
     }
-
 }
 
 /// Ensure that we can compare sak errors to reported error codes

@@ -115,5 +115,61 @@ TEST(TestStorage, test_mutable_to_const_conversion)
     cs = ms;
 }
 
+TEST(TestStorage, test_split_storage)
+{
+    uint32_t size = 500;
+    uint32_t split = 100;
+    std::vector<uint8_t> v(size);
+
+    auto storage = sak::storage(v);
+    auto storage_sequence = sak::split_storage(storage, split);
+
+    EXPECT_EQ(storage_sequence.size(), 5U);
+    for(uint32_t i = 0; i < storage_sequence.size(); ++i)
+    {
+        EXPECT_EQ(storage_sequence[i].m_size, split);
+    }
+}
+
+
+TEST(TestStorage, test_offset_storage)
+{
+    {
+        uint32_t size = 500;
+        uint32_t split = 100;
+        std::vector<uint8_t> v(size);
+
+        sak::mutable_storage old_storage = sak::storage(v);
+
+        auto new_storage = old_storage + split;
+        EXPECT_EQ(new_storage.m_size, 400U);
+        EXPECT_EQ(new_storage.m_data, &v[100]);
+
+        new_storage += 100;
+        EXPECT_EQ(new_storage.m_size, 300U);
+        EXPECT_EQ(new_storage.m_data, &v[200]);
+    }
+
+    {
+        uint32_t size = 500;
+        uint32_t split = 100;
+        std::vector<uint8_t> v(size);
+
+        sak::const_storage old_storage = sak::storage(v);
+
+        auto new_storage = old_storage + split;
+        EXPECT_EQ(new_storage.m_size, 400U);
+        EXPECT_EQ(new_storage.m_data, &v[100]);
+
+        new_storage += 100;
+        EXPECT_EQ(new_storage.m_size, 300U);
+        EXPECT_EQ(new_storage.m_data, &v[200]);
+    }
+
+
+}
+
+
+
 
 

@@ -78,6 +78,24 @@ namespace sak
                 return this + 1;
             }
 
+        /// Offset the storage
+        mutable_storage& operator+=(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                m_size -= offset;
+                m_data += offset;
+                return *this;
+            }
+
+        /// Offset the storage
+        mutable_storage operator+(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                mutable_storage storage(m_data + offset, m_size - offset);
+
+                return storage;
+            }
+
         /// Pointer to the mutable buffer storage
         uint8_t *m_data;
 
@@ -143,6 +161,24 @@ namespace sak
                 return this + 1;
             }
 
+        /// Offset the storage
+        const_storage& operator+=(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                m_size -= offset;
+                m_data += offset;
+                return *this;
+            }
+
+        /// Offset the storage
+        const_storage operator+(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                const_storage storage(m_data + offset, m_size - offset);
+
+                return storage;
+            }
+
         /// Pointer to the non-mutable buffer storage
         const uint8_t *m_data;
 
@@ -151,53 +187,23 @@ namespace sak
 
     };
 
-    /// Defines a storage sequence i.e. a storage mapping where
-    /// buffers may be in disjoint memory locations
-    template<class Storage>
-    struct storage_sequence;
-
-    template<>
-    struct storage_sequence<const_storage>
-    {
-        typedef std::vector<const_storage> type;
-    };
-
-    template<>
-    struct storage_sequence<mutable_storage>
-    {
-        typedef std::vector<mutable_storage> type;
-    };
-
-    /// Typedefs for the sequences
-    typedef storage_sequence<const_storage>::type
-        const_storage_sequence;
-
-    typedef storage_sequence<mutable_storage>::type
-        mutable_storage_sequence;
-
     /// Splits a continues storage buffer into a sequence of
     /// storage buffers where the continues buffer is split at
     /// a specified number of bytes
     template<class StorageType>
-    inline typename storage_sequence<StorageType>::type
+    inline std::vector<StorageType>
     split_storage(const StorageType &storage, uint32_t split)
     {
-        typedef typename StorageType::value_ptr
-            value_ptr;
+        auto remaining_size = storage.m_size;
+        auto data_offset = storage.m_data;
 
-        typedef typename storage_sequence<StorageType>::type
-            storage_sequence_type;
-
-        uint32_t remaining_size = storage.m_size;
-        value_ptr data_offset = storage.m_data;
-
-        storage_sequence_type sequence;
+        std::vector<StorageType> sequence;
 
         while(remaining_size > 0)
         {
             uint32_t next_size = std::min(remaining_size, split);
 
-            sequence.push_back(StorageType(next_size, data_offset));
+            sequence.push_back(StorageType(data_offset, next_size));
 
             data_offset += next_size;
             remaining_size -= next_size;

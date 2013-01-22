@@ -6,6 +6,10 @@ of every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+8.1.0
+-----
 * Updated to use the new external-waf-tools repository.
 * Added offset function to storage classes & fixed bug in the split_storage
   function.

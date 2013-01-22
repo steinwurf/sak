@@ -285,7 +285,7 @@ namespace sak
     template<class PodType, class Allocator>
     inline mutable_storage storage(std::vector<PodType, Allocator> &v)
     {
-        uint32_t size = v.size() * sizeof(PodType);
+        uint32_t size = static_cast<uint32_t>(v.size() * sizeof(PodType));
         uint8_t *data = reinterpret_cast<uint8_t*>(&v[0]);
 
         return mutable_storage(data, size);

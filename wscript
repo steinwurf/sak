@@ -49,6 +49,7 @@ def configure(conf):
 
         conf.load_external_tool('mkspec', 'wurf_cxx_mkspec_tool')
         conf.load_external_tool('runners', 'wurf_runner')
+        conf.load_external_tool('install_path', 'wurf_install_path')
 
         recurse_helper(conf, 'boost')
         recurse_helper(conf, 'gtest')

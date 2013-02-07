@@ -31,7 +31,7 @@
 
 #include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
-class sender : public sak::object
+/*class sender
 {
 public:
 
@@ -44,7 +44,18 @@ public:
 
             return &id;
         }
-};
+};*/
+
+template<>
+sak::object_id* sak::object_id<sender>()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+                .set_parent(0)
+                .set_name("sender");
+
+    return &id;
+}
 
 
 class socket : public sak::object

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9B350C81-2BA2-4A82-BB51-98C01807892B}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <OutDir>$(SolutionDir)</OutDir>
+    <IntDir>$(SolutionDir)</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>cmd.exe /C "set VS_UNICODE_OUTPUT=&amp; set PYTHONUNBUFFERED=true &amp; python waf build"</NMakeBuildCommandLine>
+    <NMakeOutput>build/win32/test/sak_tests.exe</NMakeOutput>
+    <NMakeCleanCommandLine>python waf clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>python waf</NMakeBuildCommandLine>
+    <NMakeOutput>build/win32/test/sak_tests.exe</NMakeOutput>
+    <NMakeCleanCommandLine>python waf clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\sak\aligned_allocator.hpp" />
+    <ClInclude Include="src\sak\buffer.hpp" />
+    <ClInclude Include="src\sak\buffer_input_stream.hpp" />
+    <ClInclude Include="src\sak\convert_endian.hpp" />
+    <ClInclude Include="src\sak\duplex_buffer.hpp" />
+    <ClInclude Include="src\sak\endian_buffer.hpp" />
+    <ClInclude Include="src\sak\error.hpp" />
+    <ClInclude Include="src\sak\error_tags.hpp" />
+    <ClInclude Include="src\sak\file_input_stream.hpp" />
+    <ClInclude Include="src\sak\finite_input_stream.hpp" />
+    <ClInclude Include="src\sak\input_stream.hpp" />
+    <ClInclude Include="src\sak\is_aligned.hpp" />
+    <ClInclude Include="src\sak\object.hpp" />
+    <ClInclude Include="src\sak\object_factory.hpp" />
+    <ClInclude Include="src\sak\object_factory_impl.hpp" />
+    <ClInclude Include="src\sak\object_id.hpp" />
+    <ClInclude Include="src\sak\object_registry.hpp" />
+    <ClInclude Include="src\sak\platform.hpp" />
+    <ClInclude Include="src\sak\random_input_stream.hpp" />
+    <ClInclude Include="src\sak\resource_pool.hpp" />
+    <ClInclude Include="src\sak\storage.hpp" />
+    <ClInclude Include="test\src\test_object_xyz_lib\test_object_xyz_lib_a.hpp" />
+    <ClInclude Include="test\src\test_object_xyz_lib\test_object_xyz_lib_b.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\sak\buffer.cpp" />
+    <ClCompile Include="src\sak\buffer_input_stream.cpp" />
+    <ClCompile Include="src\sak\duplex_buffer.cpp" />
+    <ClCompile Include="src\sak\endian_buffer.cpp" />
+    <ClCompile Include="src\sak\error.cpp" />
+    <ClCompile Include="src\sak\file_input_stream.cpp" />
+    <ClCompile Include="src\sak\object_id.cpp" />
+    <ClCompile Include="src\sak\platform.cpp" />
+    <ClCompile Include="src\sak\random_input_stream.cpp" />
+    <ClCompile Include="test\sak_tests.cpp" />
+    <ClCompile Include="test\src\test_aligned_allocator.cpp" />
+    <ClCompile Include="test\src\test_buffer.cpp" />
+    <ClCompile Include="test\src\test_buffer_input_stream.cpp" />
+    <ClCompile Include="test\src\test_convert_endian.cpp" />
+    <ClCompile Include="test\src\test_duplex_buffer.cpp" />
+    <ClCompile Include="test\src\test_endian_buffer.cpp" />
+    <ClCompile Include="test\src\test_file_input_stream.cpp" />
+    <ClCompile Include="test\src\test_is_aligned.cpp" />
+    <ClCompile Include="test\src\test_object_xyz.cpp" />
+    <ClCompile Include="test\src\test_object_xyz_lib\test_object_xyz_lib_a.cpp" />
+    <ClCompile Include="test\src\test_object_xyz_lib\test_object_xyz_lib_b.cpp" />
+    <ClCompile Include="test\src\test_random_input_stream.cpp" />
+    <ClCompile Include="test\src\test_resource_pool.cpp" />
+    <ClCompile Include="test\src\test_storage_xyz.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

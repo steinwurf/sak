@@ -171,11 +171,11 @@ namespace sak
                 return map.find(id) != map.end();
             }
 
-        template<class Object>
+        /*template<class Object>
         object_id get_object_id() const
             {
                 return *Object::id();
-            }
+            }*/
 
         /// Finds and returns an object factory in the given map with a
         /// "compatible" object_id.
@@ -208,6 +208,9 @@ namespace sak
         factory_map m_lookup_by_factory_id;
 
     };
+
+    /// Template must be specialized by all object classes used with the object registry
+    template<class Object> object_id get_object_id();
 }
 
 #endif

@@ -31,11 +31,11 @@
 
 #include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
-/*class sender
+class sender
 {
 public:
 
-    static sak::object_id* id()
+    /*static sak::object_id* id()
         {
             using namespace sak;
             static object_id id = object_id(object::register_type())
@@ -43,26 +43,24 @@ public:
                 .set_name("sender");
 
             return &id;
-        }
-};*/
+        }*/
+};
 
 template<>
-sak::object_id* sak::object_id<sender>()
+sak::object_id* sak::get_object_id<sender>()
 {
     using namespace sak;
     static object_id id = object_id(object::register_type())
-                .set_parent(0)
                 .set_name("sender");
-
     return &id;
 }
 
 
-class socket : public sak::object
+class socket
 {
 public:
 
-    static sak::object_id* id()
+    /*static sak::object_id* id()
         {
             using namespace sak;
             static object_id id = object_id(object::register_type())
@@ -70,11 +68,20 @@ public:
                 .set_name("socket");
 
             return &id;
-        }
+        }*/
 
     virtual void write() = 0;
 
 };
+
+template<>
+sak::object_id* sak::get_object_id<socket>()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+                .set_name("socket");
+    return &id;
+}
 
 class rate_socket : public socket
 {

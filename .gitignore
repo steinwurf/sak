@@ -15,6 +15,7 @@
 *.pyc
 
 # For projects that use Waf for building: http://code.google.com/p/waf/
+waf-*
 .waf-*
 .lock-*
 build

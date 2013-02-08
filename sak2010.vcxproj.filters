@@ -60,9 +60,6 @@
     <ClInclude Include="src\sak\is_aligned.hpp">
       <Filter>src\sak</Filter>
     </ClInclude>
-    <ClInclude Include="src\sak\object.hpp">
-      <Filter>src\sak</Filter>
-    </ClInclude>
     <ClInclude Include="src\sak\object_factory.hpp">
       <Filter>src\sak</Filter>
     </ClInclude>

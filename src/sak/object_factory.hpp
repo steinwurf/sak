@@ -40,7 +40,7 @@ namespace sak
     public:
 
         /// @return an object of the specified type
-        virtual boost::shared_ptr<object> build(object_registry &) = 0;
+        virtual boost::shared_ptr<void> build(object_registry &) = 0;
     };
 
 }

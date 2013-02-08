@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B350C81-2BA2-4A82-BB51-98C01807892B}</ProjectGuid>
     <Keyword>MakeFileProj</Keyword>
+    <ProjectName>sak2010</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -64,7 +65,6 @@
     <ClInclude Include="src\sak\finite_input_stream.hpp" />
     <ClInclude Include="src\sak\input_stream.hpp" />
     <ClInclude Include="src\sak\is_aligned.hpp" />
-    <ClInclude Include="src\sak\object.hpp" />
     <ClInclude Include="src\sak\object_factory.hpp" />
     <ClInclude Include="src\sak\object_factory_impl.hpp" />
     <ClInclude Include="src\sak\object_id.hpp" />

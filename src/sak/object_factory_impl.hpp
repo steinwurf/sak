@@ -43,7 +43,7 @@ namespace sak
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<object> build(object_registry &registry)
+        virtual boost::shared_ptr<void> build(object_registry &registry)
             {
                 assert(m_factory);
 
@@ -56,18 +56,18 @@ namespace sak
     };
 
     /// Object factory used to embed a concrete factory
-    template<class Object>
+    template<class Target>
     struct object_factory_function : public object_factory
     {
 
-        object_factory_function(const boost::function<boost::shared_ptr<Object>(
+        object_factory_function(const boost::function<boost::shared_ptr<void>(
                                     object_registry &)> &function)
             : m_function(function)
             {}
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<object> build(object_registry &registry)
+        virtual boost::shared_ptr<void> build(object_registry &registry)
             {
                 assert(m_function);
 
@@ -75,7 +75,7 @@ namespace sak
             }
 
         /// The user provided factory
-        boost::function<boost::shared_ptr<Object>(object_registry &)> m_function;
+        boost::function<boost::shared_ptr<void>(object_registry &)> m_function;
     };
 
 }

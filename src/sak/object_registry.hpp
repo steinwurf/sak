@@ -34,8 +34,13 @@
 
 namespace sak
 {
-	/// Template must be specialized by all object classes used with the object registry
-    template<class Object> object_id* get_object_id();
+	/// Template function for generating an object_id
+	/// Template must be specialized by all classes that have a base class	
+    template<class Object> object_id* get_object_id()
+	{		
+		static object_id id = object_id(typeid(Object).name());
+		return &id;
+	}
 
     /// Object registry used to store factories to construct objects of
     /// the registered types.
@@ -48,7 +53,7 @@ namespace sak
             factory_map;
 
         /// The map associating an object id to an object factory
-        typedef std::map<object_id, boost::shared_ptr<object> >
+        typedef std::map<object_id, boost::shared_ptr<void> >
             object_map;
 
     public:
@@ -158,9 +163,9 @@ namespace sak
 
                 assert(factory);
 
-                auto object = factory->build(*this);
+                auto obj = factory->build(*this);
 
-                return boost::dynamic_pointer_cast<Object>(object);
+                return boost::dynamic_pointer_cast<Object>(obj);
             }
 
     private:

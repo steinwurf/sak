@@ -34,20 +34,17 @@ namespace sak
 
     object_id::object_id()
         : m_id(0),
-          m_parent(0),
-          m_name("")
+          m_parent(0)
     { }
 
-    object_id::object_id(uint16_t id)
+    object_id::object_id(const char* id)
         : m_id(id),
-          m_parent(0),
-          m_name("")
-    { }
+          m_parent(0)
+	{ }
 
     object_id::object_id(const object_id &id)
         : m_id(id.m_id),
-          m_parent(id.m_parent),
-          m_name(id.m_name)
+          m_parent(id.m_parent)          
     { }
 
     object_id& object_id::set_parent(object_id *parent)
@@ -56,21 +53,21 @@ namespace sak
         return *this;
     }
 
-    object_id& object_id::set_name(const char *name)
+    /*object_id& object_id::set_name(const char *name)
     {
         m_name = name;
         return *this;
-    }
+    }*/
 
     bool object_id::has_parent()
     {
         return m_parent != 0;
     }
 
-    const char* object_id::name() const
+    /*const char* object_id::name() const
     {
         return m_name;
-    }
+    }*/
 
     bool are_related(const object_id *id_a, const object_id *id_b)
     {
@@ -116,10 +113,10 @@ namespace sak
             return true;
         if(id_a.m_id > id_b.m_id)
             return false;
-        if(strcmp(id_a.m_name, id_b.m_name) < 0)
+        /*if(strcmp(id_a.m_name, id_b.m_name) < 0)
             return true;
         if(strcmp(id_a.m_name, id_b.m_name) < 0)
-            return false;
+            return false;*/
 
         return false;
     }

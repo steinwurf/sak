@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sak", "sak.vcxproj", "{9B350C81-2BA2-4A82-BB51-98C01807892B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sak", "sak2010.vcxproj", "{9B350C81-2BA2-4A82-BB51-98C01807892B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

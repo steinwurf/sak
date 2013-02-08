@@ -33,69 +33,23 @@
 
 class sender
 {
-public:
-
-    /*static sak::object_id* id()
-        {
-            using namespace sak;
-            static object_id id = object_id(object::register_type())
-                .set_parent(object::id())
-                .set_name("sender");
-
-            return &id;
-        }*/
+   
 };
 
-template<>
-sak::object_id* sak::get_object_id<sender>()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-                .set_name("sender");
-    return &id;
-}
+
 
 
 class socket
 {
 public:
-
-    /*static sak::object_id* id()
-        {
-            using namespace sak;
-            static object_id id = object_id(object::register_type())
-                .set_parent(object::id())
-                .set_name("socket");
-
-            return &id;
-        }*/
-
     virtual void write() = 0;
 
 };
 
-template<>
-sak::object_id* sak::get_object_id<socket>()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-                .set_name("socket");
-    return &id;
-}
 
 class rate_socket : public socket
 {
-public:
-
-    /*static sak::object_id* id()
-        {
-            using namespace sak;
-            static object_id id = object_id(object::register_type())
-                .set_parent(socket::id())
-                .set_name("rate_socket");
-
-            return &id;
-        }*/
+public:    
 
     void write()
         {
@@ -106,26 +60,16 @@ template<>
 sak::object_id* sak::get_object_id<rate_socket>()
 {
     using namespace sak;
-    static object_id id = object_id(object::register_type())
-				.set_parent(get_object_id<socket>())
-                .set_name("rate_socket");
+    static object_id id = object_id(typeid(rate_socket).name())
+				.set_parent(get_object_id<socket>());
+                
     return &id;
 }
 
 
 class rate_control
 {
-public:
-
-    /*static sak::object_id* id()
-        {
-            using namespace sak;
-            static object_id id = object_id(object::register_type())
-                .set_parent(object::id())
-                .set_name("rate_control");
-
-            return &id;
-        }*/
+public:   
 
     void check_rate(boost::shared_ptr<socket> s)
         {

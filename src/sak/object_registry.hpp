@@ -34,6 +34,8 @@
 
 namespace sak
 {
+	/// Template must be specialized by all object classes used with the object registry
+    template<class Object> object_id* get_object_id();
 
     /// Object registry used to store factories to construct objects of
     /// the registered types.
@@ -207,9 +209,6 @@ namespace sak
         factory_map m_lookup_by_factory_id;
 
     };
-
-    /// Template must be specialized by all object classes used with the object registry
-    template<class Object> object_id* get_object_id();
 }
 
 #endif

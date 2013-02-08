@@ -150,10 +150,9 @@ namespace sak
         template<class Object>
         boost::shared_ptr<Object> build()
             {
-                assert(has_object_id(m_lookup_by_object_id, *Object::id()));
+                assert(has_object_id(m_lookup_by_object_id, *get_object_id<Object>() ));
 
-                auto factory =
-                    find(m_lookup_by_object_id, *Object::id());
+                auto factory = find(m_lookup_by_object_id, *get_object_id<Object>() );
 
                 assert(factory);
 

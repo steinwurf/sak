@@ -59,7 +59,7 @@ namespace sak
         template<class Factory>
         boost::shared_ptr<Factory> get_factory()
             {
-                auto factory_id = get_object_id<Factory>();
+                auto factory_id = *get_object_id<Factory>();
                 auto factory = find(m_lookup_by_factory_id, factory_id);
 
                 assert(factory);
@@ -79,8 +79,8 @@ namespace sak
         template<class Factory, class Object>
         void set_factory()
             {
-                auto factory_id = get_object_id<Factory>();
-                auto object_id  = get_object_id<Object>();
+                auto factory_id = *get_object_id<Factory>();
+                auto object_id  = *get_object_id<Object>();
 
                 // Did you forget to make the id function in the class Factory?
                 assert(factory_id.m_id != object::id()->m_id);
@@ -101,7 +101,7 @@ namespace sak
         void set_factory(const boost::function<boost::shared_ptr<Object>(
                              object_registry &)> &function)
             {
-                auto object_id = get_object_id<Object>();
+                auto object_id = *get_object_id<Object>();
 
                 // Did you forget to make the id function in the class Object?
                 assert(object_id.m_id != object::id()->m_id);
@@ -118,7 +118,7 @@ namespace sak
         template<class Object>
         void set_object()
             {
-                auto object_id = get_object_id<Object>();
+                auto object_id = *get_object_id<Object>();
 
                 // Did you forget to make the id function in the class Factory?
                 assert(object_id.m_id != object::id()->m_id);
@@ -132,7 +132,7 @@ namespace sak
         template<class Object>
         boost::shared_ptr<Object> get_object()
             {
-                auto object_id = get_object_id<Object>();
+                auto object_id = *get_object_id<Object>();
                 auto object = find(m_lookup_by_shared_object_id, object_id);
 
                 assert(object);
@@ -210,7 +210,7 @@ namespace sak
     };
 
     /// Template must be specialized by all object classes used with the object registry
-    template<class Object> object_id get_object_id();
+    template<class Object> object_id* get_object_id();
 }
 
 #endif

@@ -1,167 +1,173 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Test Files">
+    <Filter Include="test">
       <UniqueIdentifier>{5e1336f2-9637-44d4-b9f7-d1c25e14d6cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test Files\src">
+    <Filter Include="test\src">
       <UniqueIdentifier>{67e08909-ff3e-4a2d-901b-03d94b89c70b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test Files\src\test_object_xyz_lib">
+    <Filter Include="test\src\test_object_xyz_lib">
       <UniqueIdentifier>{613b242b-7ced-4c79-8642-13cdd14ab5a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{12f243bf-43c0-46bf-b7be-a4511557be53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\sak">
+      <UniqueIdentifier>{b87836d5-0cea-47a8-91f8-c0903fb1abc0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\sak\aligned_allocator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\buffer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\buffer_input_stream.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\convert_endian.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\duplex_buffer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\endian_buffer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\error.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\error_tags.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\file_input_stream.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\finite_input_stream.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\input_stream.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\is_aligned.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\object.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\object_factory.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\object_factory_impl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\object_id.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\object_registry.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\platform.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\random_input_stream.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\resource_pool.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\sak\storage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="test\src\test_object_xyz_lib\test_object_xyz_lib_a.hpp">
-      <Filter>Test Files\src\test_object_xyz_lib</Filter>
+      <Filter>test\src\test_object_xyz_lib</Filter>
     </ClInclude>
     <ClInclude Include="test\src\test_object_xyz_lib\test_object_xyz_lib_b.hpp">
-      <Filter>Test Files\src\test_object_xyz_lib</Filter>
+      <Filter>test\src\test_object_xyz_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\aligned_allocator.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\buffer.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\buffer_input_stream.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\convert_endian.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\duplex_buffer.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\endian_buffer.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\error.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\error_tags.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\file_input_stream.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\finite_input_stream.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\input_stream.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\is_aligned.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\object.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\object_factory.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\object_factory_impl.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\object_id.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\object_registry.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\platform.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\random_input_stream.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\resource_pool.hpp">
+      <Filter>src\sak</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sak\storage.hpp">
+      <Filter>src\sak</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\sak\buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\buffer_input_stream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\duplex_buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\endian_buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\error.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\file_input_stream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\object_id.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\platform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\sak\random_input_stream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test\src\test_aligned_allocator.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_buffer.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_buffer_input_stream.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_convert_endian.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_duplex_buffer.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_endian_buffer.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_file_input_stream.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_is_aligned.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_object_xyz.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_random_input_stream.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_resource_pool.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_storage_xyz.cpp">
-      <Filter>Test Files\src</Filter>
+      <Filter>test\src</Filter>
     </ClCompile>
     <ClCompile Include="test\sak_tests.cpp">
-      <Filter>Test Files</Filter>
+      <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_object_xyz_lib\test_object_xyz_lib_a.cpp">
-      <Filter>Test Files\src\test_object_xyz_lib</Filter>
+      <Filter>test\src\test_object_xyz_lib</Filter>
     </ClCompile>
     <ClCompile Include="test\src\test_object_xyz_lib\test_object_xyz_lib_b.cpp">
-      <Filter>Test Files\src\test_object_xyz_lib</Filter>
+      <Filter>test\src\test_object_xyz_lib</Filter>
     </ClCompile>
+    <ClCompile Include="src\sak\buffer.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\buffer_input_stream.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\duplex_buffer.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\endian_buffer.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\error.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\file_input_stream.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\object_id.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\platform.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sak\random_input_stream.cpp">
+      <Filter>src\sak</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\sak\wscript_build">
+      <Filter>src\sak</Filter>
+    </None>
+    <None Include="test\wscript_build">
+      <Filter>test</Filter>
+    </None>
   </ItemGroup>
 </Project>

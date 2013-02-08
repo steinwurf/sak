@@ -36,7 +36,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <NMakeBuildCommandLine>cmd.exe /C "set VS_UNICODE_OUTPUT=&amp; set PYTHONUNBUFFERED=true &amp; python waf build"</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>python waf build</NMakeBuildCommandLine>
     <NMakeOutput>build/win32/test/sak_tests.exe</NMakeOutput>
     <NMakeCleanCommandLine>python waf clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
@@ -99,6 +99,10 @@
     <ClCompile Include="test\src\test_random_input_stream.cpp" />
     <ClCompile Include="test\src\test_resource_pool.cpp" />
     <ClCompile Include="test\src\test_storage_xyz.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\sak\wscript_build" />
+    <None Include="test\wscript_build" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

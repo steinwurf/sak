@@ -29,7 +29,7 @@
 
 #include <boost/bind.hpp>
 
-#include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
+//#include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
 class sender
 {
@@ -87,7 +87,7 @@ class rate_socket : public socket
 {
 public:
 
-    static sak::object_id* id()
+    /*static sak::object_id* id()
         {
             using namespace sak;
             static object_id id = object_id(object::register_type())
@@ -95,19 +95,29 @@ public:
                 .set_name("rate_socket");
 
             return &id;
-        }
+        }*/
 
     void write()
         {
         }
 };
 
+template<>
+sak::object_id* sak::get_object_id<rate_socket>()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+				.set_parent(get_object_id<socket>())
+                .set_name("rate_socket");
+    return &id;
+}
 
-class rate_control : public sak::object
+
+class rate_control
 {
 public:
 
-    static sak::object_id* id()
+    /*static sak::object_id* id()
         {
             using namespace sak;
             static object_id id = object_id(object::register_type())
@@ -115,7 +125,7 @@ public:
                 .set_name("rate_control");
 
             return &id;
-        }
+        }*/
 
     void check_rate()
         {
@@ -127,7 +137,16 @@ public:
 
 };
 
-TEST(Object, basic)
+template<>
+sak::object_id* sak::get_object_id<rate_control>()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+                .set_name("rate_control");
+    return &id;
+}
+
+/*TEST(Object, basic)
 {
     boost::shared_ptr<sender> s
         = boost::make_shared<sender>();
@@ -154,9 +173,9 @@ TEST(Object, basic)
     }
 
     rate->check_rate();
-}
+}*/
 
-class a : public sak::object
+/*class a : public sak::object
 {
 public:
 
@@ -238,10 +257,10 @@ public:
         }
 
     uint32_t &m_counter;
-};
+};*/
 
 /// Test that all objects are correctly deleted
-TEST(Object, destructor)
+/*TEST(Object, destructor)
 {
     uint32_t counter = 0;
 
@@ -264,7 +283,7 @@ TEST(Object, destructor)
     }
 
     EXPECT_EQ(counter, 0U);
-}
+}*/
 
 // Test that all objects can be retrieved from all objects, also the original
 //object from any child object
@@ -288,13 +307,13 @@ TEST(Object, destructor)
 // }
 
 
-class rate_socket_factory : public sak::object
+class rate_socket_factory
 {
 public:
 
     typedef rate_socket object_type;
 
-    static sak::object_id* id()
+    /*static sak::object_id* id()
         {
             using namespace sak;
             static object_id id = object_id(object::register_type())
@@ -302,7 +321,7 @@ public:
                 .set_name("rate_socket_factory");
 
             return &id;
-        }
+        }*/
 
 
     boost::shared_ptr<rate_socket> build(sak::object_registry &)
@@ -310,6 +329,15 @@ public:
             return boost::make_shared<rate_socket>();
         }
 };
+
+template<>
+sak::object_id* sak::get_object_id<rate_socket_factory>()
+{
+    using namespace sak;
+    static object_id id = object_id(object::register_type())
+                .set_name("rate_socket_factory");
+    return &id;
+}
 
 
 TEST(ObjectFactory, register_type)
@@ -340,7 +368,7 @@ TEST(ObjectFactory, register_type_function)
 }
 
 
-TEST(ObjectFactory, register_type_from_lib)
+/*TEST(ObjectFactory, register_type_from_lib)
 {
     sak::object_registry registry;
     registry.set_factory<pear_factory, pear>();
@@ -378,6 +406,6 @@ TEST(ObjectFactory, set_get_object)
     EXPECT_TRUE(rate_socket_1);
     EXPECT_TRUE(rate_socket_2);
     EXPECT_EQ(rate_socket_1, rate_socket_2);
-}
+}*/
 
 

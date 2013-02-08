@@ -127,9 +127,9 @@ public:
             return &id;
         }*/
 
-    void check_rate()
+    void check_rate(boost::shared_ptr<socket> s)
         {
-            boost::shared_ptr<socket> s = get_object<socket>();
+            //boost::shared_ptr<socket> s = get_object<socket>();
 
             assert(s);
             s->write();

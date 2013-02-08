@@ -66,7 +66,7 @@ namespace sak
 
     uint32_t random_input_stream::bytes_available()
     {
-        return m_data.size() - m_current_pos;
+        return (uint32_t)(m_data.size() - m_current_pos);
     }
 
     bool random_input_stream::stopped()
@@ -76,7 +76,7 @@ namespace sak
 
     uint32_t random_input_stream::size()
     {
-        return m_data.size();
+        return (uint32_t)m_data.size();
     }
 
 }

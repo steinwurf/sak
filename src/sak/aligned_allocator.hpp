@@ -132,14 +132,14 @@ namespace sak
         /// memory
         pointer allocate(size_type num, const void * = 0)
             {
-                uint32_t space_needed = num * sizeof(T) + Alignment;
+                uint32_t space_needed = (uint32_t)(num * sizeof(T)) + Alignment;
 
                 uint8_t *old_ptr = reinterpret_cast<uint8_t*>(
                     ::operator new(space_needed));
 
                 uint8_t *new_ptr = find_aligned(old_ptr);
 
-                uint32_t offset = new_ptr - old_ptr;
+                uint32_t offset = (uint32_t)(new_ptr - old_ptr);
 
                 assert(offset > 0);
                 assert(offset <= Alignment);

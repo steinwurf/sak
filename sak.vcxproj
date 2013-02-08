@@ -40,6 +40,8 @@
     <NMakeOutput>build/win32/test/sak_tests.exe</NMakeOutput>
     <NMakeCleanCommandLine>python waf clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>./src/sak;./src;../deps/boost-4.0.0/boost-lib;../deps/gtest-2.0.6/gtest/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>python waf clean &amp; python waf build</NMakeReBuildCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeBuildCommandLine>python waf</NMakeBuildCommandLine>

@@ -273,7 +273,7 @@ namespace sak
     template<class PodType, class Allocator>
     inline const_storage storage(const std::vector<PodType, Allocator> &v)
     {
-        uint32_t size = v.size() * sizeof(PodType);
+        uint32_t size = uint32_t(v.size() * sizeof(PodType));
         const uint8_t *data = reinterpret_cast<const uint8_t*>(&v[0]);
 
         return const_storage(data, size);

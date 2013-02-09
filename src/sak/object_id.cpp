@@ -76,15 +76,15 @@ namespace sak
 
         const object_id *current_a = id_a;
         const object_id *current_b = id_b;
-        const object_id *object_id = object::id();
+        //const object_id *object_id = object::id();
 
-        assert(current_a->m_id > 0);
-        assert(current_b->m_id > 0);
-        assert(object_id->m_id > 0);
+        assert(current_a->m_id != 0);
+        assert(current_b->m_id != 0);
+        //assert(object_id->m_id > 0);
 
-        while(current_a->m_id != object_id->m_id)
+        while(current_a != 0)
         {
-            while(current_b->m_id != object_id->m_id)
+            while(current_b != 0)
             {
                 if(current_a->m_id == current_b->m_id)
                     return true;
@@ -95,8 +95,8 @@ namespace sak
             current_a = current_a->m_parent;
             current_b = id_b;
 
-            assert(current_a != 0);
-            assert(current_b != 0);
+            //assert(current_a != 0);
+            //assert(current_b != 0);
         }
 
         return false;

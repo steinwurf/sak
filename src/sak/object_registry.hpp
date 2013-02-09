@@ -196,7 +196,7 @@ namespace sak
 
         /// Finds and returns an object factory in the given map with a
         /// "compatible" object_id.
-        boost::shared_ptr<object>
+        boost::shared_ptr<void>
         find(const object_map &map, const object_id &id) const
             {
                 assert(has_object_id(map,id));

@@ -49,12 +49,11 @@ public:
 namespace sak
 {
 	template<>
-	sak::object_id* sak::get_object_id<rate_socket>()
+	object_id* get_object_id<rate_socket>()
 	{
 		using namespace sak;
 		static object_id id = object_id(typeid(rate_socket).name())
 					.set_parent(get_object_id<socket>());
-
 		return &id;
 	}
 }

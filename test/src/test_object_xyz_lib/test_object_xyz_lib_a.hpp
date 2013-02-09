@@ -26,50 +26,57 @@
 #ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
 #define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
 
-#include <sak/object.hpp>
+#include <sak/object_registry.hpp>
 
-namespace sak { class object_registry; }
-
-class fruit : public sak::object
+class fruit
 {
 public:
-
-    static sak::object_id* id();
     virtual std::string color() = 0;
-
 };
 
 class apple : public fruit
 {
 public:
-
-    static sak::object_id* id();
     std::string color();
-
 };
 
-class apple_factory : public sak::object
+namespace sak
+{
+	template<>
+	object_id* get_object_id<apple>()
+	{
+		static object_id id = object_id(typeid(apple).name())
+					.set_parent(get_object_id<fruit>());
+		return &id;
+	}
+}
+
+class apple_factory
 {
 public:
-
-    static sak::object_id* id();
     boost::shared_ptr<apple> build(sak::object_registry &);
 };
 
 class pear : public fruit
 {
 public:
-
-    static sak::object_id* id();
     std::string color();
-
 };
 
-class pear_factory : public sak::object
+namespace sak
+{
+	template<>
+	object_id* get_object_id<pear>()
+	{
+		static object_id id = object_id(typeid(pear).name())
+					.set_parent(get_object_id<fruit>());
+		return &id;
+	}
+}
+
+class pear_factory
 {
 public:
-
-    static sak::object_id* id();
     boost::shared_ptr<pear> build(sak::object_registry &);
 };
 

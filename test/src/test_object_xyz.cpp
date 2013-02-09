@@ -24,7 +24,6 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
-#include <sak/object.hpp>
 #include <sak/object_registry.hpp>
 
 #include <boost/bind.hpp>
@@ -47,14 +46,17 @@ public:
 	}
 };
 
-template<>
-sak::object_id* sak::get_object_id<rate_socket>()
+namespace sak
 {
-    using namespace sak;
-    static object_id id = object_id(typeid(rate_socket).name())
-				.set_parent(get_object_id<socket>());
-                
-    return &id;
+	template<>
+	sak::object_id* sak::get_object_id<rate_socket>()
+	{
+		using namespace sak;
+		static object_id id = object_id(typeid(rate_socket).name())
+					.set_parent(get_object_id<socket>());
+
+		return &id;
+	}
 }
 
 

@@ -26,35 +26,39 @@
 #ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
 #define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
 
-#include <sak/object.hpp>
+#include <sak/object_registry.hpp>
 #include "test_object_xyz_lib_a.hpp"
 
-class bird : public sak::object
+class bird
 {
 public:
-
-    static sak::object_id* id();
     virtual std::string eat() = 0;
-
 };
 
 class duck : public bird
 {
 public:
     duck(sak::object_registry &registry);
-
-    static sak::object_id* id();
     std::string eat();
 
 private:
     sak::object_registry &m_registry;
 };
 
-class duck_factory : public sak::object
+namespace sak
+{
+	template<>
+	object_id* get_object_id<duck>()
+	{
+		static object_id id = object_id(typeid(duck).name())
+					.set_parent(get_object_id<bird>());
+		return &id;
+	}
+}
+
+class duck_factory
 {
 public:
-
-    static sak::object_id* id();
     boost::shared_ptr<duck> build(sak::object_registry &);
 };
 

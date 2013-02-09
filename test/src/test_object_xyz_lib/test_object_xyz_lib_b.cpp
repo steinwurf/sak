@@ -30,16 +30,6 @@
 // Bird
 //
 
-sak::object_id* bird::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("bird");
-
-    return &id;
-}
-
 //
 // Duck
 //
@@ -47,16 +37,6 @@ sak::object_id* bird::id()
 duck::duck(sak::object_registry &registry)
     : m_registry(registry)
 {
-}
-
-sak::object_id* duck::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(bird::id())
-        .set_name("duck");
-
-    return &id;
 }
 
 std::string duck::eat()
@@ -68,16 +48,6 @@ std::string duck::eat()
 //
 // Duck Factory
 //
-
-sak::object_id* duck_factory::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("duck_factory");
-
-    return &id;
-}
 
 boost::shared_ptr<duck> duck_factory::build(sak::object_registry &registry)
 {

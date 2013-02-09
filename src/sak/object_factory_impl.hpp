@@ -26,7 +26,11 @@
 #ifndef SAK_OBJECT_FACTORY_IMPL_HPP
 #define SAK_OBJECT_FACTORY_IMPL_HPP
 
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
+
 #include "object_factory.hpp"
+
 
 namespace sak
 {

@@ -30,6 +30,7 @@
 
 #include <boost/function.hpp>
 
+#include "object_id.hpp"
 #include "object_factory_impl.hpp"
 
 namespace sak

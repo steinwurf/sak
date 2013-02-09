@@ -23,8 +23,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="python waf build"
-				ReBuildCommandLine="python waf clean &amp; python waf build"
+				BuildCommandLine="build2008.bat"
+				ReBuildCommandLine=""
 				CleanCommandLine="python waf clean"
 				Output="build/win32/test/sak_tests.exe"
 				PreprocessorDefinitions="WIN32;_DEBUG"

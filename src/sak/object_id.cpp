@@ -24,7 +24,6 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "object_id.hpp"
-#include "object.hpp"
 
 #include <cstring>
 #include <iostream>

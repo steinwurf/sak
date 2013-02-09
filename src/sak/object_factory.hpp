@@ -28,8 +28,6 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "object.hpp"
-
 namespace sak
 {
     class object_registry;

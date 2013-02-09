@@ -90,10 +90,10 @@ namespace sak
                 auto object_id  = *get_object_id<Object>();
 
                 // Did you forget to make the id function in the class Factory?
-                assert(factory_id.m_id != object::id()->m_id);
+                //assert(factory_id.m_id != object::id()->m_id);
 
                 // Did you forget to make the id function in the class Object?
-                assert(object_id.m_id != object::id()->m_id);
+                //assert(object_id.m_id != object::id()->m_id);
 
                 auto factory =
                     boost::make_shared< object_factory_impl<Factory> >();
@@ -111,7 +111,7 @@ namespace sak
                 auto object_id = *get_object_id<Object>();
 
                 // Did you forget to make the id function in the class Object?
-                assert(object_id.m_id != object::id()->m_id);
+                //assert(object_id.m_id != object::id()->m_id);
 
                 auto factory =
                     boost::make_shared< object_factory_function<Object> >(function);
@@ -128,7 +128,7 @@ namespace sak
                 auto object_id = *get_object_id<Object>();
 
                 // Did you forget to make the id function in the class Factory?
-                assert(object_id.m_id != object::id()->m_id);
+                //assert(object_id.m_id != object::id()->m_id);
 
                 auto object = boost::make_shared<Object>();
 

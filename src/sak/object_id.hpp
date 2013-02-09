@@ -27,6 +27,11 @@
 #define SAK_OBJECT_ID_HPP
 
 #include <cstdint>
+#include <cstring>
+#include <cassert>
+#include <vector>
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 namespace sak
 {

@@ -34,6 +34,7 @@ GTAGS
 # Visual Studio ignore
 *.suo
 *.user
+*.ncb
 *.sdf
 *.opensdf
 *.log

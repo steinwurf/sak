@@ -42,7 +42,7 @@ class rate_socket : public socket
 {
 public:
     void write()
-	{
+	{        
 	}
 };
 

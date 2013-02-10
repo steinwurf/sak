@@ -45,6 +45,11 @@ private:
     sak::object_registry &m_registry;
 };
 
+namespace sak
+{
+    extern template object_id* get_object_id<duck>();    
+}
+
 class duck_factory
 {
 public:

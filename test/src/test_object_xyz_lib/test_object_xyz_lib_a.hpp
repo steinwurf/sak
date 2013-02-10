@@ -40,6 +40,11 @@ public:
     std::string color();
 };
 
+namespace sak
+{
+    extern template object_id* get_object_id<apple>();    
+}
+
 class apple_factory
 {
 public:
@@ -51,6 +56,11 @@ class pear : public fruit
 public:
     std::string color();
 };
+
+namespace sak
+{
+    extern template object_id* get_object_id<pear>();    
+}
 
 class pear_factory
 {

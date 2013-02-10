@@ -37,8 +37,7 @@
 
 namespace sak
 {
-    template<>
-    object_id* get_object_id<apple>()
+    template<> object_id* get_object_id<apple>()
     {
         static object_id id = object_id(typeid(apple).name())
             .set_parent(get_object_id<fruit>());
@@ -69,8 +68,7 @@ boost::shared_ptr<apple> apple_factory::build(sak::object_registry &)
 
 namespace sak
 {
-    template<>
-    object_id* get_object_id<pear>()
+    template<> object_id* get_object_id<pear>()
     {
         static object_id id = object_id(typeid(pear).name())
             .set_parent(get_object_id<fruit>());

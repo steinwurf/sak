@@ -40,17 +40,6 @@ public:
     std::string color();
 };
 
-namespace sak
-{
-	template<>
-	object_id* get_object_id<apple>()
-	{
-		static object_id id = object_id(typeid(apple).name())
-					.set_parent(get_object_id<fruit>());
-		return &id;
-	}
-}
-
 class apple_factory
 {
 public:
@@ -62,17 +51,6 @@ class pear : public fruit
 public:
     std::string color();
 };
-
-namespace sak
-{
-	template<>
-	object_id* get_object_id<pear>()
-	{
-		static object_id id = object_id(typeid(pear).name())
-					.set_parent(get_object_id<fruit>());
-		return &id;
-	}
-}
 
 class pear_factory
 {

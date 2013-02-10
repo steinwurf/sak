@@ -24,7 +24,6 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "test_object_xyz_lib_b.hpp"
-#include <sak/object_registry.hpp>
 
 //
 // Bird
@@ -33,6 +32,17 @@
 //
 // Duck
 //
+
+namespace sak
+{
+    template<>
+    object_id* get_object_id<duck>()
+    {
+        static object_id id = object_id(typeid(duck).name())
+            .set_parent(get_object_id<bird>());
+        return &id;
+    }
+}
 
 duck::duck(sak::object_registry &registry)
     : m_registry(registry)

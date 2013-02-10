@@ -28,7 +28,7 @@
 
 #include <boost/bind.hpp>
 
-//#include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
+#include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
 
 class socket
@@ -113,7 +113,7 @@ TEST(ObjectFactory, register_type_function)
 }
 
 
-/*TEST(ObjectFactory, register_type_from_lib)
+TEST(ObjectFactory, register_type_from_lib)
 {
     sak::object_registry registry;
     registry.set_factory<pear_factory, pear>();
@@ -151,6 +151,6 @@ TEST(ObjectFactory, set_get_object)
     EXPECT_TRUE(rate_socket_1);
     EXPECT_TRUE(rate_socket_2);
     EXPECT_EQ(rate_socket_1, rate_socket_2);
-}*/
+}
 
 

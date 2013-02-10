@@ -24,7 +24,6 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "test_object_xyz_lib_a.hpp"
-#include <sak/object_registry.hpp>
 
 //
 // Fruit
@@ -35,6 +34,17 @@
 //
 // Apple
 //
+
+namespace sak
+{
+    template<>
+    object_id* get_object_id<apple>()
+    {
+        static object_id id = object_id(typeid(apple).name())
+            .set_parent(get_object_id<fruit>());
+        return &id;
+    }
+}
 
 
 
@@ -56,6 +66,17 @@ boost::shared_ptr<apple> apple_factory::build(sak::object_registry &)
 //
 // Pear
 //
+
+namespace sak
+{
+    template<>
+    object_id* get_object_id<pear>()
+    {
+        static object_id id = object_id(typeid(pear).name())
+            .set_parent(get_object_id<fruit>());
+        return &id;
+    }
+}
 
 std::string pear::color()
 {

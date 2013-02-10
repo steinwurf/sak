@@ -45,17 +45,6 @@ private:
     sak::object_registry &m_registry;
 };
 
-namespace sak
-{
-	template<>
-	object_id* get_object_id<duck>()
-	{
-		static object_id id = object_id(typeid(duck).name())
-					.set_parent(get_object_id<bird>());
-		return &id;
-	}
-}
-
 class duck_factory
 {
 public:

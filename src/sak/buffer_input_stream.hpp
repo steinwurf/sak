@@ -93,7 +93,7 @@ namespace sak
         BOOST_STATIC_ASSERT(boost::is_pod<T>::value);
         BOOST_STATIC_ASSERT(!boost::is_pointer<T>::value);
 
-        uint32_t size = (uint32_t)(v.size() * sizeof(T));
+        uint32_t size = static_cast<uint32_t>(v.size() * sizeof(T));
         const uint8_t *data = reinterpret_cast<const uint8_t*>(&v[0]);
 
         boost::shared_ptr<buffer_input_stream> b(

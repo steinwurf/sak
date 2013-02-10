@@ -60,7 +60,7 @@ namespace sak
         assert(data_end != 0);
         assert(data_start < data_end);
 
-        uint32_t size = (uint32_t)(data_end - data_start);
+        uint32_t size = static_cast<uint32_t>(data_end - data_start);
         append(data_start, size);
     }
 

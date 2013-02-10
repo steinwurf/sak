@@ -92,7 +92,6 @@ TEST(ObjectFactory, register_type)
     registry.set_factory<rate_socket_factory, rate_socket>();
 
     auto s = registry.build<socket>();
-
     auto f = registry.get_factory<rate_socket_factory>();
 
     s = f->build(registry);

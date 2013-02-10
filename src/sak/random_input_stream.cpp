@@ -76,7 +76,7 @@ namespace sak
 
     uint32_t random_input_stream::size()
     {
-        return static_cast<uint32_t>m_data.size();
+        return static_cast<uint32_t>(m_data.size());
     }
 
 }

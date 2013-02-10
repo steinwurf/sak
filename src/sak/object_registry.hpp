@@ -144,7 +144,7 @@ namespace sak
                 auto object = find(m_lookup_by_shared_object_id, object_id);
 
                 assert(object);
-                return boost::dynamic_pointer_cast<Object>(object);
+                return boost::static_pointer_cast<Object>(object);
             }
 
         /// Clears all registered factories
@@ -166,7 +166,7 @@ namespace sak
 
                 auto obj = factory->build(*this);
 
-                return boost::dynamic_pointer_cast<Object>(obj);
+                return boost::static_pointer_cast<Object>(obj);
             }
 
     private:

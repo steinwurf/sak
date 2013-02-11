@@ -47,7 +47,6 @@ public:
 };
 SAK_DEFINE_PARENT(rate_socket, socket)
 
-
 class rate_control
 {
 public:   
@@ -73,6 +72,32 @@ public:
 		return boost::make_shared<rate_socket>();
 	}
 };
+
+namespace foobar
+{	
+	class magic_socket : public rate_socket
+	{
+	public:
+		std::string write()
+		{        
+			return std::string("magic_socket write");
+		}
+	};
+	
+
+	class magic_socket_factory
+	{
+	public:
+
+		typedef rate_socket object_type;
+
+		boost::shared_ptr<magic_socket> build(sak::object_registry &)
+		{
+			return boost::make_shared<magic_socket>();
+		}
+	};
+}
+SAK_DEFINE_PARENT(foobar::magic_socket, rate_socket)
 
 
 TEST(ObjectFactory, register_type)
@@ -101,6 +126,17 @@ TEST(ObjectFactory, register_type_function)
         boost::bind(build_rate_socket, _1));
 
     auto s = registry.build<socket>();
+	//EXPECT_EQ("rate_socket write", s->write());
+}
+
+TEST(ObjectFactory, register_type_namespace)
+{
+	using namespace foobar;
+    sak::object_registry registry;
+	registry.set_factory<magic_socket_factory, magic_socket>();
+
+    auto s = registry.build<socket>();
+    EXPECT_EQ("magic_socket write", s->write());    
 }
 
 
@@ -137,7 +173,7 @@ TEST(ObjectFactory, set_get_object)
     registry.set_object<rate_socket>();
 
     auto rate_socket_1 = registry.get_object<rate_socket>();
-    auto rate_socket_2 = registry.get_object<rate_socket>();
+    auto rate_socket_2 = registry.get_object<socket>();
 
     EXPECT_TRUE(rate_socket_1);
     EXPECT_TRUE(rate_socket_2);

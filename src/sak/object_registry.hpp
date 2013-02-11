@@ -41,20 +41,18 @@ namespace sak
     /// Use the following macro after the definition of myClass:
     ///     SAF_DEFINE_PARENT(myClass, myBaseClass)
     template<class T>
-    struct TypeInfo
+    struct sak_type_info
     {
         typedef void Base;                
     };
 
 #define SAK_DEFINE_PARENT(DERIVED_CLASS, BASE_CLASS) \
-    namespace sak \
+	template<> \
+    struct sak::sak_type_info<DERIVED_CLASS> \
     { \
-        template<> \
-        struct TypeInfo<DERIVED_CLASS> \
-        { \
-            typedef BASE_CLASS Base; \
-        }; \
-    }    
+        typedef BASE_CLASS Base; \
+    };
+       
 
     /// Object registry used to store factories to construct objects of
     /// the registered types.
@@ -112,17 +110,33 @@ namespace sak
             m_lookup_by_object_id[object_id] = factory;
 
             // If the base class is not void, 
-            // then also set the factory for the Base type
-            typedef typename TypeInfo<Object>::Base Base;
+            // then reuse the factory instance for the Base type
+            typedef typename sak_type_info<Object>::Base Base;
             if (std::is_void< Base >::value == false)
-                set_factory<Factory, Base >();
+                set_factory_instance< Base >(factory);
+        }
+
+		/// Registers an object factory instance with the object registry
+        /// Once a factory has been registered objects can be created
+        template<class Object>
+        void set_factory_instance(boost::shared_ptr<object_factory> factory)
+        {           
+            auto object_id  = get_object_id<Object>();
+
+            m_lookup_by_object_id[object_id] = factory;
+
+            // If the base class is not void, 
+            // then reuse the factory instance for the Base type
+            typedef typename sak_type_info<Object>::Base Base;
+			if (std::is_void< Base >::value == false)
+                set_factory_instance< Base >(factory);            
         }
 
         /// Registers an object factory function with the object registry
         /// Once a factory function has been registered objects can be created
         template<class Object>
-        void set_factory(const boost::function<boost::shared_ptr<Object>(
-            object_registry &)> & func)
+        void set_factory(const boost::function< 
+			boost::shared_ptr<Object>(object_registry &)> & func)
         {
             auto object_id = get_object_id<Object>();            
 
@@ -131,11 +145,11 @@ namespace sak
 
             m_lookup_by_object_id[object_id] = factory;
 
-            // If the base class is not void, 
-            // then also set the factory function for the Base type
-            typedef typename TypeInfo<Object>::Base Base;
-            if (std::is_void< Base >::value == false)
-                set_factory< Base >(func);
+			// If the base class is not void, 
+            // then reuse the factory instance for the Base type
+            typedef typename sak_type_info<Object>::Base Base;
+			if (std::is_void< Base >::value == false)
+                set_factory_instance< Base >(factory);            
         }
 
         /// Registers an object factory with the object registry. This methods
@@ -149,6 +163,26 @@ namespace sak
             auto object = boost::make_shared<Object>();
 
             m_lookup_by_shared_object_id[object_id] = object;
+
+			// If the base class is not void, 
+            // then also register the Base type
+            typedef typename sak_type_info<Object>::Base Base;
+			if (std::is_void< Base >::value == false)
+                set_object_instance< Base >(object);
+        }
+
+		template<class Object>
+        void set_object_instance(boost::shared_ptr<Object> object)
+        {
+            auto object_id = get_object_id<Object>();           
+
+            m_lookup_by_shared_object_id[object_id] = object;
+
+			// If the base class is not void, 
+            // then also register the Base type
+            typedef typename sak_type_info<Object>::Base Base;
+			if (std::is_void< Base >::value == false)
+                set_object_instance< Base >(object);
         }
 
         /// @return a factory stored in the registry

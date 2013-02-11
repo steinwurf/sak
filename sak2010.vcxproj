@@ -10,6 +10,11 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9B350C81-2BA2-4A82-BB51-98C01807892B}</ProjectGuid>
     <Keyword>MakeFileProj</Keyword>
@@ -38,7 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakeBuildCommandLine>python waf build</NMakeBuildCommandLine>
-    <NMakeOutput>build/win32/test/sak_tests.exe</NMakeOutput>
+    <NMakeOutput>build/cxx_msvc11_x64/test/sak_tests.exe</NMakeOutput>
     <NMakeCleanCommandLine>python waf clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>./src/sak;./src;../deps/boost-4.0.0/boost-lib;../deps/gtest-2.0.6/gtest/include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>

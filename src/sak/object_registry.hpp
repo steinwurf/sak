@@ -125,7 +125,7 @@ namespace sak
 		/// Registers an object factory instance with the object registry
         /// Once a factory has been registered objects can be created
         template<class Object>
-        void set_factory_instance(boost::shared_ptr<object_factory> factory)
+        void set_factory_instance(const boost::shared_ptr<object_factory>& factory)
         {           
             auto object_id  = get_object_id<Object>();
 
@@ -178,7 +178,7 @@ namespace sak
         }
 
 		template<class Object>
-        void set_object_instance(boost::shared_ptr<Object> object)
+        void set_object_instance(const boost::shared_ptr<Object>& object)
         {
             auto object_id = get_object_id<Object>();           
 

@@ -82,8 +82,7 @@ namespace foobar
 		{        
 			return std::string("magic_socket write");
 		}
-	};
-	
+	};	
 
 	class magic_socket_factory
 	{

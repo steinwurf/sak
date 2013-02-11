@@ -36,10 +36,13 @@
 
 namespace sak
 {
-    /// TypeInfo template for registering the base class
-    /// Template must be specialized by all classes that have a base class
-    /// Use the following macro after the definition of myClass:
+    /// Type Info template for specifying the base class
+    /// Template must be specialized for all classes that have a base class
+	///
+    /// Use the following macro to specify the base class:
     ///     SAF_DEFINE_PARENT(myClass, myBaseClass)
+	/// Important: This macro must be used in the global namespace!
+	/// Note that multiple inheritance is not supported.
     template<class T>
     struct sak_type_info
     {
@@ -47,11 +50,14 @@ namespace sak
     };
 
 #define SAK_DEFINE_PARENT(DERIVED_CLASS, BASE_CLASS) \
-	template<> \
-    struct sak::sak_type_info<DERIVED_CLASS> \
-    { \
-        typedef BASE_CLASS Base; \
-    };
+	namespace sak \
+	{ \
+		template<> \
+		struct sak_type_info<DERIVED_CLASS> \
+		{ \
+			typedef BASE_CLASS Base; \
+		}; \
+	}
        
 
     /// Object registry used to store factories to construct objects of

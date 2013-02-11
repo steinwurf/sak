@@ -63,7 +63,7 @@ namespace sak
     {
     private:
         /// The object_id that is used to index the registered types 
-        typedef std::type_index object_id;
+        typedef size_t object_id;
 
         /// The map associating an object id to an object factory
         typedef std::map<object_id, boost::shared_ptr<object_factory> >
@@ -197,7 +197,7 @@ namespace sak
         template<class Object>
         object_id get_object_id() const
         {
-            return std::type_index(typeid(Object));
+            return typeid(Object).hash_code();
         }
 
         /// Finds and returns an object factory in the given map with a

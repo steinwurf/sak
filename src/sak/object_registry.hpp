@@ -213,6 +213,7 @@ namespace sak
         template<class Object>
         boost::shared_ptr<Object> build()
         {
+            // Have you forgotten to register the parent class for Object?
             assert(has_object_id(m_lookup_by_object_id, get_object_id<Object>() ));
 
             auto factory = find(m_lookup_by_object_id, get_object_id<Object>() );

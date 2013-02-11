@@ -29,13 +29,12 @@
 #include <sak/object_registry.hpp>
 #include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
-
+// ----- BASIC SOCKET TEST -------
 class socket
 {
 public:
     virtual std::string write() = 0;
 };
-
 
 class rate_socket : public socket
 {
@@ -46,20 +45,6 @@ public:
 	}
 };
 SAK_DEFINE_PARENT(rate_socket, socket)
-
-class rate_control
-{
-public:   
-
-    void check_rate(boost::shared_ptr<socket> s)
-	{
-		//boost::shared_ptr<socket> s = get_object<socket>();
-
-		assert(s);
-		s->write();
-	}
-
-};
 
 class rate_socket_factory
 {
@@ -158,7 +143,7 @@ TEST(ObjectFactory, register_type_function)
         boost::bind(build_rate_socket, _1));
 
     auto s = registry.build<socket>();
-	//EXPECT_EQ("rate_socket write", s->write());
+	EXPECT_EQ("rate_socket write", s->write());
 }
 
 TEST(ObjectFactory, register_type_namespace)
@@ -180,7 +165,7 @@ TEST(ObjectFactory, set_factory_param)
     auto fl = registry.build<plant>();
 	EXPECT_EQ(Color::green, fl->color());    
 
-    // Get the factory and change the color
+    // Get the factory and change the color to red
     auto factory = registry.get_factory<flower_factory>();
     factory->set_color(Color::red);
     
@@ -193,17 +178,20 @@ TEST(ObjectFactory, set_factory_param)
 TEST(ObjectFactory, register_type_from_lib)
 {
     sak::object_registry registry;
+    // Pear factory will produce fruits
     registry.set_factory<pear_factory, pear>();
     registry.set_factory<duck_factory, duck>();
 
     auto a = registry.build<duck>();
 
+    // The duck should eat a green pear now
     EXPECT_EQ("duck eats fruit which is green", a->eat());
 
-     registry.set_factory<apple_factory, apple>();
-     a = registry.build<duck>();
- 
-     EXPECT_EQ("duck eats fruit which is red", a->eat());
+    // Change the factory that produces fruit
+    registry.set_factory<apple_factory, apple>();
+    a = registry.build<duck>();
+    // The duck should eat a red apple now
+    EXPECT_EQ("duck eats fruit which is red", a->eat());
 }
 
 TEST(ObjectFactory, get_factory)

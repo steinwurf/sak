@@ -27,7 +27,6 @@
 #define SAK_OBJECT_REGISTRY_HPP
 
 #include <map>
-#include <typeindex>
 #include <type_traits>
 #include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>

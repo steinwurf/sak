@@ -24,39 +24,28 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
-#include <sak/object_registry.hpp>
-
 #include <boost/bind.hpp>
 
+#include <sak/object_registry.hpp>
 #include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
 
 class socket
 {
 public:
-    virtual void write() = 0;
+    virtual std::string write() = 0;
 };
 
 
 class rate_socket : public socket
 {
 public:
-    void write()
+    std::string write()
 	{        
+        return std::string("rate_socket write");
 	}
 };
-
-namespace sak
-{
-	template<>
-	object_id* get_object_id<rate_socket>()
-	{
-		using namespace sak;
-		static object_id id = object_id(typeid(rate_socket).name())
-					.set_parent(get_object_id<socket>());
-		return &id;
-	}
-}
+SAK_DEFINE_PARENT(rate_socket, socket)
 
 
 class rate_control
@@ -92,9 +81,11 @@ TEST(ObjectFactory, register_type)
     registry.set_factory<rate_socket_factory, rate_socket>();
 
     auto s = registry.build<socket>();
+    EXPECT_EQ("rate_socket write", s->write());
     auto f = registry.get_factory<rate_socket_factory>();
 
     s = f->build(registry);
+    EXPECT_EQ("rate_socket write", s->write());
 }
 
 boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry &)
@@ -123,10 +114,10 @@ TEST(ObjectFactory, register_type_from_lib)
 
     EXPECT_EQ("duck eats fruit which is green", a->eat());
 
-    registry.set_factory<apple_factory, apple>();
-    a = registry.build<duck>();
-
-    EXPECT_EQ("duck eats fruit which is red", a->eat());
+     registry.set_factory<apple_factory, apple>();
+     a = registry.build<duck>();
+ 
+     EXPECT_EQ("duck eats fruit which is red", a->eat());
 }
 
 TEST(ObjectFactory, get_factory)

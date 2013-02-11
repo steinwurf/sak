@@ -3,5 +3,4 @@
 @rem Set Python output to unbuffered
 set VS_UNICODE_OUTPUT=
 set PYTHONUNBUFFERED=true
-@rem python waf configure --bundle=ALL,-waf-tools --waf-tools-path="../external-waf-tools/" --bundle-path="../deps" --options=cxx_mkspec=cxx_msvc11_x86
-python waf build
+python waf configure --bundle=ALL,-waf-tools --waf-tools-path="../external-waf-tools/" --bundle-path="../deps" --options=cxx_mkspec=cxx_msvc11_x86

@@ -24,7 +24,7 @@
 			<Tool
 				Name="VCNMakeTool"
 				BuildCommandLine="build2008.bat"
-				ReBuildCommandLine=""
+				ReBuildCommandLine="config2008.bat"
 				CleanCommandLine="python waf clean"
 				Output="build/cxx_msvc11_x86/test/sak_tests.exe"
 				PreprocessorDefinitions="WIN32;_DEBUG"
@@ -143,14 +143,6 @@
 				</File>
 				<File
 					RelativePath=".\src\sak\object_factory_impl.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sak\object_id.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\sak\object_id.hpp"
 					>
 				</File>
 				<File

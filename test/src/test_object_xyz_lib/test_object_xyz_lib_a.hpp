@@ -39,11 +39,9 @@ class apple : public fruit
 public:
     std::string color();
 };
+SAK_DEFINE_PARENT(apple, fruit)
 
-namespace sak
-{
-    extern template object_id* get_object_id<apple>();    
-}
+
 
 class apple_factory
 {
@@ -56,11 +54,7 @@ class pear : public fruit
 public:
     std::string color();
 };
-
-namespace sak
-{
-    extern template object_id* get_object_id<pear>();    
-}
+SAK_DEFINE_PARENT(pear, fruit)
 
 class pear_factory
 {

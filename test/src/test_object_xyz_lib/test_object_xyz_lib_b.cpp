@@ -33,17 +33,6 @@
 // Duck
 //
 
-namespace sak
-{
-    template<>
-    object_id* get_object_id<duck>()
-    {
-        static object_id id = object_id(typeid(duck).name())
-            .set_parent(get_object_id<bird>());
-        return &id;
-    }
-}
-
 duck::duck(sak::object_registry &registry)
     : m_registry(registry)
 {
@@ -52,6 +41,7 @@ duck::duck(sak::object_registry &registry)
 std::string duck::eat()
 {
     auto f = m_registry.build<fruit>();
+    //return std::string("");
     return std::string("duck eats fruit which is ").append(f->color());
 }
 

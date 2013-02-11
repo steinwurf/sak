@@ -73,6 +73,7 @@ public:
 	}
 };
 
+// ----- NAMESPACE TEST -------
 namespace foobar
 {	
 	class magic_socket : public rate_socket
@@ -87,7 +88,6 @@ namespace foobar
 	class magic_socket_factory
 	{
 	public:
-
 		typedef rate_socket object_type;
 
 		boost::shared_ptr<magic_socket> build(sak::object_registry &)
@@ -97,6 +97,39 @@ namespace foobar
 	};
 }
 SAK_DEFINE_PARENT(foobar::magic_socket, rate_socket)
+
+
+// ----- FLOWER FACTORY TEST -------
+enum Color { red, green, blue };
+
+class plant
+{
+	Color m_color;
+public:
+	plant(Color c): m_color(c) {}
+	Color color() { return m_color; }
+};
+
+class flower: public plant
+{
+public:
+	flower(Color c): plant(c) {}
+};
+SAK_DEFINE_PARENT(flower, plant)
+
+class flower_factory
+{
+	Color m_color;
+public:
+	flower_factory(): m_color(Color::green) {} // use green as default color
+
+	void set_color(Color c) { m_color = c; }
+
+	boost::shared_ptr<flower> build(sak::object_registry &)
+	{
+		return boost::make_shared<flower>(m_color);
+	}
+};
 
 
 TEST(ObjectFactory, register_type)
@@ -136,6 +169,24 @@ TEST(ObjectFactory, register_type_namespace)
 
     auto s = registry.build<socket>();
     EXPECT_EQ("magic_socket write", s->write());    
+}
+
+TEST(ObjectFactory, set_factory_param)
+{
+    sak::object_registry registry;
+    registry.set_factory<flower_factory, flower>();
+   
+	// Build a "default" flower
+    auto fl = registry.build<plant>();
+	EXPECT_EQ(Color::green, fl->color());    
+
+    // Get the factory and change the color
+    auto factory = registry.get_factory<flower_factory>();
+    factory->set_color(Color::red);
+    
+    // Build a red flower
+    auto fl2 = registry.build<plant>();
+    EXPECT_EQ(Color::red, fl2->color());     
 }
 
 

@@ -72,7 +72,6 @@
     <ClInclude Include="src\sak\is_aligned.hpp" />
     <ClInclude Include="src\sak\object_factory.hpp" />
     <ClInclude Include="src\sak\object_factory_impl.hpp" />
-    <ClInclude Include="src\sak\object_id.hpp" />
     <ClInclude Include="src\sak\object_registry.hpp" />
     <ClInclude Include="src\sak\platform.hpp" />
     <ClInclude Include="src\sak\random_input_stream.hpp" />
@@ -88,7 +87,6 @@
     <ClCompile Include="src\sak\endian_buffer.cpp" />
     <ClCompile Include="src\sak\error.cpp" />
     <ClCompile Include="src\sak\file_input_stream.cpp" />
-    <ClCompile Include="src\sak\object_id.cpp" />
     <ClCompile Include="src\sak\platform.cpp" />
     <ClCompile Include="src\sak\random_input_stream.cpp" />
     <ClCompile Include="test\sak_tests.cpp" />

@@ -114,8 +114,9 @@ namespace sak
 
             // If the base class is not void, 
             // then also set the factory for the Base type
-            if (std::is_void< TypeInfo<Object>::Base >::value == false)
-                set_factory<Factory, TypeInfo<Object>::Base >();
+            typedef typename TypeInfo<Object>::Base Base;
+            if (std::is_void< Base >::value == false)
+                set_factory<Factory, Base >();
         }
 
         /// Registers an object factory function with the object registry
@@ -133,8 +134,9 @@ namespace sak
 
             // If the base class is not void, 
             // then also set the factory function for the Base type
-            if (std::is_void< TypeInfo<Object>::Base >::value == false)
-                set_factory< TypeInfo<Object>::Base >(func);
+            typedef typename TypeInfo<Object>::Base Base;
+            if (std::is_void< Base >::value == false)
+                set_factory< Base >(func);
         }
 
         /// Registers an object factory with the object registry. This methods

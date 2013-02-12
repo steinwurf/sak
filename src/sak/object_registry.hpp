@@ -102,7 +102,7 @@ namespace sak
         }
 
         /// Registers an object factory with the object registry
-        /// Once a factory has been registered objects can be created
+        /// Once a factory has been registered, objects can be created
         template<class Factory, class Object>
         void set_factory()
         {
@@ -124,6 +124,7 @@ namespace sak
 
 		/// Registers an object factory instance with the object registry
         /// Once a factory has been registered objects can be created
+        /// @param factory the factory instance to be used for the Object type
         template<class Object>
         void set_factory_instance(const boost::shared_ptr<object_factory>& factory)
         {           
@@ -140,6 +141,7 @@ namespace sak
 
         /// Registers an object factory function with the object registry
         /// Once a factory function has been registered objects can be created
+        /// @param func the factory function to be used for the Object type
         template<class Object>
         void set_factory(const boost::function< 
 			boost::shared_ptr<Object>(object_registry &)> & func)
@@ -158,8 +160,9 @@ namespace sak
                 set_factory_instance< Base >(factory);            
         }
 
-        /// Registers an object factory with the object registry. This methods
-        /// can be used for factories with a non-standard build function.
+        /// Registers an Object type with the object registry, and creates a
+        /// default instance of the Object type.
+        /// This method can be used for factories with a non-standard build function.
         /// Users can call the get function and invoke the custom build function
         template<class Object>
         void set_object()
@@ -177,7 +180,10 @@ namespace sak
                 set_object_instance< Base >(object);
         }
 
-		template<class Object>
+		/// Explicitly registers an Object instance with the object registry
+        /// without creating a default instance of the Object type.
+        /// @param object the Object instance to be used for the Object type
+        template<class Object>
         void set_object_instance(const boost::shared_ptr<Object>& object)
         {
             auto object_id = get_object_id<Object>();           
@@ -209,6 +215,7 @@ namespace sak
             m_lookup_by_object_id.clear();
         }
 
+        /// Builds an Object with the registered factories
         /// @return an object created using the registered factories
         template<class Object>
         boost::shared_ptr<Object> build()

@@ -40,36 +40,37 @@ namespace sak
     {
     public:
 
-        // the type managed
+        /// the type managed
         typedef Resource value_type;
 
-        // the pointer to the resource
+        /// the pointer to the resource
         typedef boost::shared_ptr<value_type> value_ptr;
 
-        // the allocator function
+        /// the allocator function
         typedef boost::function<value_ptr ()> allocator_type;
 
     public:
 
-        // Create a new resource pool
+        /// Create a new resource pool
+        /// @param allocator the allocator to be used by the pool
         resource_pool(const allocator_type &allocator)
             {
                 m_pool.reset( new pool_impl(allocator) );
             }
 
-        // @returns the number of resource in use
+        /// @returns the number of resource in use
         uint32_t size() const
             {
                 return m_pool->size();
            }
 
-        // @returns the number of unused resources
+        /// @returns the number of unused resources
         uint32_t free() const
             {
                 return m_pool->free();
             }
 
-        // @returns a resource from the pool
+        /// @returns a resource from the pool
         value_ptr allocate()
             {
                 return m_pool->allocate();

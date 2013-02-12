@@ -47,35 +47,36 @@ namespace sak
 
         /// Constructor that opens the file immediately
         /// @throws boost::system::system_error Thrown on failure.
+        /// @param filename the filename
         file_input_stream(const std::string &filename);
 
         /// Opens the file
         /// @throws boost::system::system_error Thrown on failure.
-        /// @param filename, the file name
+        /// @param filename the file name
         void open(const std::string &filename);
 
         /// Opens the file
-        /// @param filename, the file name
+        /// @param filename the file name
         /// @param ec on error set to indicate the type of error
         void open(const std::string &filename, boost::system::error_code &ec);
 
     public: // From finite_input_stream
 
-        /// @see finite_input_stream::seek
+        /// @copydoc finite_input_stream::seek()
         void seek(uint32_t pos);
 
-        /// @see finite_input_stream::read_position
+        /// @copydoc finite_input_stream::read_position()
         uint32_t read_position();
 
-        /// @see finite_input_stream::size
+        /// @copydoc finite_input_stream::size()
         uint32_t size();
 
     public: // From input_stream
 
-        /// @see input_stream::read
+        /// @copydoc input_stream::read()
         void read(uint8_t *buffer, uint32_t bytes);
 
-        /// @see input_stream::bytes_available
+        /// @copydoc input_stream::bytes_available()
         uint32_t bytes_available();
 
     private:

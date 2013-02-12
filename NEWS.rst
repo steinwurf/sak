@@ -6,7 +6,13 @@ of every change, see the Git log.
 
 Latest
 ------
+* Updated to waf 1.7.9 and started using the wurf_install_path tool.
+
+8.1.0
+-----
 * Updated to use the new external-waf-tools repository.
+* Added offset function to storage classes & fixed bug in the split_storage
+  function.
 
 8.0.0
 -----

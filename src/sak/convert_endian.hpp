@@ -33,9 +33,8 @@
 namespace sak
 {
 
-    // This struct defines a bool which defines whether the
-    // platform endiannes is big or little.
-    // We rely on the macros defined in Boost
+    // This struct defines a bool which defines whether the platform endiannes
+    // is big or little. We rely on the macros defined in Boost
     struct host_endian
     {
         static const bool big_endian =
@@ -53,87 +52,95 @@ namespace sak
     template<>
     struct convert_endian<true>
     {
-
-        static void put16(uint16_t v, uint8_t *b)
+        /// @copydoc big_endian::put16
+        static void put16(uint16_t value, uint8_t *buffer)
             {
-                b[1] = (v & 0xFF); b[0] = (v >> 8 & 0xFF);
+                buffer[1] = (value & 0xFF); buffer[0] = (value >> 8 & 0xFF);
             }
 
-        static void put32(uint32_t v, uint8_t *b)
+        /// @copydoc big_endian::put32
+        static void put32(uint32_t value, uint8_t *buffer)
             {
-                b[3] = (v & 0xFF);         b[2] = ((v >> 8) & 0xFF);
-                b[1] = ((v >> 16) & 0xFF); b[0] = ((v >> 24) & 0xFF);
+                buffer[3] = (value & 0xFF);         buffer[2] = ((value >> 8) & 0xFF);
+                buffer[1] = ((value >> 16) & 0xFF); buffer[0] = ((value >> 24) & 0xFF);
             }
 
-        static void put64(uint64_t v, uint8_t *b)
+        /// @copydoc big_endian::put64
+        static void put64(uint64_t value, uint8_t *buffer)
             {
-                b[7] = (v & 0xFF);         b[6] = ((v >> 8) & 0xFF);
-                b[5] = ((v >> 16) & 0xFF); b[4] = ((v >> 24) & 0xFF);
-                b[3] = ((v >> 32) & 0xFF); b[2] = ((v >> 40) & 0xFF);
-                b[1] = ((v >> 48) & 0xFF); b[0] = ((v >> 56) & 0xFF);
+                buffer[7] = (value & 0xFF);         buffer[6] = ((value >> 8) & 0xFF);
+                buffer[5] = ((value >> 16) & 0xFF); buffer[4] = ((value >> 24) & 0xFF);
+                buffer[3] = ((value >> 32) & 0xFF); buffer[2] = ((value >> 40) & 0xFF);
+                buffer[1] = ((value >> 48) & 0xFF); buffer[0] = ((value >> 56) & 0xFF);
             }
 
-        static uint16_t get16(const uint8_t *b)
+        /// @copydoc big_endian::get16
+        static uint16_t get16(const uint8_t *buffer)
             {
-                return (b[0] << 8) | b[1];
+                return (buffer[0] << 8) | buffer[1];
             }
 
-        static uint32_t get32(const uint8_t *b)
+        /// @copydoc big_endian::get32
+        static uint32_t get32(const uint8_t *buffer)
             {
-                return (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3];
+                return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
             }
 
-        static uint64_t get64(const uint8_t *b)
+        /// @copydoc big_endian::get64
+        static uint64_t get64(const uint8_t *buffer)
             {
-                return (((uint64_t) b[0]) << 56) | (((uint64_t) b[1]) << 48) |
-                       (((uint64_t) b[2]) << 40) | (((uint64_t) b[3]) << 32) |
-                       (((uint64_t) b[4]) << 24) | (((uint64_t) b[5]) << 16) |
-                       (((uint64_t) b[6]) << 8)  | ((uint64_t) b[7]);
+                return (((uint64_t) buffer[0]) << 56) | (((uint64_t) buffer[1]) << 48) |
+                       (((uint64_t) buffer[2]) << 40) | (((uint64_t) buffer[3]) << 32) |
+                       (((uint64_t) buffer[4]) << 24) | (((uint64_t) buffer[5]) << 16) |
+                       (((uint64_t) buffer[6]) << 8)  | ((uint64_t) buffer[7]);
             }
     };
 
     template<>
     struct convert_endian<false>
     {
-        static void put16(uint16_t v, uint8_t *b)
+        /// @copydoc big_endian::put16
+        static void put16(uint16_t value, uint8_t *buffer)
             {
-                b[0] = (v & 0xFF); b[1] = (v >> 8 & 0xFF);
+                buffer[0] = (value & 0xFF); buffer[1] = (value >> 8 & 0xFF);
             }
 
-        static void put32(uint32_t v, uint8_t *b)
+        /// @copydoc big_endian::put32
+        static void put32(uint32_t value, uint8_t *buffer)
             {
-                b[0] = (v & 0xFF);         b[1] = ((v >> 8) & 0xFF);
-                b[2] = ((v >> 16) & 0xFF); b[3] = ((v >> 24) & 0xFF);
+                buffer[0] = (value & 0xFF);         buffer[1] = ((value >> 8) & 0xFF);
+                buffer[2] = ((value >> 16) & 0xFF); buffer[3] = ((value >> 24) & 0xFF);
             }
 
-        static void put64(uint64_t v, uint8_t *b)
+        /// @copydoc big_endian::put64
+        static void put64(uint64_t value, uint8_t *buffer)
             {
-                b[0] = (v & 0xFF);         b[1] = ((v >> 8) & 0xFF);
-                b[2] = ((v >> 16) & 0xFF); b[3] = ((v >> 24) & 0xFF);
-                b[4] = ((v >> 32) & 0xFF); b[5] = ((v >> 40) & 0xFF);
-                b[6] = ((v >> 48) & 0xFF); b[7] = ((v >> 56) & 0xFF);
+                buffer[0] = (value & 0xFF);         buffer[1] = ((value >> 8) & 0xFF);
+                buffer[2] = ((value >> 16) & 0xFF); buffer[3] = ((value >> 24) & 0xFF);
+                buffer[4] = ((value >> 32) & 0xFF); buffer[5] = ((value >> 40) & 0xFF);
+                buffer[6] = ((value >> 48) & 0xFF); buffer[7] = ((value >> 56) & 0xFF);
             }
 
-        static uint16_t get16(const uint8_t *b)
+        /// @copydoc big_endian::get16
+        static uint16_t get16(const uint8_t *buffer)
             {
-                return (b[1] << 8) | b[0];
+                return (buffer[1] << 8) | buffer[0];
             }
 
-        static uint32_t get32(const uint8_t *b)
+        /// @copydoc big_endian::get32
+        static uint32_t get32(const uint8_t *buffer)
             {
-                return (b[3] << 24) | (b[2] << 16) | (b[1] << 8) | b[0];
+                return (buffer[3] << 24) | (buffer[2] << 16) | (buffer[1] << 8) | buffer[0];
             }
 
-        static uint64_t get64(const uint8_t *b)
+        /// @copydoc big_endian::get64
+        static uint64_t get64(const uint8_t *buffer)
             {
-                return (((uint64_t) b[7]) << 56) | (((uint64_t) b[6]) << 48) |
-                       (((uint64_t) b[5]) << 40) | (((uint64_t) b[4]) << 32) |
-                       (((uint64_t) b[3]) << 24) | (((uint64_t) b[2]) << 16) |
-                       (((uint64_t) b[1]) << 8)  | ((uint64_t) b[0]);
+                return (((uint64_t) buffer[7]) << 56) | (((uint64_t) buffer[6]) << 48) |
+                       (((uint64_t) buffer[5]) << 40) | (((uint64_t) buffer[4]) << 32) |
+                       (((uint64_t) buffer[3]) << 24) | (((uint64_t) buffer[2]) << 16) |
+                       (((uint64_t) buffer[1]) << 8)  | ((uint64_t) buffer[0]);
             }
-
-
-
     };
 
     // Inserts and extracts integers in big-endian format.

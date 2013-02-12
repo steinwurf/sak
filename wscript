@@ -4,7 +4,7 @@
 import os
 
 APPNAME = 'sak'
-VERSION = '8.0.0'
+VERSION = '8.1.0'
 
 def recurse_helper(ctx, name):
     if not ctx.has_dependency_path(name):
@@ -49,6 +49,7 @@ def configure(conf):
 
         conf.load_external_tool('mkspec', 'wurf_cxx_mkspec_tool')
         conf.load_external_tool('runners', 'wurf_runner')
+        conf.load_external_tool('install_path', 'wurf_install_path')
 
         recurse_helper(conf, 'boost')
         recurse_helper(conf, 'gtest')

@@ -23,8 +23,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_STORAGE_H
-#define SAK_STORAGE_H
+#ifndef SAK_STORAGE_HPP
+#define SAK_STORAGE_HPP
 
 /// @file storage.h
 /// This implementation was inspired by the boost::asio buffer.h as
@@ -78,6 +78,24 @@ namespace sak
                 return this + 1;
             }
 
+        /// Offset the storage
+        mutable_storage& operator+=(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                m_size -= offset;
+                m_data += offset;
+                return *this;
+            }
+
+        /// Offset the storage
+        mutable_storage operator+(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                mutable_storage storage(m_data + offset, m_size - offset);
+
+                return storage;
+            }
+
         /// Pointer to the mutable buffer storage
         uint8_t *m_data;
 
@@ -119,8 +137,8 @@ namespace sak
               m_size(s.m_size)
             { }
 
-        /// Assigns and converts a mutable storage buffer into a const storage
-        /// buffer
+        /// Assigns and converts a mutable storage buffer
+        /// into a const storage buffer
         /// @param s the mutable storage object
         const_storage& operator=(const mutable_storage &s)
             {
@@ -129,18 +147,36 @@ namespace sak
                 return *this;
             }
 
-        /// @return interator to the first element note in this adapter we
-        ///         always only have one element
+        /// @return interator to the first element note in this
+        ///         adapter we always only have one element
         const_iterator begin() const
             {
                 return this;
             }
 
-        /// @return interator to the end for this adapter we always only have
-        ///         one element thus the + 1
+        /// @return interator to the end for this adapter we
+        ///         always only have one element thus the + 1
         const_iterator end() const
             {
                 return this + 1;
+            }
+
+        /// Offset the storage
+        const_storage& operator+=(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                m_size -= offset;
+                m_data += offset;
+                return *this;
+            }
+
+        /// Offset the storage
+        const_storage operator+(uint32_t offset)
+            {
+                assert(offset <= m_size);
+                const_storage storage(m_data + offset, m_size - offset);
+
+                return storage;
             }
 
         /// Pointer to the non-mutable buffer storage
@@ -151,55 +187,23 @@ namespace sak
 
     };
 
-    /// Defines a storage sequence i.e. a storage mapping where buffers may be
-    /// in disjoint memory locations
-    template<class Storage>
-    struct storage_sequence;
-
-    template<>
-    struct storage_sequence<const_storage>
-    {
-        /// type typedef
-        typedef std::vector<const_storage> type;
-    };
-
-    template<>
-    struct storage_sequence<mutable_storage>
-    {
-        /// type typedef
-        typedef std::vector<mutable_storage> type;
-    };
-
-    /// Typedefs for the sequences
-    typedef storage_sequence<const_storage>::type
-        const_storage_sequence;
-
-    typedef storage_sequence<mutable_storage>::type
-        mutable_storage_sequence;
-
     /// Splits a continues storage buffer into a sequence of
     /// storage buffers where the continues buffer is split at
     /// a specified number of bytes
     template<class StorageType>
-    inline typename storage_sequence<StorageType>::type
+    inline std::vector<StorageType>
     split_storage(const StorageType &storage, uint32_t split)
     {
-        typedef typename StorageType::value_ptr
-            value_ptr;
+        auto remaining_size = storage.m_size;
+        auto data_offset = storage.m_data;
 
-        typedef typename storage_sequence<StorageType>::type
-            storage_sequence_type;
-
-        uint32_t remaining_size = storage.m_size;
-        value_ptr data_offset = storage.m_data;
-
-        storage_sequence_type sequence;
+        std::vector<StorageType> sequence;
 
         while(remaining_size > 0)
         {
             uint32_t next_size = std::min(remaining_size, split);
 
-            sequence.push_back(StorageType(next_size, data_offset));
+            sequence.push_back(StorageType(data_offset, next_size));
 
             data_offset += next_size;
             remaining_size -= next_size;
@@ -281,7 +285,7 @@ namespace sak
     template<class PodType, class Allocator>
     inline mutable_storage storage(std::vector<PodType, Allocator> &v)
     {
-        uint32_t size = v.size() * sizeof(PodType);
+        uint32_t size = static_cast<uint32_t>(v.size() * sizeof(PodType));
         uint8_t *data = reinterpret_cast<uint8_t*>(&v[0]);
 
         return mutable_storage(data, size);

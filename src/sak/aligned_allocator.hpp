@@ -92,8 +92,7 @@ namespace sak
                 return Alignment;
             }
 
-        /// Constructors and destructor
-        /// - nothing to do because the allocator has no state
+        /// Constructors the allocator has no state
         aligned_allocator()
             { }
 
@@ -104,6 +103,7 @@ namespace sak
         aligned_allocator(const aligned_allocator<U>&)
             { }
 
+        /// Destructor the allocator has no state
         ~aligned_allocator()
             { }
 
@@ -127,9 +127,8 @@ namespace sak
         ///       allocator             old_ptr and     right memory boundary
         ///                             new_ptr
         ///
-        /// The offset is stored one byte below the new_ptr which makes sure
-        /// that we can find the old_ptr again when we need to deallocate the
-        /// memory
+        /// The offset is stored one byte below the new_ptr to make sure that we
+        /// can find the old_ptr again when we need to deallocate the memory
         pointer allocate(size_type num, const void * = 0)
             {
                 uint32_t space_needed = num * sizeof(T) + Alignment;
@@ -154,7 +153,7 @@ namespace sak
 
         /// Given the pointer ptr we find the next location where we have an
         /// address with the desired alignment
-        /// @param ptr, the start address
+        /// @param ptr the start address
         /// @return the next aligned address
         uint8_t* find_aligned(uint8_t* ptr)
             {

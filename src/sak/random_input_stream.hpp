@@ -45,7 +45,7 @@ namespace sak
     public:
 
          /// Constructor
-         /// @param size, the size in bytes of the buffer passed
+         /// @param size the size in bytes of the buffer passed
         random_input_stream(uint32_t size);
 
         /// @return a pointer to the random data
@@ -53,24 +53,24 @@ namespace sak
 
     public: // From finite_input_stream
 
-         /// @see finite_input_stream::seek
+         /// @copydoc finite_input_stream::seek()
         void seek(uint32_t pos);
 
-         /// @see finite_input_stream::seek
+         /// @copydoc finite_input_stream::read_position()
         uint32_t read_position();
 
-         /// @see finite_input_stream::seek
+         /// @copydoc finite_input_stream::size()
         uint32_t size();
 
     public: // From input_stream
 
-         /// @see input_stream::read
+         /// @copydoc input_stream::read()
         void read(uint8_t *buffer, uint32_t bytes);
 
-         /// @see input_stream::bytes_available
+         /// @copydoc input_stream::bytes_available()
         uint32_t bytes_available();
 
-         /// @see input_stream::stopped
+         /// @copydoc input_stream::stopped()
         bool stopped();
 
     protected:

@@ -45,10 +45,12 @@ namespace sak
         {}
 
         /// Request a read from the io device
+        /// @param buffer from where to read
+        /// @param bytes to read
         virtual void read(uint8_t *buffer, uint32_t bytes) = 0;
 
-        /// Returns the number of bytes available
-        /// for reading
+        /// Returns the number of bytes available for reading
+        /// @return number of bytes available
         virtual uint32_t bytes_available() = 0;
 
         /// Returns whether no more data will be produced. E.g. in the case
@@ -74,7 +76,7 @@ namespace sak
         typedef bs2::signal<void (const std::string&)> error_signal;
 
         /// Connect to the error signal
-        /// @param slot, the function to call
+        /// @param slot the function to call
         bs2::connection on_error(const error_signal::slot_type &slot)
         {
             return m_error_signal.connect(slot);
@@ -85,7 +87,7 @@ namespace sak
 
 
         /// Connect to the stopped signal
-        /// @param slot, the function to call
+        /// @param slot the function to call
         bs2::connection on_stopped(const stopped_signal::slot_type &slot)
         {
             return m_stopped_signal.connect(slot);

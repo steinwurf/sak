@@ -31,7 +31,18 @@ GTAGS
 \#*#
 *~
 
+#Eclipse ignore
+.cproject
+.project
+.metadata
+local.properties
+.classpath
+
 # Visual Studio ignore
+*.sln
+*.vcproj
+*.vcxproj
+*.filters
 *.suo
 *.user
 *.ncb
@@ -39,4 +50,5 @@ GTAGS
 *.opensdf
 *.log
 Debug
+Release
 test.txt

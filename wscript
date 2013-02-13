@@ -38,18 +38,19 @@ def options(opt):
             major_version = 4))
 
     opt.load('wurf_dependency_bundle')
-    opt.load('wurf_tools')
+    opt.load('wurf_tools')    
 
 def configure(conf):
 
     if conf.is_toplevel():
 
         conf.load('wurf_dependency_bundle')
-        conf.load('wurf_tools')
+        conf.load('wurf_tools')        
 
         conf.load_external_tool('mkspec', 'wurf_cxx_mkspec_tool')
         conf.load_external_tool('runners', 'wurf_runner')
         conf.load_external_tool('install_path', 'wurf_install_path')
+        conf.load_external_tool('project_gen', 'wurf_msvs')
 
         recurse_helper(conf, 'boost')
         recurse_helper(conf, 'gtest')

@@ -27,6 +27,7 @@
 #define SAK_OBJECT_REGISTRY_HPP
 
 #include <map>
+#include <typeindex>
 #include <type_traits>
 #include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
@@ -67,7 +68,7 @@ namespace sak
     private:
 
         /// The object_id that is used to index the registered types
-        typedef size_t object_id;
+        typedef std::type_index object_id;
 
         /// The map associating an object id to an object factory
         typedef std::map<object_id, boost::shared_ptr<object_factory> >
@@ -103,7 +104,8 @@ namespace sak
         }
 
         /// Registers an object factory with the object registry
-        /// Once a factory has been registered, objects can be created
+        /// Important: a new factory instance is automatically created
+        /// Once a factory has been registered, objects can be built
         template<class Factory, class Object>
         void set_factory()
         {
@@ -126,7 +128,7 @@ namespace sak
         }
 
         /// Registers an object factory instance with the object registry
-        /// Once a factory has been registered objects can be created
+        /// Once a factory has been registered, objects can be created
         /// @param factory the factory instance to be used for the Object type
         template<class Object>
         void set_factory(const boost::shared_ptr<object_factory>& factory)
@@ -145,7 +147,7 @@ namespace sak
         }
 
         /// Registers an object factory function with the object registry
-        /// Once a factory function has been registered objects can be created
+        /// Once a factory function has been registered, objects can be created
         /// @param func the factory function to be used for the Object type
         template<class Object>
         void set_factory(const boost::function<
@@ -168,10 +170,8 @@ namespace sak
             }
         }
 
-        /// Registers an Object type with the object registry, and creates a
-        /// default instance of the Object type.
-        /// This method can be used for factories with a non-standard build function.
-        /// Users can call the get function and invoke the custom build function
+        /// Registers an Object type with the object registry.
+        /// Important: a new instance of the Object type is created
         template<class Object>
         void set_object()
         {
@@ -211,6 +211,7 @@ namespace sak
             }
         }
 
+        /// Returns a shared pointer to an explicitly registered Object.
         /// @return a factory stored in the registry
         template<class Object>
         boost::shared_ptr<Object> get_object()
@@ -230,7 +231,7 @@ namespace sak
         }
 
         /// Builds an Object with the registered factories
-        /// @return an object created using the registered factories
+        /// @return a shared pointer to the new Object
         template<class Object>
         boost::shared_ptr<Object> build()
         {
@@ -249,21 +250,27 @@ namespace sak
     private:
 
         /// Checks if an object id is registered in a specific category
+        /// @param map the map in which the object_id is stored or not
+        /// @param id the object_id to find
+        /// @return true if the object is registered
         template<class Map>
         bool has_object_id(const Map &map, const object_id &id) const
         {
             return map.find(id) != map.end();
         }
 
+        /// Returns the object_id for a type using C++ typeid
         /// @return the object id of the Object type
         template<class Object>
         object_id get_object_id() const
         {
-            return typeid(Object).hash_code();
+            return std::type_index(typeid(Object));
         }
 
         /// Finds and returns an object factory in the given map with a
         /// "compatible" object_id.
+        /// @param map the map in which the object_id is stored
+        /// @param id the object_id to find
         boost::shared_ptr<object_factory>
             find(const factory_map &map, const object_id &id) const
         {
@@ -273,6 +280,8 @@ namespace sak
 
         /// Finds and returns an object factory in the given map with a
         /// "compatible" object_id.
+        /// @param map the map in which the object_id is stored
+        /// @param id the object_id to find
         boost::shared_ptr<void>
             find(const object_map &map, const object_id &id) const
         {
@@ -290,9 +299,7 @@ namespace sak
 
         /// Map allowing a factory to be found based on a factory's object id
         factory_map m_lookup_by_factory_id;
-
     };
 }
 
 #endif
-

@@ -40,81 +40,21 @@ class rate_socket : public socket
 {
 public:
     std::string write()
-	{
+    {
         return std::string("rate_socket write");
-	}
+    }
 };
 SAK_DEFINE_PARENT(rate_socket, socket)
 
 class rate_socket_factory
 {
 public:
-
     typedef rate_socket object_type;
 
     boost::shared_ptr<rate_socket> build(sak::object_registry &)
-	{
-		return boost::make_shared<rate_socket>();
-	}
-};
-
-// ----- NAMESPACE TEST -------
-namespace foobar
-{
-	class magic_socket : public rate_socket
-	{
-	public:
-		std::string write()
-		{
-			return std::string("magic_socket write");
-		}
-	};
-
-	class magic_socket_factory
-	{
-	public:
-		typedef rate_socket object_type;
-
-		boost::shared_ptr<magic_socket> build(sak::object_registry &)
-		{
-			return boost::make_shared<magic_socket>();
-		}
-	};
-}
-SAK_DEFINE_PARENT(foobar::magic_socket, rate_socket)
-
-
-// ----- FLOWER FACTORY TEST -------
-enum Color { red, green, blue };
-
-class plant
-{
-    Color m_color;
-public:
-    plant(Color c): m_color(c) {}
-    Color color() { return m_color; }
-};
-
-class flower: public plant
-{
-public:
-    flower(Color c): plant(c) {}
-};
-
-SAK_DEFINE_PARENT(flower, plant)
-
-class flower_factory
-{
-    Color m_color;
-public:
-    flower_factory(): m_color(Color::green) {} // use green as default color
-
-    void set_color(Color c) { m_color = c; }
-
-    boost::shared_ptr<flower> build(sak::object_registry &)
-	{
-            return boost::make_shared<flower>(m_color);
-	}
+    {
+        return boost::make_shared<rate_socket>();
+    }
 };
 
 // Testing that the building a base type with the registry works
@@ -136,7 +76,7 @@ boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry &)
     return boost::make_shared<rate_socket>();
 }
 
-
+// Testing factory function
 TEST(ObjectFactory, register_type_function)
 {
     sak::object_registry registry;
@@ -144,27 +84,107 @@ TEST(ObjectFactory, register_type_function)
         boost::bind(build_rate_socket, _1));
 
     auto s = registry.build<socket>();
-	EXPECT_EQ("rate_socket write", s->write());
+    EXPECT_EQ("rate_socket write", s->write());
 }
 
+// Testing set_object + get_object
+TEST(ObjectFactory, set_get_object)
+{
+    sak::object_registry registry;
+    registry.set_object<rate_socket>();
+
+    auto rate_socket_1 = registry.get_object<rate_socket>();
+    auto rate_socket_2 = registry.get_object<socket>();
+
+    EXPECT_TRUE(rate_socket_1);
+    EXPECT_TRUE(rate_socket_2);
+    EXPECT_EQ(rate_socket_1, rate_socket_2);
+}
+
+// ----- NAMESPACE TEST -------
+namespace foobar
+{
+    class magic_socket : public rate_socket
+    {
+    public:
+
+        std::string write()
+        {
+            return std::string("magic_socket write");
+        }
+    };
+
+    class magic_socket_factory
+    {
+    public:
+
+        typedef rate_socket object_type;
+
+        boost::shared_ptr<magic_socket> build(sak::object_registry &)
+        {
+            return boost::make_shared<magic_socket>();
+        }
+    };
+}
+SAK_DEFINE_PARENT(foobar::magic_socket, rate_socket)
+
+// Testing parent definition inside other namespace
 TEST(ObjectFactory, register_type_namespace)
 {
-	using namespace foobar;
+    using namespace foobar;
     sak::object_registry registry;
-	registry.set_factory<magic_socket_factory, magic_socket>();
+    registry.set_factory<magic_socket_factory, magic_socket>();
 
     auto s = registry.build<socket>();
     EXPECT_EQ("magic_socket write", s->write());
 }
 
+
+// ----- FLOWER FACTORY TEST -------
+enum Color { red, green, blue };
+
+class plant
+{
+    Color m_color;
+public:
+
+    plant(Color c): m_color(c) {}
+    Color color() { return m_color; }
+};
+
+class flower: public plant
+{
+public:
+
+    flower(Color c): plant(c) {}
+};
+
+SAK_DEFINE_PARENT(flower, plant)
+
+class flower_factory
+{
+    Color m_color;
+public:
+
+    flower_factory(): m_color(Color::green) {} // use green as default color
+
+    void set_color(Color c) { m_color = c; }
+
+    boost::shared_ptr<flower> build(sak::object_registry &)
+    {
+        return boost::make_shared<flower>(m_color);
+    }
+};
+
+// Testing factory with custom parameters
 TEST(ObjectFactory, set_factory_param)
 {
     sak::object_registry registry;
     registry.set_factory<flower_factory, flower>();
 
-	// Build a "default" flower
+    // Build a "default" flower
     auto fl = registry.build<plant>();
-	EXPECT_EQ(Color::green, fl->color());
+    EXPECT_EQ(Color::green, fl->color());
 
     // Get the factory and change the color to red
     auto factory = registry.get_factory<flower_factory>();
@@ -175,7 +195,7 @@ TEST(ObjectFactory, set_factory_param)
     EXPECT_EQ(Color::red, fl2->color());
 }
 
-
+// Testing factory for types defined in a static library
 TEST(ObjectFactory, register_type_from_lib)
 {
     sak::object_registry registry;
@@ -195,6 +215,7 @@ TEST(ObjectFactory, register_type_from_lib)
     EXPECT_EQ("duck eats fruit which is red", a->eat());
 }
 
+// Testing set_factory + get_factory
 TEST(ObjectFactory, get_factory)
 {
     sak::object_registry registry;
@@ -205,18 +226,3 @@ TEST(ObjectFactory, get_factory)
     auto d = factory->build(registry);
     EXPECT_EQ("duck eats fruit which is green", d->eat());
 }
-
-TEST(ObjectFactory, set_get_object)
-{
-    sak::object_registry registry;
-    registry.set_object<rate_socket>();
-
-    auto rate_socket_1 = registry.get_object<rate_socket>();
-    auto rate_socket_2 = registry.get_object<socket>();
-
-    EXPECT_TRUE(rate_socket_1);
-    EXPECT_TRUE(rate_socket_2);
-    EXPECT_EQ(rate_socket_1, rate_socket_2);
-}
-
-

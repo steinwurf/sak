@@ -6,7 +6,13 @@ of every change, see the Git log.
 
 Latest
 ------
+* TBD
+
+9.0.0
+------
 * Updated to waf 1.7.9 and started using the wurf_install_path tool.
+* Removing sak::object and sak::object_id and using typeid for type identification
+  in the object registry. 
 
 8.1.0
 -----

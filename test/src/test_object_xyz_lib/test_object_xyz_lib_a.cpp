@@ -24,35 +24,16 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "test_object_xyz_lib_a.hpp"
-#include <sak/object_registry.hpp>
 
 //
 // Fruit
 //
 
-sak::object_id* fruit::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("fruit");
 
-    return &id;
-}
 
 //
 // Apple
 //
-
-sak::object_id* apple::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(fruit::id())
-        .set_name("apple");
-
-    return &id;
-}
 
 std::string apple::color()
 {
@@ -62,16 +43,6 @@ std::string apple::color()
 //
 // Apple Factory
 //
-
-sak::object_id* apple_factory::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("apple_factory");
-
-    return &id;
-}
 
 boost::shared_ptr<apple> apple_factory::build(sak::object_registry &)
 {
@@ -83,16 +54,6 @@ boost::shared_ptr<apple> apple_factory::build(sak::object_registry &)
 // Pear
 //
 
-sak::object_id* pear::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(fruit::id())
-        .set_name("pear");
-
-    return &id;
-}
-
 std::string pear::color()
 {
     return "green";
@@ -101,16 +62,6 @@ std::string pear::color()
 //
 // Pear Factory
 //
-
-sak::object_id* pear_factory::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("pear_factory");
-
-    return &id;
-}
 
 boost::shared_ptr<pear> pear_factory::build(sak::object_registry &)
 {

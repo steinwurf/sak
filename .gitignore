@@ -15,6 +15,7 @@
 *.pyc
 
 # For projects that use Waf for building: http://code.google.com/p/waf/
+waf-*
 .waf-*
 .lock-*
 build
@@ -29,3 +30,25 @@ GTAGS
 # Emacs temp / auto save
 \#*#
 *~
+
+#Eclipse ignore
+.cproject
+.project
+.metadata
+local.properties
+.classpath
+
+# Visual Studio ignore
+*.sln
+*.vcproj
+*.vcxproj
+*.filters
+*.suo
+*.user
+*.ncb
+*.sdf
+*.opensdf
+*.log
+Debug
+Release
+test.txt

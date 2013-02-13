@@ -26,7 +26,11 @@
 #ifndef SAK_OBJECT_FACTORY_IMPL_HPP
 #define SAK_OBJECT_FACTORY_IMPL_HPP
 
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
+
 #include "object_factory.hpp"
+
 
 namespace sak
 {
@@ -39,16 +43,16 @@ namespace sak
 
         object_factory_impl()
             : m_factory(boost::make_shared<Factory>())
-            {}
+        {}
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<object> build(object_registry &registry)
-            {
-                assert(m_factory);
+        virtual boost::shared_ptr<void> build(object_registry &registry)
+        {
+            assert(m_factory);
 
-                return m_factory->build(registry);
-            }
+            return m_factory->build(registry);
+        }
 
         /// The user provided factory
         boost::shared_ptr<Factory> m_factory;
@@ -56,26 +60,26 @@ namespace sak
     };
 
     /// Object factory used to embed a concrete factory
-    template<class Object>
+    template<class Target>
     struct object_factory_function : public object_factory
     {
 
-        object_factory_function(const boost::function<boost::shared_ptr<Object>(
-                                    object_registry &)> &function)
+        object_factory_function(const boost::function<boost::shared_ptr<void>(
+            object_registry &)> &function)
             : m_function(function)
-            {}
+        {}
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<object> build(object_registry &registry)
-            {
-                assert(m_function);
+        virtual boost::shared_ptr<void> build(object_registry &registry)
+        {
+            assert(m_function);
 
-                return m_function(registry);
-            }
+            return m_function(registry);
+        }
 
         /// The user provided factory
-        boost::function<boost::shared_ptr<Object>(object_registry &)> m_function;
+        boost::function<boost::shared_ptr<void>(object_registry &)> m_function;
     };
 
 }

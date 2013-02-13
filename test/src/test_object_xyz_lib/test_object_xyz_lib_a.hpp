@@ -26,50 +26,39 @@
 #ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
 #define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_A_HPP
 
-#include <sak/object.hpp>
+#include <sak/object_registry.hpp>
 
-namespace sak { class object_registry; }
-
-class fruit : public sak::object
+class fruit
 {
 public:
-
-    static sak::object_id* id();
     virtual std::string color() = 0;
-
 };
 
 class apple : public fruit
 {
 public:
-
-    static sak::object_id* id();
     std::string color();
-
 };
+SAK_DEFINE_PARENT(apple, fruit)
 
-class apple_factory : public sak::object
+
+
+class apple_factory
 {
 public:
-
-    static sak::object_id* id();
     boost::shared_ptr<apple> build(sak::object_registry &);
 };
 
 class pear : public fruit
 {
 public:
-
-    static sak::object_id* id();
     std::string color();
-
 };
+SAK_DEFINE_PARENT(pear, fruit)
 
-class pear_factory : public sak::object
+class pear_factory
 {
 public:
-
-    static sak::object_id* id();
     boost::shared_ptr<pear> build(sak::object_registry &);
 };
 

@@ -116,7 +116,7 @@ namespace sak
 
             uint32_t free() const
                 {
-                    return m_free_list.size();
+                    return static_cast<uint32_t>(m_free_list.size());
                 }
 
             void recycle(const value_ptr &resource)

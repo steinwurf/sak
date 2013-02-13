@@ -132,7 +132,7 @@ namespace sak
             m_buffer.resize(total_size);
         }
 
-        uint32_t extra_space = m_buffer.size() - total_size;
+        uint32_t extra_space = static_cast<uint32_t>(m_buffer.size() - total_size);
         m_front_capacity = min_front_capacity;
         m_data_size = size;
         m_back_capacity = min_back_capacity + extra_space;

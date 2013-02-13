@@ -28,8 +28,6 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "object.hpp"
-
 namespace sak
 {
     class object_registry;
@@ -38,9 +36,8 @@ namespace sak
     class object_factory
     {
     public:
-
         /// @return an object of the specified type
-        virtual boost::shared_ptr<object> build(object_registry &) = 0;
+        virtual boost::shared_ptr<void> build(object_registry &) = 0;
     };
 
 }

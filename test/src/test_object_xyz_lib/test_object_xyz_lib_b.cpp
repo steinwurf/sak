@@ -24,21 +24,10 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "test_object_xyz_lib_b.hpp"
-#include <sak/object_registry.hpp>
 
 //
 // Bird
 //
-
-sak::object_id* bird::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("bird");
-
-    return &id;
-}
 
 //
 // Duck
@@ -49,35 +38,16 @@ duck::duck(sak::object_registry &registry)
 {
 }
 
-sak::object_id* duck::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(bird::id())
-        .set_name("duck");
-
-    return &id;
-}
-
 std::string duck::eat()
 {
     auto f = m_registry.build<fruit>();
+    //return std::string("");
     return std::string("duck eats fruit which is ").append(f->color());
 }
 
 //
 // Duck Factory
 //
-
-sak::object_id* duck_factory::id()
-{
-    using namespace sak;
-    static object_id id = object_id(object::register_type())
-        .set_parent(object::id())
-        .set_name("duck_factory");
-
-    return &id;
-}
 
 boost::shared_ptr<duck> duck_factory::build(sak::object_registry &registry)
 {

@@ -40,7 +40,7 @@ class rate_socket : public socket
 {
 public:
     std::string write()
-	{        
+	{
         return std::string("rate_socket write");
 	}
 };
@@ -60,15 +60,15 @@ public:
 
 // ----- NAMESPACE TEST -------
 namespace foobar
-{	
+{
 	class magic_socket : public rate_socket
 	{
 	public:
 		std::string write()
-		{        
+		{
 			return std::string("magic_socket write");
 		}
-	};	
+	};
 
 	class magic_socket_factory
 	{
@@ -89,34 +89,35 @@ enum Color { red, green, blue };
 
 class plant
 {
-	Color m_color;
+    Color m_color;
 public:
-	plant(Color c): m_color(c) {}
-	Color color() { return m_color; }
+    plant(Color c): m_color(c) {}
+    Color color() { return m_color; }
 };
 
 class flower: public plant
 {
 public:
-	flower(Color c): plant(c) {}
+    flower(Color c): plant(c) {}
 };
+
 SAK_DEFINE_PARENT(flower, plant)
 
 class flower_factory
 {
-	Color m_color;
+    Color m_color;
 public:
-	flower_factory(): m_color(Color::green) {} // use green as default color
+    flower_factory(): m_color(Color::green) {} // use green as default color
 
-	void set_color(Color c) { m_color = c; }
+    void set_color(Color c) { m_color = c; }
 
-	boost::shared_ptr<flower> build(sak::object_registry &)
+    boost::shared_ptr<flower> build(sak::object_registry &)
 	{
-		return boost::make_shared<flower>(m_color);
+            return boost::make_shared<flower>(m_color);
 	}
 };
 
-
+// Testing that the building a base type with the registry works
 TEST(ObjectFactory, register_type)
 {
     sak::object_registry registry;
@@ -153,25 +154,25 @@ TEST(ObjectFactory, register_type_namespace)
 	registry.set_factory<magic_socket_factory, magic_socket>();
 
     auto s = registry.build<socket>();
-    EXPECT_EQ("magic_socket write", s->write());    
+    EXPECT_EQ("magic_socket write", s->write());
 }
 
 TEST(ObjectFactory, set_factory_param)
 {
     sak::object_registry registry;
     registry.set_factory<flower_factory, flower>();
-   
+
 	// Build a "default" flower
     auto fl = registry.build<plant>();
-	EXPECT_EQ(Color::green, fl->color());    
+	EXPECT_EQ(Color::green, fl->color());
 
     // Get the factory and change the color to red
     auto factory = registry.get_factory<flower_factory>();
     factory->set_color(Color::red);
-    
+
     // Build a red flower
     auto fl2 = registry.build<plant>();
-    EXPECT_EQ(Color::red, fl2->color());     
+    EXPECT_EQ(Color::red, fl2->color());
 }
 
 

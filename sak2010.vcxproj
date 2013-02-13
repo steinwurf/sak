@@ -98,7 +98,7 @@
     <ClCompile Include="test\src\test_endian_buffer.cpp" />
     <ClCompile Include="test\src\test_file_input_stream.cpp" />
     <ClCompile Include="test\src\test_is_aligned.cpp" />
-    <ClCompile Include="test\src\test_object_xyz.cpp" />
+    <ClCompile Include="test\src\test_object_registry.cpp" />
     <ClCompile Include="test\src\test_object_xyz_lib\test_object_xyz_lib_a.cpp" />
     <ClCompile Include="test\src\test_object_xyz_lib\test_object_xyz_lib_b.cpp" />
     <ClCompile Include="test\src\test_random_input_stream.cpp" />

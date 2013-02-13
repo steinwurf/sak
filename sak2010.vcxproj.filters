@@ -107,9 +107,6 @@
     <ClCompile Include="test\src\test_is_aligned.cpp">
       <Filter>test\src</Filter>
     </ClCompile>
-    <ClCompile Include="test\src\test_object_xyz.cpp">
-      <Filter>test\src</Filter>
-    </ClCompile>
     <ClCompile Include="test\src\test_random_input_stream.cpp">
       <Filter>test\src</Filter>
     </ClCompile>
@@ -151,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="src\sak\random_input_stream.cpp">
       <Filter>src\sak</Filter>
+    </ClCompile>
+    <ClCompile Include="test\src\test_object_registry.cpp">
+      <Filter>test\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

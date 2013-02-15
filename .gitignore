@@ -39,6 +39,7 @@ local.properties
 .classpath
 
 # Visual Studio ignore
+*.bat
 *.sln
 *.vcproj
 *.vcxproj

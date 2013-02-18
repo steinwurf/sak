@@ -32,6 +32,7 @@
 
 #include <cstdint>
 #include <cassert>
+#include <cstring>
 
 namespace sak
 {
@@ -217,7 +218,8 @@ namespace sak
     /// @param last iterator to the last storage adapter
     /// @return the size in bytes of the storage adapters
     template<class StorageIterator>
-    inline uint32_t storage_size(StorageIterator first, StorageIterator last)
+    inline uint32_t storage_size(StorageIterator first,
+                                 StorageIterator last)
     {
         uint32_t size = 0;
         while(first != last)
@@ -237,7 +239,8 @@ namespace sak
     }
 
     /// Copies the source storage into the destination storage buffer
-    inline void copy_storage(const mutable_storage &dest, const const_storage &src)
+    inline void copy_storage(const mutable_storage &dest,
+                             const const_storage &src)
     {
         assert(dest.m_size > 0);
         assert(dest.m_size >= src.m_size);
@@ -309,6 +312,35 @@ namespace sak
     {
         uint8_t *data_ptr = reinterpret_cast<uint8_t*>(data);
         return mutable_storage(data_ptr, size_in_bytes);
+    }
+
+    /// Compares two storage objects to see whether they contain
+    /// the same data
+    /// @param storage_a The first storage object
+    /// @param storage_b The second storage object
+    /// @return True if the storage objects contain the same data
+    ///         otherwise false.
+    inline bool equal(const const_storage &storage_a,
+        const const_storage &storage_b)
+    {
+
+        if(storage_a.m_size != storage_b.m_size)
+        {
+            return false;
+        }
+
+        // They have the same size - do they point to the same data?
+
+        if(storage_a.m_data == storage_b.m_data)
+        {
+            return true;
+        }
+
+        // It is two different buffers - is the content equal?
+        auto zero_is_equal = std::memcmp(storage_a.m_data,
+                                         storage_b.m_data,
+                                         storage_b.m_size);
+        return zero_is_equal == 0;
     }
 
 }

@@ -165,11 +165,55 @@ TEST(TestStorage, test_offset_storage)
         EXPECT_EQ(new_storage.m_size, 300U);
         EXPECT_EQ(new_storage.m_data, &v[200]);
     }
-
-
 }
 
 
+TEST(TestStorage, test_equal)
+{
+    {
+        std::vector<uint8_t> d1(10);
+        std::vector<uint8_t> d2(11);
 
+        EXPECT_FALSE(sak::equal(sak::storage(d1),sak::storage(d2)));
+        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d1)));
+        EXPECT_TRUE(sak::equal(sak::storage(d2),sak::storage(d2)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        std::vector<uint8_t> d2(10, 'b');
+
+        EXPECT_FALSE(sak::equal(sak::storage(d1),sak::storage(d2)));
+        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d1)));
+        EXPECT_TRUE(sak::equal(sak::storage(d2),sak::storage(d2)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        std::vector<uint8_t> d2(10, 'a');
+
+        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d2)));
+        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d1)));
+        EXPECT_TRUE(sak::equal(sak::storage(d2),sak::storage(d2)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        std::vector<uint8_t> d2(9, 'a');
+
+        EXPECT_FALSE(sak::equal(sak::storage(d1),sak::storage(d2)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        auto d2 = sak::storage(d1);
+        EXPECT_TRUE(sak::equal(sak::storage(d1), d2));
+        d2 += 2;
+
+        EXPECT_FALSE(sak::equal(sak::storage(d1), d2));
+    }
+
+
+}
 
 

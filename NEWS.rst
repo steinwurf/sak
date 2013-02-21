@@ -4,15 +4,15 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest
-------
-* TBD
+Latest (minor)
+--------------
+* Added sak::equal() for comparing sak::const_storage objects.
 
 9.0.0
 ------
 * Updated to waf 1.7.9 and started using the wurf_install_path tool.
-* Removing sak::object and sak::object_id and using typeid for type identification
-  in the object registry. 
+* Removing sak::object and sak::object_id and using typeid for type
+  identification in the object registry.
 
 8.1.0
 -----

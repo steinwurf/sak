@@ -60,6 +60,7 @@ def print_menu(options, question, default_index=0):
 
 android_mkspec = ['cxx_gxx46_arm_android']
 win32_mkspec = ['cxx_msvc11_x86', 'cxx_msvc11_x64'] + android_mkspec
+
 msvs_targets = ['None', 'Visual Studio 2008', 'Visual Studio 2010', 'Visual Studio 2012']
 
 def config_win32():
@@ -75,13 +76,13 @@ def config_win32():
     # bundle_opt = '--bundle=ALL --bundle-path="../deps"'
     bundle_opt = \
     '--bundle=ALL,-waf-tools --waf-tools-path="../external-waf-tools" --bundle-path="../deps"'
-    opt = '--options=cxx_mkspec='+mkspec
-    msvs = ''
+    tool_opt = '--options=cxx_mkspec='+mkspec
+    msvs_opt = ''
     if vsver == 'Visual Studio 2008':
-        msvs = 'msvs2008'
+        msvs_opt = 'msvs2008'
     elif vsver == 'Visual Studio 2010':
-        msvs = 'msvs'
-    full_cmd = str.format('{} {} {} {}',command, bundle_opt, opt, msvs).strip()
+        msvs_opt = 'msvs2010'
+    full_cmd = str.format('{} {} {} {} -vvv',command, bundle_opt, tool_opt, msvs_opt).strip()
     print('Full cmd: '+full_cmd)
     os.system(full_cmd)
 

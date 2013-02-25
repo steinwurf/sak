@@ -82,7 +82,7 @@ def config_win32():
         msvs_opt = 'msvs2008'
     elif vsver == 'Visual Studio 2010':
         msvs_opt = 'msvs2010'
-    full_cmd = str.format('{} {} {} {} -vvv',command, bundle_opt, tool_opt, msvs_opt).strip()
+    full_cmd = str.format('{} {} {} {}',command, bundle_opt, tool_opt, msvs_opt).strip()
     print('Full cmd: '+full_cmd)
     os.system(full_cmd)
 

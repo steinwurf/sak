@@ -41,9 +41,6 @@ local.properties
 # Visual Studio ignore
 *.bat
 *.sln
-*.vcproj
-*.vcxproj
-*.filters
 *.suo
 *.user
 *.ncb

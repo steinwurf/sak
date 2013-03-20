@@ -59,7 +59,7 @@ def print_menu(options, question, default_index=0):
 
 
 android_mkspec = ['cxx_gxx46_arm_android']
-win32_mkspec = ['cxx_msvc11_x86', 'cxx_msvc11_x64'] + android_mkspec
+win32_mkspec = ['cxx_msvc11_x86', 'cxx_msvc11_x64', 'cxx_gxx46_x86', 'cxx_gxx47_x86'] + android_mkspec
 
 msvs_targets = ['None', 'Visual Studio 2008', 'Visual Studio 2010', 'Visual Studio 2012']
 

@@ -4,8 +4,12 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest (minor)
---------------
+Latest
+------
+* tbd
+
+9.1.0
+-----
 * Added sak::equal() for comparing sak::const_storage objects.
 
 9.0.0

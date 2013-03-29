@@ -228,6 +228,7 @@ namespace sak
         {
             m_lookup_by_factory_id.clear();
             m_lookup_by_object_id.clear();
+            m_lookup_by_shared_object_id.clear();
         }
 
         /// Builds an Object with the registered factories

@@ -37,6 +37,7 @@ GTAGS
 .metadata
 local.properties
 .classpath
+.settings/
 
 # Visual Studio ignore
 *.bat

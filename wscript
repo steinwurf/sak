@@ -50,11 +50,7 @@ def configure(conf):
         conf.load_external_tool('mkspec', 'wurf_cxx_mkspec_tool')
         conf.load_external_tool('runners', 'wurf_runner')
         conf.load_external_tool('install_path', 'wurf_install_path')
-        try:
-            conf.load_external_tool('project_gen', 'wurf_msvs')
-        except Exception as e:
-            print("Exception when loading external tool")
-            print(e)
+        conf.load_external_tool('project_gen', 'wurf_project_generator')
 
         recurse_helper(conf, 'boost')
         recurse_helper(conf, 'gtest')

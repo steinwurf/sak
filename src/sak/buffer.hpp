@@ -54,7 +54,7 @@ namespace sak
         /// Appends data to the end of the buffer
         /// @param data_start the start address of the of the data
         /// @param data_end the end address of the data
-        void append(const uint8_t *data_start, const uint8_t *data_end);
+        void append(const uint8_t* data_start, const uint8_t* data_end);
 
         /// Appends data to the end of the buffer
         /// @param storage the data to append

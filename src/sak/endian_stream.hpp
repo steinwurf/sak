@@ -29,6 +29,8 @@
 #include <cassert>
 
 #include <vector>
+#include <string>
+#include <algorithm>
 
 #include "convert_endian.hpp"
 

@@ -120,7 +120,7 @@ namespace sak
         template<class LengthType>
         inline bool read_string(std::string& value)
         {
-            typename LengthType length;
+            LengthType length;
             if (read<LengthType>(length)==false) return false; 
             return read_string(value, length);
         }

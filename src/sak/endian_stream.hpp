@@ -65,6 +65,13 @@ namespace sak
         /// Writes the contents of a sak::storage container to the buffer
         /// @param storage the storage to write
         void write(const mutable_storage& storage)
+        {
+            write(const_storage(storage));
+        }
+
+        /// Writes the contents of a sak::storage container to the buffer
+        /// @param storage the storage to write
+        void write(const const_storage& storage)
         {           
             // Make sure there is enough space in the underlying buffer
             assert(m_size >= m_position + storage.m_size);
@@ -90,7 +97,7 @@ namespace sak
 
         /// Reads data from the buffer to fill a mutable storage        
         /// @param storage the storage to be filled 
-        void read(mutable_storage& storage)
+        void read(const mutable_storage& storage)
         {           
             // Make sure there is enough data to read in the underlying buffer
             assert(m_size >= m_position + storage.m_size);

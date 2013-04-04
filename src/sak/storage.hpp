@@ -34,6 +34,9 @@
 #include <cassert>
 #include <cstring>
 
+#include <vector>
+#include <string>
+
 namespace sak
 {
 
@@ -49,56 +52,56 @@ namespace sak
         typedef const mutable_storage* const_iterator;
 
         /// Create an empty storage object
-        mutable_storage()
-            : m_data(0),
-              m_size(0)
-            { }
+        mutable_storage() :
+            m_data(0),
+            m_size(0)
+        { }
 
         /// Create an initialized mutable storage object
         /// @param size the size of the buffer in bytes
         /// @param data pointer to the storage buffer
-        mutable_storage(uint8_t *data, uint32_t size)
-            : m_data(data),
-              m_size(size)
-            {
-                assert(m_data != 0);
-                assert(m_size > 0);
-            }
+        mutable_storage(uint8_t *data, uint32_t size) :
+            m_data(data),
+            m_size(size)
+        {
+            assert(m_data != 0);
+            assert(m_size > 0);
+        }
 
         /// @return interator to the first element note in this
         ///         adapter we always only have one element
         const_iterator begin() const
-            {
-                return this;
-            }
+        {
+            return this;
+        }
 
         /// @return interator to the end for this adapter we
         ///         always only have one element thus the + 1
         const_iterator end() const
-            {
-                return this + 1;
-            }
+        {
+            return this + 1;
+        }
 
         /// Offset the storage
         mutable_storage& operator+=(uint32_t offset)
-            {
-                assert(offset <= m_size);
-                m_size -= offset;
-                m_data += offset;
-                return *this;
-            }
+        {
+            assert(offset <= m_size);
+            m_size -= offset;
+            m_data += offset;
+            return *this;
+        }
 
         /// Offset the storage
         mutable_storage operator+(uint32_t offset)
-            {
-                assert(offset <= m_size);
-                mutable_storage storage(m_data + offset, m_size - offset);
+        {
+            assert(offset <= m_size);
+            mutable_storage storage(m_data + offset, m_size - offset);
 
-                return storage;
-            }
+            return storage;
+        }
 
         /// Pointer to the mutable buffer storage
-        uint8_t *m_data;
+        uint8_t* m_data;
 
         /// The size of the mutable buffer
         uint32_t m_size;
@@ -118,82 +121,82 @@ namespace sak
         typedef const const_storage* const_iterator;
 
         /// Create an empty storage object
-        const_storage()
-            : m_data(0),
-              m_size(0)
-            { }
+        const_storage() :
+            m_data(0),
+            m_size(0)
+        { }
 
         /// Create an initialized const storage object
         /// @param size the size of the buffer in bytes
         /// @param data pointer to the storage buffer
-        const_storage(const uint8_t *data, uint32_t size)
-            : m_data(data),
-              m_size(size)
-            { }
+        const_storage(const uint8_t *data, uint32_t size) :
+            m_data(data),
+            m_size(size)
+        { }
 
         /// Creates and const storage object from a mutable
         /// @param s the mutable storage object
-        const_storage(const mutable_storage &s)
-            : m_data(s.m_data),
-              m_size(s.m_size)
-            { }
+        const_storage(const mutable_storage& s) :
+            m_data(s.m_data),
+            m_size(s.m_size)
+        { }
 
         /// Assigns and converts a mutable storage buffer
         /// into a const storage buffer
         /// @param s the mutable storage object
-        const_storage& operator=(const mutable_storage &s)
-            {
-                m_data = s.m_data;
-                m_size = s.m_size;
-                return *this;
-            }
+        const_storage& operator=(const mutable_storage& s)
+        {
+            m_data = s.m_data;
+            m_size = s.m_size;
+            return *this;
+        }
 
         /// @return interator to the first element note in this
         ///         adapter we always only have one element
         const_iterator begin() const
-            {
-                return this;
-            }
+        {
+            return this;
+        }
 
         /// @return interator to the end for this adapter we
         ///         always only have one element thus the + 1
         const_iterator end() const
-            {
-                return this + 1;
-            }
+        {
+            return this + 1;
+        }
 
         /// Offset the storage
         const_storage& operator+=(uint32_t offset)
-            {
-                assert(offset <= m_size);
-                m_size -= offset;
-                m_data += offset;
-                return *this;
-            }
+        {
+            assert(offset <= m_size);
+            m_size -= offset;
+            m_data += offset;
+            return *this;
+        }
 
         /// Offset the storage
         const_storage operator+(uint32_t offset)
-            {
-                assert(offset <= m_size);
-                const_storage storage(m_data + offset, m_size - offset);
+        {
+            assert(offset <= m_size);
+            const_storage storage(m_data + offset, m_size - offset);
 
-                return storage;
-            }
+            return storage;
+        }
 
         /// Pointer to the non-mutable buffer storage
-        const uint8_t *m_data;
+        const uint8_t* m_data;
 
         /// The size of the mutable buffer
         uint32_t m_size;
 
     };
 
-    /// Splits a continues storage buffer into a sequence of
-    /// storage buffers where the continues buffer is split at
+    /// Splits a continuous storage buffer into a sequence of
+    /// storage buffers where the original buffer is split at
     /// a specified number of bytes
     template<class StorageType>
     inline std::vector<StorageType>
-    split_storage(const StorageType &storage, uint32_t split)
+        split_storage(const StorageType& storage, uint32_t split)
     {
         auto remaining_size = storage.m_size;
         auto data_offset = storage.m_data;
@@ -219,7 +222,7 @@ namespace sak
     /// @return the size in bytes of the storage adapters
     template<class StorageIterator>
     inline uint32_t storage_size(StorageIterator first,
-                                 StorageIterator last)
+        StorageIterator last)
     {
         uint32_t size = 0;
         while(first != last)
@@ -240,7 +243,7 @@ namespace sak
 
     /// Copies the source storage into the destination storage buffer
     inline void copy_storage(const mutable_storage &dest,
-                             const const_storage &src)
+        const const_storage &src)
     {
         assert(dest.m_size > 0);
         assert(dest.m_size >= src.m_size);
@@ -248,8 +251,8 @@ namespace sak
         assert(src.m_data != 0);
 
         std::copy(src.m_data,
-                  src.m_data + src.m_size,
-                  dest.m_data);
+            src.m_data + src.m_size,
+            dest.m_data);
     }
 
     /// Casts the stored pointer to a different data type
@@ -270,14 +273,37 @@ namespace sak
         return reinterpret_cast<const ValueType*>(s.m_data);
     }
 
+    
+
+    /// Storage function for pointers to const data
+    /// @param data pointer to the data buffer
+    /// @param size_in_bytes the size of data buffer in bytes
+    /// @return the storage adapter
+    inline const_storage storage(const void* data, uint32_t size_in_bytes)
+    {
+        const uint8_t* data_ptr = reinterpret_cast<const uint8_t*>(data);
+        return const_storage(data_ptr, size_in_bytes);
+    }
+
+    /// Storage function for pointers to mutable data
+    /// @param data pointer to the data buffer
+    /// @param size_in_bytes the size of data buffer in bytes
+    /// @return the storage adapter
+    inline mutable_storage storage(void* data, uint32_t size_in_bytes)
+    {
+        uint8_t* data_ptr = reinterpret_cast<uint8_t*>(data);
+        return mutable_storage(data_ptr, size_in_bytes);
+    }
+
+
     /// Creates a const storage object
     /// @param v is a std::vector buffer
     /// @return the storage adapter
     template<class PodType, class Allocator>
-    inline const_storage storage(const std::vector<PodType, Allocator> &v)
+    inline const_storage storage(const std::vector<PodType, Allocator>& v)
     {
         uint32_t size = uint32_t(v.size() * sizeof(PodType));
-        const uint8_t *data = reinterpret_cast<const uint8_t*>(&v[0]);
+        const uint8_t* data = reinterpret_cast<const uint8_t*>(&v[0]);
 
         return const_storage(data, size);
     }
@@ -286,32 +312,35 @@ namespace sak
     /// @param v is a std::vector buffer
     /// @return the storage adapter
     template<class PodType, class Allocator>
-    inline mutable_storage storage(std::vector<PodType, Allocator> &v)
+    inline mutable_storage storage(std::vector<PodType, Allocator>& v)
     {
         uint32_t size = static_cast<uint32_t>(v.size() * sizeof(PodType));
-        uint8_t *data = reinterpret_cast<uint8_t*>(&v[0]);
+        uint8_t* data = reinterpret_cast<uint8_t*>(&v[0]);
 
         return mutable_storage(data, size);
     }
 
-    /// Storage function for pointers to const data
-    /// @param data pointer to the data buffer
-    /// @param size_in_bytes the size of data buffer in bytes
+
+    /// Creates a const storage object from a string
+    /// @param str is a std::string
     /// @return the storage adapter
-    inline const_storage storage(const void *data, uint32_t size_in_bytes)
+    inline const_storage storage(const std::string& str)
     {
-        const uint8_t *data_ptr = reinterpret_cast<const uint8_t*>(data);
-        return const_storage(data_ptr, size_in_bytes);
+        uint32_t size = (uint32_t)str.size();        
+        const uint8_t* data = reinterpret_cast<const uint8_t*>(&str[0]);
+
+        return const_storage(data, size);
     }
 
-    /// Storage function for pointers to mutable data
-    /// @param data pointer to the data buffer
-    /// @param size_in_bytes the size of data buffer in bytes
-    /// @return the storage adapter
-    inline mutable_storage storage(void *data, uint32_t size_in_bytes)
+    /// Creates a mutable storage object from a string
+    /// @param str is a std::string
+    /// @return the storage adapter    
+    inline mutable_storage storage(std::string& str)
     {
-        uint8_t *data_ptr = reinterpret_cast<uint8_t*>(data);
-        return mutable_storage(data_ptr, size_in_bytes);
+        uint32_t size = (uint32_t)str.size();        
+        uint8_t* data = reinterpret_cast<uint8_t*>(&str[0]);
+
+        return mutable_storage(data, size);
     }
 
     /// Compares two storage objects to see whether they contain
@@ -338,8 +367,8 @@ namespace sak
 
         // It is two different buffers - is the content equal?
         auto zero_is_equal = std::memcmp(storage_a.m_data,
-                                         storage_b.m_data,
-                                         storage_b.m_size);
+            storage_b.m_data,
+            storage_b.m_size);
         return zero_is_equal == 0;
     }
 

@@ -27,148 +27,101 @@
 
 #include <stdint.h>
 #include <cassert>
-
-#include <vector>
-#include <string>
 #include <algorithm>
 
+#include "storage.hpp"
 #include "convert_endian.hpp"
 
 namespace sak
 {
 
-    /// The idea behind the endian_stream is to provide a simple interface for
-    /// writing to and reading from an std::vector. 
+    /// The idea behind the endian_stream is to provide a stream-like interface 
+    /// for accessing a fixed-size buffer.    
     /// All complexity regarding endianness is encapsulated.
     class endian_stream
     {
 
     public:
 
-        /// Creates an endian buffer on top of a preallocated buffer of the
+        /// Creates an endian stream on top of a pre-allocated buffer of the
         /// specified size
         /// @param buffer a pointer to the buffer
-        /// @param size the i size of the buffer
-        endian_stream(std::vector<uint8_t>& vector, uint32_t offset = 0);
-
+        /// @param size the size of the buffer in bytes
+        endian_stream(uint8_t* buffer, uint32_t size);        
+        
         /// Writes a value of the size of ValueType to the buffer
         /// @param value the value to write
         template<class ValueType>
         void write(ValueType value)
         {           
-            // Make sure there is enough space in the underlying vector
-            if (m_vector.size() < m_position + sizeof(ValueType))
-                m_vector.resize(m_position + sizeof(ValueType));
+            // Make sure there is enough space in the underlying buffer
+            assert(m_size >= m_position + sizeof(ValueType));              
             // Write the value at the current position
-            big_endian::put<ValueType>(value, &m_vector[m_position]);
+            big_endian::put<ValueType>(value, &m_buffer[m_position]);
             // Advance the current position
             m_position += sizeof(ValueType);
         }
 
-        template<class LengthType>
-        inline void write_string(const std::string& value)
-        {
-            write<LengthType>(value.size());
-            write_string(value);
-        }
-
-        inline void write_string(const std::string& value)
-        {            
-            uint32_t bytes = value.size();
-            if (bytes == 0) return;
-            // Make sure there is enough space in the underlying vector
-            if (m_vector.size() < m_position + bytes)
-                m_vector.resize(m_position + bytes);
-            // Write the value at the current position
-            // Copy the string to the buffer
-            std::copy_n(value.begin(), bytes, &m_vector[m_position]);
+        /// Writes the contents of a sak::storage container to the buffer
+        /// @param storage the storage to write
+        void write(const mutable_storage& storage)
+        {           
+            // Make sure there is enough space in the underlying buffer
+            assert(m_size >= m_position + storage.m_size);
+            // Copy the data to the buffer
+            std::copy_n(storage.m_data, storage.m_size, &m_buffer[m_position]);            
             // Advance the current position
-            m_position += bytes;            
+            m_position += storage.m_size;
         }
 
-        inline void write_vector(const std::vector<uint8_t>& value)
-        {
-            uint32_t bytes = value.size();
-            if (bytes == 0) return;
-            // Make sure there is enough space in the underlying vector
-            if (m_vector.size() < m_position + bytes)
-                m_vector.resize(m_position + bytes);
-            // Write the value at the current position
-            // Copy the string to the buffer
-            std::copy_n(value.begin(), bytes, &m_vector[m_position]);
-            // Advance the current position
-            m_position += bytes;            
-        }
-        
-
-        /// Reads from the buffer and moves the write position.
-        /// @param value reference to the value to be read
-        /// @return boolean to indicate if the reading operation was successful
+        /// Reads from the buffer and moves the read position.
+        /// @param value reference to the value to be read        
         template<class ValueType>
-        bool read(ValueType& value)
+        void read(ValueType& value)
         {
-            // Make sure there is enough data to read in the underlying vector
-            if (m_vector.size() < m_position + sizeof(ValueType))
-                return false;
+            // Make sure there is enough data to read in the underlying buffer
+            assert(m_size >= m_position + sizeof(ValueType));                
             // Read the value at the current position
-            value = big_endian::get<ValueType>(&m_vector[m_position]);
+            value = big_endian::get<ValueType>(&m_buffer[m_position]);
             // Advance the current position
             m_position += sizeof(ValueType);
-            return true;
-        } 
-
-        template<class LengthType>
-        inline bool read_string(std::string& value)
-        {
-            LengthType length;
-            if (read<LengthType>(length)==false) return false; 
-            return read_string(value, length);
-        }
-
-        inline bool read_string(std::string& value, uint32_t bytes)
-        {
-            if (bytes == 0) return true;
-            // Make sure there is enough data to read in the underlying vector
-            if (m_vector.size() < m_position + bytes)
-                return false;
             
-            // Reserve space in the target buffer
-            value.resize(bytes);
-            // Read the string from the buffer
-            std::copy_n(&m_vector[m_position], bytes, value.begin());
-            // Advance the current position
-            m_position += bytes;
-            return true;
         }
 
-        inline bool read_vector(std::vector<uint8_t>& value, uint32_t bytes)
-        {
-            if (bytes == 0) return true;
-            // Make sure there is enough data to read in the underlying vector
-            if (m_vector.size() < m_position + bytes)
-                return false;
-            
-            // Reserve space in the target buffer
-            value.resize(bytes);
-            // Read the string from the buffer
-            std::copy_n(&m_vector[m_position], bytes, value.begin());
+        /// Reads data from the buffer to fill a mutable storage        
+        /// @param storage the storage to be filled 
+        void read(mutable_storage& storage)
+        {           
+            // Make sure there is enough data to read in the underlying buffer
+            assert(m_size >= m_position + storage.m_size);
+            // Copy the data from the buffer to the storage
+            std::copy_n(&m_buffer[m_position], storage.m_size, storage.m_data);            
             // Advance the current position
-            m_position += bytes;
-            return true;
-        }
+            m_position += storage.m_size;
+        }        
 
+        /// Gets the size of the buffer
+        /// @return the size of the buffer
+        uint32_t size() const;
 
         /// Gets the current read/write position of the buffer
         /// @return the current position
         uint32_t position() const;
 
+        /// Changes the current read/write position of the buffer
+        /// @param new_position the new position
+        void seek(uint32_t new_position);        
+
     private:
 
         /// Pointer to the buffer
-        std::vector<uint8_t>& m_vector;
+        uint8_t* m_buffer;
 
+        /// The size of the buffer
+        uint32_t m_size;
+        
         /// The current position
-        uint32_t m_position;
+        uint32_t m_position;    
         
     };
 }

@@ -250,9 +250,7 @@ namespace sak
         assert(dest.m_data != 0);
         assert(src.m_data != 0);
 
-        std::copy(src.m_data,
-            src.m_data + src.m_size,
-            dest.m_data);
+        std::copy(src.m_data, src.m_data + src.m_size, dest.m_data);
     }
 
     /// Casts the stored pointer to a different data type
@@ -326,7 +324,7 @@ namespace sak
     /// @return the storage adapter
     inline const_storage storage(const std::string& str)
     {
-        uint32_t size = (uint32_t)str.size();        
+        uint32_t size = (uint32_t)str.size();
         const uint8_t* data = reinterpret_cast<const uint8_t*>(&str[0]);
 
         return const_storage(data, size);
@@ -334,10 +332,10 @@ namespace sak
 
     /// Creates a mutable storage object from a string
     /// @param str is a std::string
-    /// @return the storage adapter    
+    /// @return the storage adapter
     inline mutable_storage storage(std::string& str)
     {
-        uint32_t size = (uint32_t)str.size();        
+        uint32_t size = (uint32_t)str.size();
         uint8_t* data = reinterpret_cast<uint8_t*>(&str[0]);
 
         return mutable_storage(data, size);
@@ -349,8 +347,8 @@ namespace sak
     /// @param storage_b The second storage object
     /// @return True if the storage objects contain the same data
     ///         otherwise false.
-    inline bool equal(const const_storage &storage_a,
-        const const_storage &storage_b)
+    inline bool equal(const const_storage& storage_a,
+        const const_storage& storage_b)
     {
 
         if(storage_a.m_size != storage_b.m_size)
@@ -367,12 +365,10 @@ namespace sak
 
         // It is two different buffers - is the content equal?
         auto zero_is_equal = std::memcmp(storage_a.m_data,
-            storage_b.m_data,
-            storage_b.m_size);
+            storage_b.m_data, storage_b.m_size);
         return zero_is_equal == 0;
     }
 
 }
 
 #endif
-

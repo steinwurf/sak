@@ -1,6 +1,6 @@
 // Copyright (c) 2011-2013 Steinwurf ApS
 // All Rights Reserved
-
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //     * Redistributions of source code must retain the above copyright
@@ -11,7 +11,7 @@
 //     * Neither the name of Steinwurf ApS nor the
 //       names of its contributors may be used to endorse or promote products
 //       derived from this software without specific prior written permission.
-
+//
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -35,27 +35,26 @@
 namespace sak
 {
 
-    /// The idea behind the endian_stream is to provide a stream-like interface 
-    /// for accessing a fixed-size buffer.    
+    /// The idea behind the endian_stream is to provide a stream-like interface
+    /// for accessing a fixed-size buffer.
     /// All complexity regarding endianness is encapsulated.
     class endian_stream
     {
-
     public:
 
         /// Creates an endian stream on top of a pre-allocated buffer of the
         /// specified size
         /// @param buffer a pointer to the buffer
         /// @param size the size of the buffer in bytes
-        endian_stream(uint8_t* buffer, uint32_t size);        
-        
+        endian_stream(uint8_t* buffer, uint32_t size);
+
         /// Writes a value of the size of ValueType to the buffer
         /// @param value the value to write
         template<class ValueType>
         void write(ValueType value)
-        {           
+        {
             // Make sure there is enough space in the underlying buffer
-            assert(m_size >= m_position + sizeof(ValueType));              
+            assert(m_size >= m_position + sizeof(ValueType));
             // Write the value at the current position
             big_endian::put<ValueType>(value, &m_buffer[m_position]);
             // Advance the current position
@@ -72,40 +71,39 @@ namespace sak
         /// Writes the contents of a sak::storage container to the buffer
         /// @param storage the storage to write
         void write(const const_storage& storage)
-        {           
+        {
             // Make sure there is enough space in the underlying buffer
             assert(m_size >= m_position + storage.m_size);
             // Copy the data to the buffer
-            std::copy_n(storage.m_data, storage.m_size, &m_buffer[m_position]);            
+            std::copy_n(storage.m_data, storage.m_size, &m_buffer[m_position]);
             // Advance the current position
             m_position += storage.m_size;
         }
 
         /// Reads from the buffer and moves the read position.
-        /// @param value reference to the value to be read        
+        /// @param value reference to the value to be read
         template<class ValueType>
         void read(ValueType& value)
         {
             // Make sure there is enough data to read in the underlying buffer
-            assert(m_size >= m_position + sizeof(ValueType));                
+            assert(m_size >= m_position + sizeof(ValueType));
             // Read the value at the current position
             value = big_endian::get<ValueType>(&m_buffer[m_position]);
             // Advance the current position
             m_position += sizeof(ValueType);
-            
         }
 
-        /// Reads data from the buffer to fill a mutable storage        
-        /// @param storage the storage to be filled 
+        /// Reads data from the buffer to fill a mutable storage
+        /// @param storage the storage to be filled
         void read(const mutable_storage& storage)
-        {           
+        {
             // Make sure there is enough data to read in the underlying buffer
             assert(m_size >= m_position + storage.m_size);
             // Copy the data from the buffer to the storage
-            std::copy_n(&m_buffer[m_position], storage.m_size, storage.m_data);            
+            std::copy_n(&m_buffer[m_position], storage.m_size, storage.m_data);
             // Advance the current position
             m_position += storage.m_size;
-        }        
+        }
 
         /// Gets the size of the buffer
         /// @return the size of the buffer
@@ -117,7 +115,7 @@ namespace sak
 
         /// Changes the current read/write position of the buffer
         /// @param new_position the new position
-        void seek(uint32_t new_position);        
+        void seek(uint32_t new_position);
 
     private:
 
@@ -126,9 +124,10 @@ namespace sak
 
         /// The size of the buffer
         uint32_t m_size;
-        
+
         /// The current position
-        uint32_t m_position;    
-        
+        uint32_t m_position;
+
     };
+
 }

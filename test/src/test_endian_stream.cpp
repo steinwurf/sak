@@ -1,4 +1,4 @@
-// Copyright (c) 2012, Steinwurf ApS
+// Copyright (c) 2012-2013, Steinwurf ApS
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -32,8 +32,6 @@
 
 #include <sak/endian_stream.hpp>
 
-
-
 TEST(TestEndianStream, create_stream)
 {
     const uint32_t size = 1024;
@@ -62,8 +60,8 @@ void write_read_test()
     {
         stream.write(highest_value);
     }
-    
-    // Go back to the beginning of the stream 
+
+    // Go back to the beginning of the stream
     stream.seek(0);
     for(uint32_t i = 0; i < elements; i++)
     {
@@ -116,14 +114,14 @@ void random_write_read_test(bool pseudorandom)
     }
 
     ValueType last_value = 0;
-    // Go back to the beginning of the stream 
+    // Go back to the beginning of the stream
     stream.seek(0);
     // Read values in FIFO order
     for (uint32_t i = 0; i < elements; i++)
     {
         stream.read(last_value);
         EXPECT_EQ(values[i], last_value);
-    }   
+    }
 }
 
 void various_write_read_test(bool pseudorandom)
@@ -174,7 +172,7 @@ void various_write_read_test(bool pseudorandom)
     uint16_t last_u16 = 0;
     uint32_t last_u32 = 0;
     uint64_t last_u64 = 0;
-    // Go back to the beginning of the stream 
+    // Go back to the beginning of the stream
     stream.seek(0);
     // Read values in FIFO order
     for (uint32_t i = 0; i < elements; i++)
@@ -298,17 +296,17 @@ TEST(TestEndianStream, read_write_string)
     stream.write((uint16_t)first.size());
     stream.write(sak::storage(first));
     stream.write((uint16_t)second.size());
-    stream.write(sak::storage(second));    
+    stream.write(sak::storage(second));
     stream.write((uint16_t)third.size());
-    stream.write(sak::storage(third));    
+    stream.write(sak::storage(third));
 
     // Temp variables
     std::string current;
     uint16_t len = 0;
-    
-    // Go back to the beginning of the stream 
+
+    // Go back to the beginning of the stream
     stream.seek(0);
-    
+
     // Read the strings together with their lengths
     stream.read(len);
     EXPECT_EQ(first.size(), len);
@@ -318,13 +316,13 @@ TEST(TestEndianStream, read_write_string)
     EXPECT_EQ(first, current);
 
     stream.read(len);
-    EXPECT_EQ(second.size(), len);    
+    EXPECT_EQ(second.size(), len);
     current.resize(len);
     stream.read(sak::storage(current));
     EXPECT_EQ(second, current);
 
     stream.read(len);
-    EXPECT_EQ(third.size(), len);    
+    EXPECT_EQ(third.size(), len);
     current.resize(len);
     stream.read(sak::storage(current));
     EXPECT_EQ(third, current);
@@ -338,7 +336,7 @@ TEST(TestEndianStream, read_write_vector)
     sak::endian_stream stream(buffer.data(), size);
 
     std::vector<uint8_t> first(100, 'a');
-    std::vector<uint32_t> second(200, 1234);    
+    std::vector<uint32_t> second(200, 1234);
 
     // Write the vectors together with their lengths
     // The length is written as 16-bit integers
@@ -346,17 +344,17 @@ TEST(TestEndianStream, read_write_vector)
     stream.write(sak::storage(first));
     // The size here refers to the number of integers
     // stored in the second vector
-    stream.write((uint16_t)second.size());  
-    stream.write(sak::storage(second)); 
+    stream.write((uint16_t)second.size());
+    stream.write(sak::storage(second));
 
     // Temp variables
     std::vector<uint8_t> first_out;
     std::vector<uint32_t> second_out;
     uint16_t len = 0;
-    
-    // Go back to the beginning of the stream 
+
+    // Go back to the beginning of the stream
     stream.seek(0);
-    
+
     // Read the vector length
     stream.read(len);
     EXPECT_EQ(first.size(), len);

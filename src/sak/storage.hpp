@@ -271,7 +271,7 @@ namespace sak
         return reinterpret_cast<const ValueType*>(s.m_data);
     }
 
-    
+
 
     /// Storage function for pointers to const data
     /// @param data pointer to the data buffer

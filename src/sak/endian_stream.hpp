@@ -48,7 +48,12 @@ namespace sak
         /// @param size the size of the buffer in bytes
         endian_stream(uint8_t* buffer, uint32_t size);
 
-        /// Writes a value of the size of ValueType to the buffer
+        /// Creates an endian stream on top of a mutable storage that has
+        /// a fixed size
+        /// @param storage the mutable storage
+        endian_stream(const mutable_storage& storage);
+
+        /// Writes a value of the size of ValueType to the stream
         /// @param value the value to write
         template<class ValueType>
         void write(ValueType value)
@@ -61,14 +66,20 @@ namespace sak
             m_position += sizeof(ValueType);
         }
 
-        /// Writes the contents of a sak::storage container to the buffer
+        /// Writes the contents of a sak::storage container to the stream.
+        /// Note that this function is provided only for convenience and
+        /// it does not perform any endian conversions. Furthermore, the length
+        /// of the container is not written to the stream.
         /// @param storage the storage to write
         void write(const mutable_storage& storage)
         {
             write(const_storage(storage));
         }
 
-        /// Writes the contents of a sak::storage container to the buffer
+        /// Writes the contents of a sak::storage container to the stream.
+        /// Note that this function is provided only for convenience and
+        /// it does not perform any endian conversions. Furthermore, the length
+        /// of the container is not written to the stream.
         /// @param storage the storage to write
         void write(const const_storage& storage)
         {
@@ -80,7 +91,7 @@ namespace sak
             m_position += storage.m_size;
         }
 
-        /// Reads from the buffer and moves the read position.
+        /// Reads from the stream and moves the read position.
         /// @param value reference to the value to be read
         template<class ValueType>
         void read(ValueType& value)
@@ -93,7 +104,11 @@ namespace sak
             m_position += sizeof(ValueType);
         }
 
-        /// Reads data from the buffer to fill a mutable storage
+        /// Reads data from the stream to fill a mutable storage
+        /// Note that this function is provided only for convenience and
+        /// it does not perform any endian conversions. Furthermore, the length
+        /// of the storage is not read from the stream. Therefore, the
+        /// mutable storage must resized before it can be filled.
         /// @param storage the storage to be filled
         void read(const mutable_storage& storage)
         {
@@ -105,15 +120,15 @@ namespace sak
             m_position += storage.m_size;
         }
 
-        /// Gets the size of the buffer
+        /// Gets the size of the underlying buffer
         /// @return the size of the buffer
         uint32_t size() const;
 
-        /// Gets the current read/write position of the buffer
+        /// Gets the current read/write position in the stream
         /// @return the current position
         uint32_t position() const;
 
-        /// Changes the current read/write position of the buffer
+        /// Changes the current read/write position in the stream
         /// @param new_position the new position
         void seek(uint32_t new_position);
 

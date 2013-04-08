@@ -35,6 +35,13 @@ namespace sak
         assert(m_size);
     }
 
+    endian_stream::endian_stream(const mutable_storage& storage) :
+        m_buffer(storage.m_data), m_size(storage.m_size), m_position(0)
+    {
+        assert(m_buffer != 0);
+        assert(m_size);
+    }
+
     uint32_t endian_stream::size() const
     {
         return m_size;

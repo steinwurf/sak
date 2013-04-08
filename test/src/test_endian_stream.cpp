@@ -41,6 +41,31 @@ TEST(TestEndianStream, create_stream)
     sak::endian_stream stream(buffer.data(), size);
 }
 
+TEST(TestEndianStream, create_stream_from_storage)
+{
+    const uint32_t elements = 10;               ///no. of elements
+    const uint32_t size = elements * sizeof(uint32_t);
+
+    std::vector<uint8_t> buffer;
+    buffer.resize(size);
+    // Create endian stream directly from sak::storage
+    sak::endian_stream stream(sak::storage(buffer));
+
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        stream.write(i);
+    }
+
+    // Go back to the beginning of the stream
+    stream.seek(0);
+    uint32_t last_value = 0;
+    for(uint32_t i = 0; i < elements; i++)
+    {
+        stream.read(last_value);
+        EXPECT_EQ(i, last_value);
+    }
+}
+
 /// Test helper functions
 
 template<class ValueType>

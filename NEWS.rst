@@ -4,9 +4,15 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest
+Latest (minor)
 ------
 * tbd
+
+10.0.0
+------
+* The endian_buffer class has been replaced with an endian_stream that
+  provides a stream-like interface over a fixed-size buffer.
+* sak::storage() can be created directly from an std::string
 
 9.1.0
 -----

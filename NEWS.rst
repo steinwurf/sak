@@ -8,6 +8,10 @@ Latest (minor)
 ------
 * tbd
 
+10.1.0
+------
+* Added the ceil_division.hpp for ceil'ed integer division.
+
 10.0.0
 ------
 * The endian_buffer class has been replaced with an endian_stream that

@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace sak
 {
     /// Ceiling for integer division - ceil(numerator/denominator)

@@ -33,9 +33,9 @@ def options(opt):
 
     bundle.add_dependency(opt,
         resolve.ResolveGitMajorVersion(
-            name = 'boost',
-            git_repository = 'git://github.com/steinwurf/external-boost.git',
-            major_version = 4))
+            name = 'boost-modules',
+            git_repository = 'git://github.com/steinwurf/external-boost-modules.git',
+            major_version = 1))
 
     opt.load('wurf_dependency_bundle')
     opt.load('wurf_tools')
@@ -52,7 +52,7 @@ def configure(conf):
         conf.load_external_tool('install_path', 'wurf_install_path')
         conf.load_external_tool('project_gen', 'wurf_project_generator')
 
-        recurse_helper(conf, 'boost')
+        recurse_helper(conf, 'boost-modules')
         recurse_helper(conf, 'gtest')
 
 def build(bld):
@@ -65,7 +65,7 @@ def build(bld):
 
         bld.load('wurf_dependency_bundle')
 
-        recurse_helper(bld, 'boost')
+        recurse_helper(bld, 'boost-modules')
         recurse_helper(bld, 'gtest')
 
         # Only build test are executed from the

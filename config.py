@@ -8,7 +8,7 @@ project_dependencies = \
 [
     'waf-tools',
     'gtest',
-    'boost-modules',
+    'boost',
 ]
 
 # Importing a dynamically generated module

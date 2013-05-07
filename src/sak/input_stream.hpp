@@ -66,7 +66,7 @@ namespace sak
 
         /// Specify callbacks to allow the caller to determine if
         /// new data has arrived which is ready to be read.
-        /// @param slot the slot to connect          *
+        /// @param slot the slot to connect
         bs2::connection on_ready_read(const ready_read_signal::slot_type &slot)
         {
             return m_ready_read_signal.connect(slot);

@@ -99,8 +99,8 @@ TEST(ObjectFactory, set_get_object)
     auto rate_socket_1 = registry.get_object<rate_socket>();
     auto rate_socket_2 = registry.get_object<socket>();
 
-    EXPECT_TRUE(rate_socket_1);
-    EXPECT_TRUE(rate_socket_2);
+    EXPECT_TRUE(rate_socket_1 != 0);
+    EXPECT_TRUE(rate_socket_2 != 0);
     EXPECT_EQ(rate_socket_1, rate_socket_2);
 }
 

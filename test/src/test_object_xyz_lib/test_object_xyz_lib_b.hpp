@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
-#define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
+#pragma once
 
 #include <sak/object_registry.hpp>
 #include "test_object_xyz_lib_a.hpp"
@@ -55,7 +54,7 @@ public:
 
 
 
-#endif
+
 
 
 

@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_OBJECT_REGISTRY_HPP
-#define SAK_OBJECT_REGISTRY_HPP
+#pragma once
 
 #include <map>
 #include <typeindex>
@@ -303,4 +302,4 @@ namespace sak
     };
 }
 
-#endif
+

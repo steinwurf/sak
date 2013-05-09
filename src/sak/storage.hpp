@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_STORAGE_HPP
-#define SAK_STORAGE_HPP
+#pragma once
 
 /// @file storage.h
 /// This implementation was inspired by the boost::asio buffer.h as
@@ -371,4 +370,4 @@ namespace sak
 
 }
 
-#endif
+

@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_PLATFORM_HPP
-#define SAK_PLATFORM_HPP
+#pragma once
 
 #include <cstdint>
 
@@ -45,4 +44,4 @@ namespace sak
     };
 }
 
-#endif
+

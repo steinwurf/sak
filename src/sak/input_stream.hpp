@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_INPUT_STREAM_HPP
-#define SAK_INPUT_STREAM_HPP
+#pragma once
 
 #include <cstdint>
 
@@ -108,5 +107,5 @@ namespace sak
 
 }
 
-#endif
+
 

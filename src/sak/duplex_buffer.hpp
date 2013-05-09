@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_DUPLEX_BUFFER_HPP
-#define SAK_DUPLEX_BUFFER_HPP
+#pragma once
 
 #include <cstdint>
 #include <vector>
@@ -169,4 +168,4 @@ namespace sak
     };
 }
 
-#endif
+

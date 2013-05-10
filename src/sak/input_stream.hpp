@@ -27,12 +27,11 @@
 
 #include <cstdint>
 
-#include <boost/signals2.hpp>
+#include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
 
 namespace sak
 {
-    namespace bs2 = boost::signals2;
 
     /// Input stream abstraction
     class input_stream
@@ -61,47 +60,48 @@ namespace sak
     public:
 
         /// Signal emitted when data can be read
-        typedef bs2::signal<void ()> ready_read_signal;
+        typedef boost::function<void ()> ready_read_callback;
 
         /// Specify callbacks to allow the caller to determine if
         /// new data has arrived which is ready to be read.
         /// @param slot the slot to connect
-        bs2::connection on_ready_read(const ready_read_signal::slot_type &slot)
+        void on_ready_read(const ready_read_callback& callback)
         {
-            return m_ready_read_signal.connect(slot);
+            m_ready_read_callback = callback;
         }
 
+
         /// Signal emitted on error
-        typedef bs2::signal<void (const std::string&)> error_signal;
+        typedef boost::function<void (const std::string&)> error_callback;
 
         /// Connect to the error signal
         /// @param slot the function to call
-        bs2::connection on_error(const error_signal::slot_type &slot)
+        void on_error(const error_callback& callback)
         {
-            return m_error_signal.connect(slot);
+            m_error_callback = callback;
         }
 
-        /// Signal emitted when the stream is stopped
-        typedef bs2::signal<void ()> stopped_signal;
 
+        /// Signal emitted when the stream is stopped
+        typedef boost::function<void ()> stopped_callback;
 
         /// Connect to the stopped signal
         /// @param slot the function to call
-        bs2::connection on_stopped(const stopped_signal::slot_type &slot)
+        void on_stopped(const stopped_callback& callback)
         {
-            return m_stopped_signal.connect(slot);
+            m_stopped_callback = callback;
         }
 
     protected:
 
         /// The ready read signal
-        ready_read_signal m_ready_read_signal;
+        ready_read_callback m_ready_read_callback;
 
         /// The error signal
-        error_signal m_error_signal;
+        error_callback m_error_callback;
 
         /// The stopped signals
-        stopped_signal m_stopped_signal;
+        stopped_callback m_stopped_callback;
 
     };
 

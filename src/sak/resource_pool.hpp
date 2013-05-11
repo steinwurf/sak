@@ -52,76 +52,76 @@ namespace sak
 
         /// Create a new resource pool
         /// @param allocator the allocator to be used by the pool
-        resource_pool(const allocator_type &allocator)
-            {
-                m_pool.reset( new pool_impl(allocator) );
-            }
+        resource_pool(const allocator_type& allocator)
+        {
+            m_pool.reset( new pool_impl(allocator) );
+        }
 
         /// @returns the number of resource in use
         uint32_t size() const
-            {
-                return m_pool->size();
-           }
+        {
+            return m_pool->size();
+        }
 
         /// @returns the number of unused resources
         uint32_t free() const
-            {
-                return m_pool->free();
-            }
+        {
+            return m_pool->free();
+        }
 
         /// @returns a resource from the pool
         value_ptr allocate()
-            {
-                return m_pool->allocate();
-            }
+        {
+            return m_pool->allocate();
+        }
 
     private:
 
         struct pool_impl : public boost::enable_shared_from_this<pool_impl>
         {
 
-            pool_impl(const allocator_type &allocator)
+            pool_impl(const allocator_type& allocator)
                 : m_allocator(allocator),
                   m_pool_size(0)
-                {
-                    assert(m_allocator);
-                }
+            {
+                assert(m_allocator);
+            }
 
             value_ptr allocate()
+            {
+                value_ptr resource;
+
+                if (m_free_list.size() > 0)
                 {
-                    value_ptr resource;
-
-                    if(m_free_list.size() > 0)
-                    {
-                        resource = m_free_list.back();
-                        m_free_list.pop_back();
-                    }
-                    else
-                    {
-                        assert(m_allocator);
-                        resource = m_allocator();
-                        ++m_pool_size;
-                    }
-
-                    boost::shared_ptr<pool_impl> pool = pool_impl::shared_from_this();
-
-                    return value_ptr(resource.get(), deleter(pool, resource));
+                    resource = m_free_list.back();
+                    m_free_list.pop_back();
                 }
+                else
+                {
+                    assert(m_allocator);
+                    resource = m_allocator();
+                    ++m_pool_size;
+                }
+
+                boost::shared_ptr<pool_impl> pool = pool_impl::shared_from_this();
+
+                return value_ptr(resource.get(), deleter(pool, resource));
+            }
 
             uint32_t size() const
-                {
-                    return m_pool_size;
-                }
+            {
+                return m_pool_size;
+            }
 
             uint32_t free() const
-                {
-                    return static_cast<uint32_t>(m_free_list.size());
-                }
+            {
+                return static_cast<uint32_t>(m_free_list.size());
+            }
 
-            void recycle(const value_ptr &resource)
-                {
-                    m_free_list.push_back(resource);
-                }
+            void recycle(const value_ptr& resource)
+            {
+                m_free_list.push_back(resource);
+            }
 
         private:
 
@@ -144,24 +144,24 @@ namespace sak
 
         struct deleter
         {
-            deleter(const pool_weak_ptr &pool, const value_ptr &resource)
+            deleter(const pool_weak_ptr& pool, const value_ptr& resource)
                 : m_pool(pool),
                   m_resource(resource)
-                {
-                    assert(!m_pool.expired());
-                    assert(m_resource);
-                }
+            {
+                assert(!m_pool.expired());
+                assert(m_resource);
+            }
 
-            void operator()(value_type *)
-                {
-                    // Place the resource in the free list
-                    pool_ptr pool = m_pool.lock();
+            void operator()(value_type*)
+            {
+                // Place the resource in the free list
+                pool_ptr pool = m_pool.lock();
 
-                    if(pool)
-                    {
-                        pool->recycle(m_resource);
-                    }
+                if (pool)
+                {
+                    pool->recycle(m_resource);
                 }
+            }
 
             // Poiner to the pool needed for recycling
             pool_weak_ptr m_pool;

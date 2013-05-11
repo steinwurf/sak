@@ -34,7 +34,7 @@ namespace sak
 {
 
     /// Checks whether a pointer is aligned to a specific memory boundary
-    inline bool is_aligned(const void *ptr,
+    inline bool is_aligned(const void* ptr,
                            uint32_t alignment = platform::simd_align)
     {
         // Is power of 2

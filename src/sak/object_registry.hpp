@@ -71,11 +71,11 @@ namespace sak
 
         /// The map associating an object id to an object factory
         typedef std::map<object_id, boost::shared_ptr<object_factory> >
-            factory_map;
+        factory_map;
 
         /// The map associating an object id to an object factory
         typedef std::map<object_id, boost::shared_ptr<void> >
-            object_map;
+        object_map;
 
     public:
 
@@ -139,7 +139,7 @@ namespace sak
             // If the base class is not void,
             // then reuse the factory instance for the Base type
             typedef typename sak_type_info<Object>::Base Base;
-            if(std::is_void< Base >::value == false)
+            if (std::is_void< Base >::value == false)
             {
                 set_factory< Base >(factory);
             }
@@ -150,7 +150,7 @@ namespace sak
         /// @param func the factory function to be used for the Object type
         template<class Object>
         void set_factory(const boost::function<
-                             boost::shared_ptr<Object>(object_registry &)> & func)
+                         boost::shared_ptr<Object>(object_registry&)> & func)
         {
             auto object_id = get_object_id<Object>();
 
@@ -254,7 +254,7 @@ namespace sak
         /// @param id the object_id to find
         /// @return true if the object is registered
         template<class Map>
-        bool has_object_id(const Map &map, const object_id &id) const
+        bool has_object_id(const Map& map, const object_id& id) const
         {
             return map.find(id) != map.end();
         }
@@ -272,7 +272,7 @@ namespace sak
         /// @param map the map in which the object_id is stored
         /// @param id the object_id to find
         boost::shared_ptr<object_factory>
-            find(const factory_map &map, const object_id &id) const
+        find(const factory_map& map, const object_id& id) const
         {
             assert(has_object_id(map,id));
             return map.at(id);
@@ -283,7 +283,7 @@ namespace sak
         /// @param map the map in which the object_id is stored
         /// @param id the object_id to find
         boost::shared_ptr<void>
-            find(const object_map &map, const object_id &id) const
+        find(const object_map& map, const object_id& id) const
         {
             assert(has_object_id(map,id));
             return map.at(id);

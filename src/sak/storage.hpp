@@ -59,7 +59,7 @@ namespace sak
         /// Create an initialized mutable storage object
         /// @param size the size of the buffer in bytes
         /// @param data pointer to the storage buffer
-        mutable_storage(uint8_t *data, uint32_t size) :
+        mutable_storage(uint8_t* data, uint32_t size) :
             m_data(data),
             m_size(size)
         {
@@ -128,7 +128,7 @@ namespace sak
         /// Create an initialized const storage object
         /// @param size the size of the buffer in bytes
         /// @param data pointer to the storage buffer
-        const_storage(const uint8_t *data, uint32_t size) :
+        const_storage(const uint8_t* data, uint32_t size) :
             m_data(data),
             m_size(size)
         { }
@@ -195,14 +195,14 @@ namespace sak
     /// a specified number of bytes
     template<class StorageType>
     inline std::vector<StorageType>
-        split_storage(const StorageType& storage, uint32_t split)
+    split_storage(const StorageType& storage, uint32_t split)
     {
         auto remaining_size = storage.m_size;
         auto data_offset = storage.m_data;
 
         std::vector<StorageType> sequence;
 
-        while(remaining_size > 0)
+        while (remaining_size > 0)
         {
             uint32_t next_size = std::min(remaining_size, split);
 
@@ -221,10 +221,10 @@ namespace sak
     /// @return the size in bytes of the storage adapters
     template<class StorageIterator>
     inline uint32_t storage_size(StorageIterator first,
-        StorageIterator last)
+                                 StorageIterator last)
     {
         uint32_t size = 0;
-        while(first != last)
+        while (first != last)
         {
             size += first->m_size;
             ++first;
@@ -235,14 +235,14 @@ namespace sak
     /// Zeros the memory pointed to by a mutable storage
     /// object
     /// @param storage the mutable storage buffer
-    inline void zero_storage(mutable_storage &storage)
+    inline void zero_storage(mutable_storage& storage)
     {
         std::fill_n(storage.m_data, storage.m_size, 0);
     }
 
     /// Copies the source storage into the destination storage buffer
-    inline void copy_storage(const mutable_storage &dest,
-        const const_storage &src)
+    inline void copy_storage(const mutable_storage& dest,
+                             const const_storage& src)
     {
         assert(dest.m_size > 0);
         assert(dest.m_size >= src.m_size);
@@ -256,7 +256,7 @@ namespace sak
     /// @param s the storage adapter
     /// @return pointer to the requested storage data type
     template<class ValueType>
-    inline ValueType* cast_storage(const mutable_storage &s)
+    inline ValueType* cast_storage(const mutable_storage& s)
     {
         return reinterpret_cast<ValueType*>(s.m_data);
     }
@@ -265,7 +265,7 @@ namespace sak
     /// @param s the storage adapter
     /// @return pointer to the requested storage data type
     template<class ValueType>
-    inline const ValueType* cast_storage(const const_storage &s)
+    inline const ValueType* cast_storage(const const_storage& s)
     {
         return reinterpret_cast<const ValueType*>(s.m_data);
     }
@@ -347,24 +347,24 @@ namespace sak
     /// @return True if the storage objects contain the same data
     ///         otherwise false.
     inline bool equal(const const_storage& storage_a,
-        const const_storage& storage_b)
+                      const const_storage& storage_b)
     {
 
-        if(storage_a.m_size != storage_b.m_size)
+        if (storage_a.m_size != storage_b.m_size)
         {
             return false;
         }
 
         // They have the same size - do they point to the same data?
 
-        if(storage_a.m_data == storage_b.m_data)
+        if (storage_a.m_data == storage_b.m_data)
         {
             return true;
         }
 
         // It is two different buffers - is the content equal?
         auto zero_is_equal = std::memcmp(storage_a.m_data,
-            storage_b.m_data, storage_b.m_size);
+                                         storage_b.m_data, storage_b.m_size);
         return zero_is_equal == 0;
     }
 

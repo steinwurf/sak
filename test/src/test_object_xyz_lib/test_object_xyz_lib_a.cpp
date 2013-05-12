@@ -44,7 +44,7 @@ std::string apple::color()
 // Apple Factory
 //
 
-boost::shared_ptr<apple> apple_factory::build(sak::object_registry &)
+boost::shared_ptr<apple> apple_factory::build(sak::object_registry&)
 {
     return boost::make_shared<apple>();
 }
@@ -63,7 +63,7 @@ std::string pear::color()
 // Pear Factory
 //
 
-boost::shared_ptr<pear> pear_factory::build(sak::object_registry &)
+boost::shared_ptr<pear> pear_factory::build(sak::object_registry&)
 {
     return boost::make_shared<pear>();
 }

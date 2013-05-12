@@ -45,7 +45,7 @@ namespace sak
         /// Request a read from the io device
         /// @param buffer from where to read
         /// @param bytes to read
-        virtual void read(uint8_t *buffer, uint32_t bytes) = 0;
+        virtual void read(uint8_t* buffer, uint32_t bytes) = 0;
 
         /// Returns the number of bytes available for reading
         /// @return number of bytes available

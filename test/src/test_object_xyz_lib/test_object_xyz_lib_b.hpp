@@ -37,11 +37,11 @@ public:
 class duck : public bird
 {
 public:
-    duck(sak::object_registry &registry);
+    duck(sak::object_registry& registry);
     std::string eat();
 
 private:
-    sak::object_registry &m_registry;
+    sak::object_registry& m_registry;
 };
 SAK_DEFINE_PARENT(duck, bird)
 
@@ -49,7 +49,7 @@ SAK_DEFINE_PARENT(duck, bird)
 class duck_factory
 {
 public:
-    boost::shared_ptr<duck> build(sak::object_registry &);
+    boost::shared_ptr<duck> build(sak::object_registry&);
 };
 
 

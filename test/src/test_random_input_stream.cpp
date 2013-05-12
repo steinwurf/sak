@@ -22,7 +22,7 @@ TEST(TestRandomInputStream, CreateRandomInputStream)
 
         std::vector<uint8_t> buffer_out;
 
-        while( input_stream->bytes_available() > 0 )
+        while ( input_stream->bytes_available() > 0 )
         {
             // Random read (always positive thus + 1)
             uint32_t read_request = (rand() % 100) + 1;
@@ -37,7 +37,8 @@ TEST(TestRandomInputStream, CreateRandomInputStream)
         }
 
         EXPECT_EQ(buffer_out.size(), buffer_size);
-        ASSERT_TRUE(std::equal(buffer_out.begin(), buffer_out.end(), input_stream->data()));
+        ASSERT_TRUE(std::equal(buffer_out.begin(), buffer_out.end(),
+                               input_stream->data()));
     }
 }
 

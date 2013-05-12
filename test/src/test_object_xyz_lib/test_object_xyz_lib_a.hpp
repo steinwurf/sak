@@ -45,7 +45,7 @@ SAK_DEFINE_PARENT(apple, fruit)
 class apple_factory
 {
 public:
-    boost::shared_ptr<apple> build(sak::object_registry &);
+    boost::shared_ptr<apple> build(sak::object_registry&);
 };
 
 class pear : public fruit
@@ -58,7 +58,7 @@ SAK_DEFINE_PARENT(pear, fruit)
 class pear_factory
 {
 public:
-    boost::shared_ptr<pear> build(sak::object_registry &);
+    boost::shared_ptr<pear> build(sak::object_registry&);
 };
 
 

@@ -53,7 +53,7 @@ namespace sak
     {
     public:
 
-        static_assert(Alignment != 0 && ((Alignment & (Alignment-1)) == 0),
+        static_assert(Alignment != 0 && ((Alignment & (Alignment - 1)) == 0),
                       "Must be a power of 2");
 
     public:
@@ -128,7 +128,7 @@ namespace sak
         ///
         /// The offset is stored one byte below the new_ptr to make sure that we
         /// can find the old_ptr again when we need to deallocate the memory
-        pointer allocate(size_type num, const void * = 0)
+        pointer allocate(size_type num, const void* = 0)
         {
             uint32_t space_needed = static_cast<uint32_t>(num * sizeof(T)) + Alignment;
 
@@ -176,7 +176,7 @@ namespace sak
 #else
 
         template<class U, class... Args>
-        void construct(U* p, Args&&... args)
+        void construct(U* p, Args&& ... args)
         {
             ::new(static_cast<void*>(p)) U(std::forward<Args>(args)...);
         }

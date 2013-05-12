@@ -139,6 +139,7 @@ namespace sak
             // If the base class is not void,
             // then reuse the factory instance for the Base type
             typedef typename sak_type_info<Object>::Base Base;
+
             if (std::is_void< Base >::value == false)
             {
                 set_factory< Base >(factory);
@@ -149,13 +150,13 @@ namespace sak
         /// Once a factory function has been registered, objects can be created
         /// @param func the factory function to be used for the Object type
         template<class Object>
-        void set_factory(const boost::function<
-                         boost::shared_ptr<Object>(object_registry&)> & func)
+        void set_factory(const boost::function <
+                         boost::shared_ptr<Object>(object_registry&) > & func)
         {
             auto object_id = get_object_id<Object>();
 
             boost::shared_ptr<object_factory> factory =
-                boost::make_shared< object_factory_function<Object> >(func);
+                boost::make_shared< object_factory_function >(func);
 
             m_lookup_by_object_id[object_id] = factory;
 
@@ -274,7 +275,7 @@ namespace sak
         boost::shared_ptr<object_factory>
         find(const factory_map& map, const object_id& id) const
         {
-            assert(has_object_id(map,id));
+            assert(has_object_id(map, id));
             return map.at(id);
         }
 
@@ -285,7 +286,7 @@ namespace sak
         boost::shared_ptr<void>
         find(const object_map& map, const object_id& id) const
         {
-            assert(has_object_id(map,id));
+            assert(has_object_id(map, id));
             return map.at(id);
         }
 

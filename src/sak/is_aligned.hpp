@@ -38,7 +38,7 @@ namespace sak
                            uint32_t alignment = platform::simd_align)
     {
         // Is power of 2
-        assert(alignment != 0 && ((alignment & (alignment-1)) == 0));
+        assert(alignment != 0 && ((alignment & (alignment - 1)) == 0));
 
         return (reinterpret_cast<uintptr_t>(ptr) % alignment) == 0;
     }

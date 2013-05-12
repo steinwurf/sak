@@ -54,7 +54,7 @@ public:
 
     typedef rate_socket object_type;
 
-    boost::shared_ptr<rate_socket> build(sak::object_registry &)
+    boost::shared_ptr<rate_socket> build(sak::object_registry&)
     {
         return boost::make_shared<rate_socket>();
     }
@@ -74,7 +74,7 @@ TEST(ObjectFactory, register_type)
     EXPECT_EQ("rate_socket write", s->write());
 }
 
-boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry &)
+boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry&)
 {
     return boost::make_shared<rate_socket>();
 }
@@ -123,7 +123,7 @@ namespace foobar
 
         typedef rate_socket object_type;
 
-        boost::shared_ptr<magic_socket> build(sak::object_registry &)
+        boost::shared_ptr<magic_socket> build(sak::object_registry&)
         {
             return boost::make_shared<magic_socket>();
         }
@@ -174,7 +174,7 @@ public:
 
     void set_color(Color c) { m_color = c; }
 
-    boost::shared_ptr<flower> build(sak::object_registry &)
+    boost::shared_ptr<flower> build(sak::object_registry&)
     {
         return boost::make_shared<flower>(m_color);
     }

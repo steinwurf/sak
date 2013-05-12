@@ -27,7 +27,7 @@
 
 namespace sak
 {
-    buffer_input_stream::buffer_input_stream(uint32_t size, const uint8_t *data)
+    buffer_input_stream::buffer_input_stream(uint32_t size, const uint8_t* data)
         : m_size(size),
           m_data(data),
           m_current_pos(0)
@@ -47,7 +47,7 @@ namespace sak
         return m_current_pos;
     }
 
-    void buffer_input_stream::read(uint8_t *buffer, uint32_t bytes)
+    void buffer_input_stream::read(uint8_t* buffer, uint32_t bytes)
     {
         assert(bytes > 0);
         assert(bytes + m_current_pos <= m_size);

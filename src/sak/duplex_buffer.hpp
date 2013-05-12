@@ -67,15 +67,15 @@ namespace sak
 
         /// Creates a new buffer from an existing buffer
         /// @param buffer an existing buffer
-        duplex_buffer(const duplex_buffer &buffer);
+        duplex_buffer(const duplex_buffer& buffer);
 
         /// Initializes the buffer from an existing buffer
         /// @param buffer an existing buffer
-        duplex_buffer& operator=(const duplex_buffer &buffer);
+        duplex_buffer& operator=(const duplex_buffer& buffer);
 
         /// Swaps the content of two duplex_buffer objects.
         /// @param buffer the target buffer for the swap
-        void swap(duplex_buffer &buffer);
+        void swap(duplex_buffer& buffer);
 
         /// @return pointer to the data
         uint8_t* data();

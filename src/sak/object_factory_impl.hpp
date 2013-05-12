@@ -40,13 +40,13 @@ namespace sak
     struct object_factory_impl : public object_factory
     {
 
-        object_factory_impl()
-            : m_factory(boost::make_shared<Factory>())
+        object_factory_impl() :
+            m_factory(boost::make_shared<Factory>())
         {}
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<void> build(object_registry &registry)
+        virtual boost::shared_ptr<void> build(object_registry& registry)
         {
             assert(m_factory);
 
@@ -58,19 +58,20 @@ namespace sak
 
     };
 
-    /// Object factory used to embed a concrete factory
-    template<class Target>
+    /// Object factory function struct stores a function object
     struct object_factory_function : public object_factory
     {
 
-        object_factory_function(const boost::function<boost::shared_ptr<void>(
-            object_registry &)> &function)
-            : m_function(function)
+        typedef boost::function < boost::shared_ptr<void> (object_registry&) >
+        factory_callback;
+
+        object_factory_function(const factory_callback& function) :
+            m_function(function)
         {}
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<void> build(object_registry &registry)
+        virtual boost::shared_ptr<void> build(object_registry& registry)
         {
             assert(m_function);
 
@@ -78,7 +79,8 @@ namespace sak
         }
 
         /// The user provided factory
-        boost::function<boost::shared_ptr<void>(object_registry &)> m_function;
+        factory_callback m_function;
+
     };
 
 }

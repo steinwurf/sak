@@ -41,9 +41,9 @@ namespace sak
         /// how we make the error strings)
         enum error_type
         {
-#define ERROR_TAG(id,msg) id,
-#include "error_tags.hpp"
-#undef ERROR_TAG
+#define     ERROR_TAG(id,msg) id,
+#include    "error_tags.hpp"
+#undef      ERROR_TAG
             terminate_tag
         };
 

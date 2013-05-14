@@ -36,6 +36,7 @@
 
 namespace sak
 {
+
     /// Type Info template for specifying the base class
     /// Template must be specialized for all classes that have a base class
     ///
@@ -301,6 +302,5 @@ namespace sak
         /// Map allowing a factory to be found based on a factory's object id
         factory_map m_lookup_by_factory_id;
     };
+
 }
-
-

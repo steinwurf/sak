@@ -33,7 +33,7 @@
 // Duck
 //
 
-duck::duck(sak::object_registry &registry)
+duck::duck(sak::object_registry& registry)
     : m_registry(registry)
 {
 }
@@ -49,7 +49,7 @@ std::string duck::eat()
 // Duck Factory
 //
 
-boost::shared_ptr<duck> duck_factory::build(sak::object_registry &registry)
+boost::shared_ptr<duck> duck_factory::build(sak::object_registry& registry)
 {
     return boost::make_shared<duck>(registry);
 }

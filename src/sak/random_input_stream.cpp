@@ -32,7 +32,7 @@ namespace sak
     {
         assert(size > 0);
         m_data.resize(size);
-        for(uint32_t i = 0; i < size; ++i)
+        for (uint32_t i = 0; i < size; ++i)
         {
             m_data[i] = rand();
         }
@@ -54,7 +54,7 @@ namespace sak
         return m_current_pos;
     }
 
-    void random_input_stream::read(uint8_t *buffer, uint32_t bytes)
+    void random_input_stream::read(uint8_t* buffer, uint32_t bytes)
     {
         assert(bytes > 0);
         assert(bytes + m_current_pos <= m_data.size());

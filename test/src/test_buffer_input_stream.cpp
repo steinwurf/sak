@@ -16,7 +16,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         std::vector<char> buffer(buffer_size, '\0');
 
-        for(uint32_t i = 0; i < buffer_size; ++i)
+        for (uint32_t i = 0; i < buffer_size; ++i)
         {
             buffer[i] = (rand() % 255);
         }
@@ -29,7 +29,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         std::vector<char> buffer_out;
 
-        while( input_stream->bytes_available() > 0 )
+        while ( input_stream->bytes_available() > 0 )
         {
             // Random read (always positive thus + 1)
             uint32_t read_request = (rand() % 100) + 1;

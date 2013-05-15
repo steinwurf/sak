@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_IS_ALIGNED_H
-#define SAK_IS_ALIGNED_H
+#pragma once
 
 #include <cstdint>
 #include <cassert>
@@ -35,15 +34,15 @@ namespace sak
 {
 
     /// Checks whether a pointer is aligned to a specific memory boundary
-    inline bool is_aligned(const void *ptr,
+    inline bool is_aligned(const void* ptr,
                            uint32_t alignment = platform::simd_align)
     {
         // Is power of 2
-        assert(alignment != 0 && ((alignment & (alignment-1)) == 0));
+        assert(alignment != 0 && ((alignment & (alignment - 1)) == 0));
 
         return (reinterpret_cast<uintptr_t>(ptr) % alignment) == 0;
     }
 
 }
 
-#endif
+

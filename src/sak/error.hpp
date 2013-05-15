@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_ERROR_HPP
-#define SAK_ERROR_HPP
+#pragma once
 
 #include <cstdint>
 
@@ -42,9 +41,9 @@ namespace sak
         /// how we make the error strings)
         enum error_type
         {
-            #define ERROR_TAG(id,msg) id,
-            #include "error_tags.hpp"
-            #undef ERROR_TAG
+#define     ERROR_TAG(id,msg) id,
+#include    "error_tags.hpp"
+#undef      ERROR_TAG
             terminate_tag
         };
 
@@ -92,7 +91,10 @@ namespace sak
 }
 
 /// Ensure that we can compare sak errors to reported error codes
-namespace boost { namespace system {
+namespace boost
+{
+    namespace system
+    {
 
         template<>
         struct is_error_code_enum<sak::error::error_type>
@@ -101,6 +103,3 @@ namespace boost { namespace system {
         };
     }
 }
-
-
-#endif

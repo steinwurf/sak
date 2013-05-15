@@ -31,10 +31,11 @@ namespace sak
     namespace error
     {
 
-        const char *error_tags[256] = {
-            #define ERROR_TAG(id, msg) msg,
-            #include "error_tags.hpp"
-            #undef ERROR_TAG
+        const char* error_tags[256] =
+        {
+#define     ERROR_TAG(id, msg) msg,
+#include    "error_tags.hpp"
+#undef      ERROR_TAG
         };
 
         const char* sak_category_impl::name() const

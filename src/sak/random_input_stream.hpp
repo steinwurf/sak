@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_RANDOM_INPUT_STREAM_HPP
-#define SAK_RANDOM_INPUT_STREAM_HPP
+#pragma once
 
 #include <vector>
 #include <stdint.h>
@@ -44,8 +43,8 @@ namespace sak
     {
     public:
 
-         /// Constructor
-         /// @param size the size in bytes of the buffer passed
+        /// Constructor
+        /// @param size the size in bytes of the buffer passed
         random_input_stream(uint32_t size);
 
         /// @return a pointer to the random data
@@ -53,24 +52,24 @@ namespace sak
 
     public: // From finite_input_stream
 
-         /// @copydoc finite_input_stream::seek()
+        /// @copydoc finite_input_stream::seek()
         void seek(uint32_t pos);
 
-         /// @copydoc finite_input_stream::read_position()
+        /// @copydoc finite_input_stream::read_position()
         uint32_t read_position();
 
-         /// @copydoc finite_input_stream::size()
+        /// @copydoc finite_input_stream::size()
         uint32_t size();
 
     public: // From input_stream
 
-         /// @copydoc input_stream::read()
-        void read(uint8_t *buffer, uint32_t bytes);
+        /// @copydoc input_stream::read()
+        void read(uint8_t* buffer, uint32_t bytes);
 
-         /// @copydoc input_stream::bytes_available()
+        /// @copydoc input_stream::bytes_available()
         uint32_t bytes_available();
 
-         /// @copydoc input_stream::stopped()
+        /// @copydoc input_stream::stopped()
         bool stopped();
 
     protected:
@@ -78,10 +77,10 @@ namespace sak
         /// Pointer to the buffer
         std::vector<uint8_t> m_data;
 
-         /// The current read position
+        /// The current read position
         uint32_t m_current_pos;
 
     };
 }
 
-#endif
+

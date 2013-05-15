@@ -19,7 +19,7 @@ TEST(TestFileInputStream, ReadRandomFile)
 
         std::vector<char> output_buffer(file_size, '\0');
 
-        for(uint32_t i = 0; i < file_size; ++i)
+        for (uint32_t i = 0; i < file_size; ++i)
         {
             output_buffer[i] = (rand() % 255);
         }
@@ -41,7 +41,7 @@ TEST(TestFileInputStream, ReadRandomFile)
 
         std::vector<char> input_buffer;
 
-        while(fs.bytes_available() > 0)
+        while (fs.bytes_available() > 0)
         {
             uint32_t read = std::min(read_size, fs.bytes_available());
 
@@ -77,7 +77,7 @@ TEST(TestFileInputStream, ExceptionThrow)
     {
         fs.open("strange_file_that_should_not_exist.notfound");
     }
-    catch(const boost::system::system_error &error)
+    catch (const boost::system::system_error& error)
     {
         ec = error.code();
     }
@@ -111,7 +111,7 @@ TEST(TestFileInputStream, ExceptionThrowConstructor)
         sak::file_input_stream fs(
             "strange_file_that_should_not_exist.notfound");
     }
-    catch(const boost::system::system_error &error)
+    catch (const boost::system::system_error& error)
     {
         ec = error.code();
     }

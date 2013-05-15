@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_BUFFER_HPP
-#define SAK_BUFFER_HPP
+#pragma once
 
 #include <vector>
 
@@ -49,7 +48,7 @@ namespace sak
         /// Appends data to the end of the buffer
         /// @param data the bytes to append to the end of the buffer
         /// @param size the size of the data in bytes
-        void append(const uint8_t *data, uint32_t size);
+        void append(const uint8_t* data, uint32_t size);
 
         /// Appends data to the end of the buffer
         /// @param data_start the start address of the of the data
@@ -59,7 +58,7 @@ namespace sak
         /// Appends data to the end of the buffer
         /// @param storage the data to append
         template<class Storage>
-        void append(const Storage &storage);
+        void append(const Storage& storage);
 
         /// @return a pointer to the start of the data in the buffer
         const uint8_t* data() const;
@@ -91,9 +90,9 @@ namespace sak
     };
 
     template<class Storage>
-    inline void buffer::append(const Storage &storage)
+    inline void buffer::append(const Storage& storage)
     {
-        for(auto it = storage.begin(); it != storage.end(); ++it)
+        for (auto it = storage.begin(); it != storage.end(); ++it)
         {
             append(it->m_data, it->m_size);
         }
@@ -101,5 +100,5 @@ namespace sak
 
 }
 
-#endif
+
 

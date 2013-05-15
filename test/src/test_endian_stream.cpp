@@ -51,7 +51,7 @@ TEST(TestEndianStream, create_stream_from_storage)
     // Create endian stream directly from sak::storage
     sak::endian_stream stream(sak::storage(buffer));
 
-    for(uint32_t i = 0; i < elements; i++)
+    for (uint32_t i = 0; i < elements; i++)
     {
         stream.write(i);
     }
@@ -59,7 +59,7 @@ TEST(TestEndianStream, create_stream_from_storage)
     // Go back to the beginning of the stream
     stream.seek(0);
     uint32_t last_value = 0;
-    for(uint32_t i = 0; i < elements; i++)
+    for (uint32_t i = 0; i < elements; i++)
     {
         stream.read(last_value);
         EXPECT_EQ(i, last_value);
@@ -72,7 +72,7 @@ template<class ValueType>
 void write_read_test()
 {
     const uint32_t elements = 1024;               ///no. of elements
-    const uint32_t size = 1024*sizeof(ValueType); ///size in bytes
+    const uint32_t size = 1024 * sizeof(ValueType); ///size in bytes
     std::vector<uint8_t> buffer;
     buffer.resize(size);
     sak::endian_stream stream(buffer.data(), size);
@@ -81,27 +81,27 @@ void write_read_test()
     ValueType highest_value = std::numeric_limits<ValueType>::max();
     ValueType last_value = 0;
 
-    for(uint32_t i = 0; i < elements; i++)
+    for (uint32_t i = 0; i < elements; i++)
     {
         stream.write(highest_value);
     }
 
     // Go back to the beginning of the stream
     stream.seek(0);
-    for(uint32_t i = 0; i < elements; i++)
+    for (uint32_t i = 0; i < elements; i++)
     {
         stream.read(last_value);
         EXPECT_EQ(highest_value, last_value);
     }
 
     stream.seek(0);
-    for(uint32_t i = 0; i < elements; i++)
+    for (uint32_t i = 0; i < elements; i++)
     {
         stream.write(lowest_value);
     }
 
     stream.seek(0);
-    for(uint32_t i = 0; i < elements; i++)
+    for (uint32_t i = 0; i < elements; i++)
     {
         stream.read(last_value);
         EXPECT_EQ(lowest_value, last_value);
@@ -112,7 +112,7 @@ template<class ValueType>
 void random_write_read_test(bool pseudorandom)
 {
     const uint32_t elements = 1024;               /// no. of elements
-    const uint32_t size = 1024*sizeof(ValueType); /// size in bytes
+    const uint32_t size = 1024 * sizeof(ValueType); /// size in bytes
     std::vector<uint8_t> buffer;
     buffer.resize(size);
 
@@ -152,7 +152,7 @@ void random_write_read_test(bool pseudorandom)
 void various_write_read_test(bool pseudorandom)
 {
     const uint32_t elements = 1024;
-    const uint32_t size = 1024*sizeof(uint64_t);
+    const uint32_t size = 1024 * sizeof(uint64_t);
     std::vector<uint8_t> buffer;
     buffer.resize(size);
 
@@ -172,7 +172,7 @@ void various_write_read_test(bool pseudorandom)
 
     for (uint32_t i = 0; i < elements; i++)
     {
-        switch(i % 4)
+        switch (i % 4)
         {
             case 0:
                 values[i] = rand() % std::numeric_limits<uint8_t>::max();
@@ -202,7 +202,7 @@ void various_write_read_test(bool pseudorandom)
     // Read values in FIFO order
     for (uint32_t i = 0; i < elements; i++)
     {
-        switch(i % 4)
+        switch (i % 4)
         {
             case 0:
                 stream.read<uint8_t>(last_u8);

@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_BUFFER_INPUT_STREAM_HPP
-#define SAK_BUFFER_INPUT_STREAM_HPP
+#pragma once
 
 #include <vector>
 #include <stdint.h>
@@ -48,28 +47,28 @@ namespace sak
         /// Constructor
         /// @param size the size in bytes of the buffer passed
         /// @param data pointer to the data buffer
-        buffer_input_stream(uint32_t size, const uint8_t *data);
+        buffer_input_stream(uint32_t size, const uint8_t* data);
 
     public: // From finite_input_stream
 
-         /// @copydoc finite_input_stream::seek()
+        /// @copydoc finite_input_stream::seek()
         void seek(uint32_t pos);
 
-         /// @copydoc finite_input_stream::read_position()
+        /// @copydoc finite_input_stream::read_position()
         uint32_t read_position();
 
-         /// @copydoc finite_input_stream::size()
+        /// @copydoc finite_input_stream::size()
         uint32_t size();
 
     public: // From input_stream
 
-         /// @copydoc input_stream::read()
-        void read(uint8_t *buffer, uint32_t bytes);
+        /// @copydoc input_stream::read()
+        void read(uint8_t* buffer, uint32_t bytes);
 
-         /// @copydoc input_stream::bytes_available()
+        /// @copydoc input_stream::bytes_available()
         uint32_t bytes_available();
 
-         /// @copydoc input_stream::stopped()
+        /// @copydoc input_stream::stopped()
         bool stopped();
 
     protected:
@@ -78,9 +77,9 @@ namespace sak
         uint32_t m_size;
 
         /// Pointer to the buffer
-        const uint8_t *m_data;
+        const uint8_t* m_data;
 
-         /// The current read position
+        /// The current read position
         uint32_t m_current_pos;
 
     };
@@ -89,13 +88,13 @@ namespace sak
     /// buffer input stream over common buffer types
     template<class T>
     boost::shared_ptr<buffer_input_stream>
-    make_buffer_input(const std::vector<T> &v)
+    make_buffer_input(const std::vector<T>& v)
     {
         BOOST_STATIC_ASSERT(boost::is_pod<T>::value);
         BOOST_STATIC_ASSERT(!boost::is_pointer<T>::value);
 
         uint32_t size = static_cast<uint32_t>(v.size() * sizeof(T));
-        const uint8_t *data = reinterpret_cast<const uint8_t*>(&v[0]);
+        const uint8_t* data = reinterpret_cast<const uint8_t*>(&v[0]);
 
         boost::shared_ptr<buffer_input_stream> b(
             new buffer_input_stream(size, data));
@@ -106,4 +105,4 @@ namespace sak
 }
 
 
-#endif
+

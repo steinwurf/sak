@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
-#define SAK_TEST_SRC_TEST_OBJECT_XYZ_LIB_TEST_OBJECT_XYZ_LIB_B_HPP
+#pragma once
 
 #include <sak/object_registry.hpp>
 #include "test_object_xyz_lib_a.hpp"
@@ -38,11 +37,11 @@ public:
 class duck : public bird
 {
 public:
-    duck(sak::object_registry &registry);
+    duck(sak::object_registry& registry);
     std::string eat();
 
 private:
-    sak::object_registry &m_registry;
+    sak::object_registry& m_registry;
 };
 SAK_DEFINE_PARENT(duck, bird)
 
@@ -50,12 +49,12 @@ SAK_DEFINE_PARENT(duck, bird)
 class duck_factory
 {
 public:
-    boost::shared_ptr<duck> build(sak::object_registry &);
+    boost::shared_ptr<duck> build(sak::object_registry&);
 };
 
 
 
-#endif
+
 
 
 

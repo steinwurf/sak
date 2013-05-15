@@ -45,21 +45,21 @@ namespace sak
           m_data_size(size)
     { }
 
-    duplex_buffer::duplex_buffer(const duplex_buffer &buffer)
+    duplex_buffer::duplex_buffer(const duplex_buffer& buffer)
         : m_buffer(buffer.m_buffer),
           m_front_capacity(buffer.m_front_capacity),
           m_back_capacity(buffer.m_back_capacity),
           m_data_size(buffer.m_data_size)
     { }
 
-    duplex_buffer& duplex_buffer::operator=(const duplex_buffer &buffer)
+    duplex_buffer& duplex_buffer::operator=(const duplex_buffer& buffer)
     {
         duplex_buffer temp(buffer);
         swap(temp);
         return *this;
     }
 
-    void duplex_buffer::swap(duplex_buffer &buffer)
+    void duplex_buffer::swap(duplex_buffer& buffer)
     {
         std::swap(buffer.m_buffer, m_buffer);
         std::swap(buffer.m_front_capacity, m_front_capacity);
@@ -99,11 +99,11 @@ namespace sak
 
     void duplex_buffer::resize_front(uint32_t size)
     {
-        if(size < m_data_size)
+        if (size < m_data_size)
         {
             shrink_front(m_data_size - size);
         }
-        else if(size > m_data_size)
+        else if (size > m_data_size)
         {
             expand_front(size - m_data_size);
         }
@@ -111,23 +111,23 @@ namespace sak
 
     void duplex_buffer::resize_back(uint32_t size)
     {
-        if(size < m_data_size)
+        if (size < m_data_size)
         {
             shrink_back(m_data_size - size);
         }
-        else if(size > m_data_size)
+        else if (size > m_data_size)
         {
             expand_back(size - m_data_size);
         }
     }
 
     void duplex_buffer::resize(uint32_t size,
-                                      uint32_t min_front_capacity,
-                                      uint32_t min_back_capacity)
+                               uint32_t min_front_capacity,
+                               uint32_t min_back_capacity)
     {
         uint32_t total_size = min_front_capacity + size + min_back_capacity;
 
-        if(m_buffer.size() < total_size)
+        if (m_buffer.size() < total_size)
         {
             m_buffer.resize(total_size);
         }
@@ -155,7 +155,7 @@ namespace sak
 
     void duplex_buffer::expand_front(uint32_t size)
     {
-        if(size > m_front_capacity)
+        if (size > m_front_capacity)
         {
             realloc(size, m_back_capacity);
         }
@@ -178,7 +178,7 @@ namespace sak
 
     void duplex_buffer::expand_back(uint32_t size)
     {
-        if(size > m_back_capacity)
+        if (size > m_back_capacity)
         {
             realloc(m_front_capacity, size);
         }

@@ -43,7 +43,7 @@ void test_vector_helper(uint32_t vector_size)
     EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1U);
 
     // Check const
-    const std::vector<PodType> &v_ref = v;
+    const std::vector<PodType>& v_ref = v;
 
     sak::const_storage const_cs = sak::storage(v_ref);
     EXPECT_EQ(const_cs.m_size, vector_size * sizeof(PodType));
@@ -69,7 +69,7 @@ void test_buffer_helper(uint32_t vector_size)
 {
     std::vector<PodType> v(vector_size);
 
-    PodType *v_data = &v[0];
+    PodType* v_data = &v[0];
     uint32_t v_size = vector_size * sizeof(PodType);
 
     sak::const_storage cs = sak::storage(v_data, v_size);
@@ -84,7 +84,7 @@ void test_buffer_helper(uint32_t vector_size)
     EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1U);
 
     // Check const
-    const PodType *v_data_const = v_data;
+    const PodType* v_data_const = v_data;
 
     sak::const_storage const_cs = sak::storage(v_data_const, v_size);
     EXPECT_EQ(const_cs.m_size, v_size);
@@ -125,7 +125,7 @@ TEST(TestStorage, test_split_storage)
     auto storage_sequence = sak::split_storage(storage, split);
 
     EXPECT_EQ(storage_sequence.size(), 5U);
-    for(uint32_t i = 0; i < storage_sequence.size(); ++i)
+    for (uint32_t i = 0; i < storage_sequence.size(); ++i)
     {
         EXPECT_EQ(storage_sequence[i].m_size, split);
     }
@@ -174,34 +174,34 @@ TEST(TestStorage, test_equal)
         std::vector<uint8_t> d1(10);
         std::vector<uint8_t> d2(11);
 
-        EXPECT_FALSE(sak::equal(sak::storage(d1),sak::storage(d2)));
-        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d1)));
-        EXPECT_TRUE(sak::equal(sak::storage(d2),sak::storage(d2)));
+        EXPECT_FALSE(sak::equal(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::equal(sak::storage(d2), sak::storage(d2)));
     }
 
     {
         std::vector<uint8_t> d1(10, 'a');
         std::vector<uint8_t> d2(10, 'b');
 
-        EXPECT_FALSE(sak::equal(sak::storage(d1),sak::storage(d2)));
-        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d1)));
-        EXPECT_TRUE(sak::equal(sak::storage(d2),sak::storage(d2)));
+        EXPECT_FALSE(sak::equal(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::equal(sak::storage(d2), sak::storage(d2)));
     }
 
     {
         std::vector<uint8_t> d1(10, 'a');
         std::vector<uint8_t> d2(10, 'a');
 
-        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d2)));
-        EXPECT_TRUE(sak::equal(sak::storage(d1),sak::storage(d1)));
-        EXPECT_TRUE(sak::equal(sak::storage(d2),sak::storage(d2)));
+        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::equal(sak::storage(d2), sak::storage(d2)));
     }
 
     {
         std::vector<uint8_t> d1(10, 'a');
         std::vector<uint8_t> d2(9, 'a');
 
-        EXPECT_FALSE(sak::equal(sak::storage(d1),sak::storage(d2)));
+        EXPECT_FALSE(sak::equal(sak::storage(d1), sak::storage(d2)));
     }
 
     {

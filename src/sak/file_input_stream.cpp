@@ -37,14 +37,14 @@ namespace sak
     {
     }
 
-    file_input_stream::file_input_stream(const std::string &filename)
+    file_input_stream::file_input_stream(const std::string& filename)
         : m_filesize(0)
     {
         open(filename);
     }
 
 
-    void file_input_stream::open(const std::string &filename)
+    void file_input_stream::open(const std::string& filename)
     {
         assert(!m_file.is_open());
 
@@ -55,15 +55,15 @@ namespace sak
         error::throw_error(ec);
     }
 
-    void file_input_stream::open(const std::string &filename,
-                                 boost::system::error_code &ec)
+    void file_input_stream::open(const std::string& filename,
+                                 boost::system::error_code& ec)
     {
         assert(!m_file.is_open());
 
         m_file.open(filename.c_str(),
-                    std::ios::in|std::ios::binary);
+                    std::ios::in | std::ios::binary);
 
-        if(!m_file.is_open())
+        if (!m_file.is_open())
         {
             ec = error::make_error_code(error::failed_open_file);
             return;
@@ -90,7 +90,7 @@ namespace sak
         return static_cast<uint32_t>(pos);
     }
 
-    void file_input_stream::read(uint8_t *buffer, uint32_t bytes)
+    void file_input_stream::read(uint8_t* buffer, uint32_t bytes)
     {
         assert(m_file.is_open());
 

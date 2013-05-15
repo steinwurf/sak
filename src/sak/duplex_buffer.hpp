@@ -23,8 +23,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SAK_DUPLEX_BUFFER_HPP
-#define SAK_DUPLEX_BUFFER_HPP
+#pragma once
 
 #include <cstdint>
 #include <vector>
@@ -68,15 +67,15 @@ namespace sak
 
         /// Creates a new buffer from an existing buffer
         /// @param buffer an existing buffer
-        duplex_buffer(const duplex_buffer &buffer);
+        duplex_buffer(const duplex_buffer& buffer);
 
         /// Initializes the buffer from an existing buffer
         /// @param buffer an existing buffer
-        duplex_buffer& operator=(const duplex_buffer &buffer);
+        duplex_buffer& operator=(const duplex_buffer& buffer);
 
         /// Swaps the content of two duplex_buffer objects.
         /// @param buffer the target buffer for the swap
-        void swap(duplex_buffer &buffer);
+        void swap(duplex_buffer& buffer);
 
         /// @return pointer to the data
         uint8_t* data();
@@ -169,4 +168,4 @@ namespace sak
     };
 }
 
-#endif
+

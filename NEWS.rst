@@ -7,6 +7,9 @@ of every change, see the Git log.
 Latest (minor)
 ------
 * Minor: Updated to waf-tools 2
+* Minor: Update to waf 1.7.10 
+* Minor: Remove unused boost::signals
+* Minor: Conforming to new coding style
 
 10.1.0
 ------

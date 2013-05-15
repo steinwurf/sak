@@ -27,7 +27,7 @@
 #include <stdint.h>
 #include <time.h>
 
-GTEST_API_ int main(int argc, char **argv)
+GTEST_API_ int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
 

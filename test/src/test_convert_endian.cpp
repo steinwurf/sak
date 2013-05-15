@@ -30,7 +30,8 @@
 // http://stackoverflow.com/questions/1001307/
 bool is_big_endian()
 {
-    union {
+    union
+    {
         uint32_t i;
         char c[4];
     } bint = {0x01020304};
@@ -62,7 +63,7 @@ TEST(ConvertEndian, Convert)
     }
 
     {
-        if(sak::host_endian::big_endian)
+        if (sak::host_endian::big_endian)
         {
             uint8_t data[2];
             uint16_t in  = 0x1122U;
@@ -96,7 +97,7 @@ TEST(ConvertEndian, Convert)
     }
 
     {
-        if(sak::host_endian::big_endian)
+        if (sak::host_endian::big_endian)
         {
             uint8_t data[4];
             uint32_t in  = 0x11223344U;
@@ -135,7 +136,7 @@ TEST(ConvertEndian, Convert)
 
 
     {
-        if(sak::host_endian::big_endian)
+        if (sak::host_endian::big_endian)
         {
             uint8_t data[8];
             uint64_t in  = 0x1122334455667788ULL;
@@ -187,7 +188,7 @@ TEST(ConvertEndian, Convert)
 TEST(ConvertEndian, ConvertTemplate)
 {
     {
-        if(sak::host_endian::big_endian)
+        if (sak::host_endian::big_endian)
         {
             uint8_t data[2];
             uint16_t in  = 0x1122U;

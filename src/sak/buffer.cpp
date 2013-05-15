@@ -40,12 +40,12 @@ namespace sak
         m_vector.resize(capacity);
     }
 
-    void buffer::append(const uint8_t *data, uint32_t size)
+    void buffer::append(const uint8_t* data, uint32_t size)
     {
         assert(data != 0);
         assert(size > 0);
 
-        if(m_size + size > m_vector.size())
+        if (m_size + size > m_vector.size())
         {
             m_vector.resize(m_size + size);
         }
@@ -54,7 +54,7 @@ namespace sak
         m_size += size;
     }
 
-    void buffer::append(const uint8_t *data_start, const uint8_t *data_end)
+    void buffer::append(const uint8_t* data_start, const uint8_t* data_end)
     {
         assert(data_start != 0);
         assert(data_end != 0);
@@ -86,7 +86,7 @@ namespace sak
         // should become important in an application
         // we could add that possibility as a reallocation-policy
 
-        if(size <= m_vector.size())
+        if (size <= m_vector.size())
         {
             m_size = size;
         }

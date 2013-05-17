@@ -26,6 +26,3 @@
 
 ERROR_TAG(unused, "reserved since errors should never be zero :)")
 ERROR_TAG(failed_open_file, "Could not open file")
-
-
-

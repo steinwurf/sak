@@ -1,4 +1,4 @@
-// Copyright (c) 2012, Steinwurf ApS
+// Copyright (c) 2012-2013, Steinwurf ApS
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,9 +23,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <cstdint>
+#include <ctime>
+
 #include <gtest/gtest.h>
-#include <stdint.h>
-#include <time.h>
 
 GTEST_API_ int main(int argc, char** argv)
 {

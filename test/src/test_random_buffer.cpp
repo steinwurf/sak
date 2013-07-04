@@ -35,15 +35,13 @@ void test_random_buffer(uint32_t buffer_size)
 {
     sak::random_buffer buffer;
 
+    // Fill the buffer with random data and embed the random seed
     buffer.fill(buffer_size, true);
     ASSERT_EQ(buffer.size(), buffer_size);
 
+    // Verify the contents of the buffer using the embedded random seed
     bool verified = buffer.verify();
     EXPECT_EQ(true, verified);
-
-//     uint8_t* data = buffer.data();
-//     for (uint32_t i = 0; i < buffer_size; ++i)
-//         std::cout << (int)data[i] << std::endl;
 }
 
 TEST(TestRandomBuffer, fill_and_verify_5)

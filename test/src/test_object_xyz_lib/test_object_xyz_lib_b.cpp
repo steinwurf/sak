@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2012 Steinwurf ApS
+// Copyright (c) 2011-2013 Steinwurf ApS
 // All Rights Reserved
 //
 // Redistribution and use in source and binary forms, with or without

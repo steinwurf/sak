@@ -6,6 +6,11 @@ of every change, see the Git log.
 
 Latest (minor)
 ------
+* TBD
+
+10.2.0
+------
+* Minor: Added random_buffer class that can be filled and verified using an embedded random seed
 * Minor: Updated to waf-tools 2
 * Minor: Update to waf 1.7.10 
 * Minor: Remove unused boost::signals
@@ -13,7 +18,7 @@ Latest (minor)
 
 10.1.0
 ------
-* Added the ceil_division.hpp for ceil'ed integer division.
+* Added the ceil_division.hpp for ceiled integer division.
 
 10.0.0
 ------

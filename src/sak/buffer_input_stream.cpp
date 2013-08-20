@@ -27,28 +27,19 @@
 
 namespace sak
 {
-    buffer_input_stream::buffer_input_stream(uint32_t size, const uint8_t* data)
-        : m_size(size),
-          m_data(data),
-          m_current_pos(0)
-    {
-        assert(m_size > 0);
-        assert(m_data != 0);
-    }
 
-    buffer_input_stream::buffer_input_stream(const_storage buff_stor)
-        : m_size(buff_stor.m_size),
-          m_data(buff_stor.m_data),
+    buffer_input_stream::buffer_input_stream(const_storage buffer_storage)
+        : m_buffer_storage(buffer_storage),
           m_current_pos(0)
     {
-        assert(m_size > 0);
-        assert(m_data != 0);
+        assert(m_buffer_storage.m_size > 0);
+        assert(m_buffer_storage.m_data != 0);
     }
 
 
     void buffer_input_stream::seek(uint32_t pos)
     {
-        assert(pos >= m_size);
+        assert(pos >= m_buffer_storage.m_size);
         m_current_pos = pos;
     }
 
@@ -60,16 +51,16 @@ namespace sak
     void buffer_input_stream::read(uint8_t* buffer, uint32_t bytes)
     {
         assert(bytes > 0);
-        assert(bytes + m_current_pos <= m_size);
+        assert(bytes + m_current_pos <= m_buffer_storage.m_size);
 
-        memcpy(buffer, m_data + m_current_pos, bytes);
+        memcpy(buffer, m_buffer_storage.m_data + m_current_pos, bytes);
 
         m_current_pos += bytes;
     }
 
     uint32_t buffer_input_stream::bytes_available()
     {
-        return m_size - m_current_pos;
+        return m_buffer_storage.m_size - m_current_pos;
     }
 
     bool buffer_input_stream::stopped()
@@ -79,7 +70,7 @@ namespace sak
 
     uint32_t buffer_input_stream::size()
     {
-        return m_size;
+        return m_buffer_storage.m_size;
     }
 
 }

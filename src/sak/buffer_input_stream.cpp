@@ -36,6 +36,16 @@ namespace sak
         assert(m_data != 0);
     }
 
+    buffer_input_stream::buffer_input_stream(const_storage buff_stor)
+        : m_size(buff_stor.m_size),
+          m_data(buff_stor.m_data),
+          m_current_pos(0)
+    {
+        assert(m_size > 0);
+        assert(m_data != 0);
+    }
+
+
     void buffer_input_stream::seek(uint32_t pos)
     {
         assert(pos >= m_size);

@@ -46,24 +46,30 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
             buffer[i] = (rand() % 255);
         }
 
-        boost::shared_ptr<sak::buffer_input_stream> input_stream
-            = sak::make_buffer_input( buffer );
+//        boost::shared_ptr<sak::buffer_input_stream> input_stream
+//            = sak::make_buffer_input( buffer );
 
-        ASSERT_TRUE( input_stream->size() == buffer_size );
-        ASSERT_TRUE( input_stream->read_position() == 0 );
+
+        const uint8_t* my_data = reinterpret_cast<const uint8_t*>(&buffer[0]);
+
+        sak::const_storage my_stor(my_data,buffer_size); 
+        sak::buffer_input_stream input_stream (my_stor);
+
+        ASSERT_TRUE( input_stream.size() == buffer_size );
+        ASSERT_TRUE( input_stream.read_position() == 0 );
 
         std::vector<char> buffer_out;
 
-        while ( input_stream->bytes_available() > 0 )
+        while ( input_stream.bytes_available() > 0 )
         {
             // Random read (always positive thus + 1)
             uint32_t read_request = (rand() % 100) + 1;
 
-            uint32_t read = std::min(read_request, input_stream->bytes_available());
+            uint32_t read = std::min(read_request, input_stream.bytes_available());
 
             std::vector<char> read_buffer(read, '\0');
 
-            input_stream->read( reinterpret_cast<uint8_t*>(read_buffer.data()), read );
+            input_stream.read( reinterpret_cast<uint8_t*>(read_buffer.data()), read );
 
             buffer_out.insert(buffer_out.end(), read_buffer.begin(), read_buffer.end());
         }

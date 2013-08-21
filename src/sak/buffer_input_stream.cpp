@@ -28,7 +28,7 @@
 namespace sak
 {
 
-    buffer_input_stream::buffer_input_stream(const_storage buffer_storage)
+    buffer_input_stream::buffer_input_stream(const const_storage& buffer_storage)
         : m_buffer_storage(buffer_storage),
           m_current_pos(0)
     {

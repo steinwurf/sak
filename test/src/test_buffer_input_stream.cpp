@@ -46,9 +46,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
             buffer[i] = (rand() % 255);
         }
 
-//        boost::shared_ptr<sak::buffer_input_stream> input_stream
-//            = sak::make_buffer_input( buffer );
-
+        // First: Implementation through const_storage constructor
 
         const uint8_t* my_data = reinterpret_cast<const uint8_t*>(&buffer[0]);
 
@@ -58,6 +56,24 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         ASSERT_TRUE( input_stream.size() == buffer_size );
         ASSERT_TRUE( input_stream.read_position() == 0 );
 
+
+        // Second: Implementation through storage conversion function
+
+
+        // buffer_b is another test buffer
+        std::vector<char> buffer_b(buffer_size, '\0');
+
+        // Conversion from buffer_b to my_storage_2
+        sak::const_storage my_storage_2 = sak::storage(buffer_b);
+
+        sak::buffer_input_stream input_stream_2 (my_storage_2);
+
+        ASSERT_TRUE( input_stream_2.size() == buffer_size );
+        ASSERT_TRUE( input_stream_2.read_position() == 0 );
+
+
+
+        // Reading from first storage 
         std::vector<char> buffer_out;
 
         while ( input_stream.bytes_available() > 0 )
@@ -65,18 +81,46 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
             // Random read (always positive thus + 1)
             uint32_t read_request = (rand() % 100) + 1;
 
-            uint32_t read = std::min(read_request, input_stream.bytes_available());
+            uint32_t read = std::min(read_request,
+                                     input_stream.bytes_available());
 
             std::vector<char> read_buffer(read, '\0');
 
-            input_stream.read( reinterpret_cast<uint8_t*>(read_buffer.data()), read );
+            input_stream.read(reinterpret_cast<uint8_t*>(read_buffer.data()),
+                              read);
 
-            buffer_out.insert(buffer_out.end(), read_buffer.begin(), read_buffer.end());
+            buffer_out.insert(buffer_out.end(), read_buffer.begin(),
+                              read_buffer.end());
         }
 
-        ASSERT_TRUE(std::equal(buffer.begin(), buffer.end(), buffer_out.begin()));
+        ASSERT_TRUE(std::equal(buffer.begin(), buffer.end(),
+                    buffer_out.begin()));
+
+
+        // Reading from second storage
+
+        std::vector<char> buffer_out_2;
+
+        while ( input_stream_2.bytes_available() > 0 )
+        {
+            // Random read (always positive thus + 1)
+            uint32_t read_request_2 = (rand() % 100) + 1;
+
+            uint32_t read_2 = std::min(read_request_2,
+                                     input_stream_2.bytes_available());
+
+            std::vector<char> read_buffer_2(read_2, '\0');
+
+            input_stream_2.read(reinterpret_cast<uint8_t*>(read_buffer_2.data()),
+                              read_2);
+
+            buffer_out_2.insert(buffer_out_2.end(), read_buffer_2.begin(),
+                              read_buffer_2.end());
+        }
+
+        ASSERT_TRUE(std::equal(buffer_b.begin(), buffer_b.end(),
+                    buffer_out_2.begin()));
 
     }
 
 }
-

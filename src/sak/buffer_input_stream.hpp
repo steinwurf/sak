@@ -47,7 +47,7 @@ namespace sak
 
         /// Constructor
         /// @param buffer_storage will be used as a data storage
-        buffer_input_stream(const_storage buffer_storage);
+        buffer_input_stream(const const_storage& buffer_storage);
 
     public: // From finite_input_stream
 

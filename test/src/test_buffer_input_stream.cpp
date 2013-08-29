@@ -101,11 +101,11 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         input_stream.seek(buffer_size - 2);
 
-        buffer_out.seek(buffer_size -2);
 
         const uint32_t m_data_position = input_stream.read_position();
 
-        const uint32_t m_data_out_position = buffer_out.read_position();
+
+        ASSERT_EQ(buffer_size - 2,m_data_position);
 
         // Reading from second storage
 

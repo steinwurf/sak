@@ -39,7 +39,7 @@ namespace sak
 
     void buffer_input_stream::seek(uint32_t pos)
     {
-        assert(pos >= m_buffer_storage.m_size);
+        assert(pos <= m_buffer_storage.m_size);
         m_current_pos = pos;
     }
 

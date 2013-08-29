@@ -96,6 +96,16 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         ASSERT_TRUE(std::equal(buffer.begin(), buffer.end(),
                     buffer_out.begin()));
 
+        //Check the positions "buffer_size - 2" read from input and output 
+        //buffer 1 with "seek" function
+
+        input_stream.seek(buffer_size - 2);
+
+        buffer_out.seek(buffer_size -2);
+
+        const uint32_t m_data_position = input_stream.read_position();
+
+        const uint32_t m_data_out_position = buffer_out.read_position();
 
         // Reading from second storage
 
@@ -111,8 +121,8 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
             std::vector<char> read_buffer_2(read_2, '\0');
 
-            input_stream_2.read(reinterpret_cast<uint8_t*>(read_buffer_2.data()),
-                              read_2);
+            input_stream_2.read(reinterpret_cast<uint8_t*>(
+                                read_buffer_2.data()),read_2);
 
             buffer_out_2.insert(buffer_out_2.end(), read_buffer_2.begin(),
                               read_buffer_2.end());
@@ -120,6 +130,13 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         ASSERT_TRUE(std::equal(buffer_b.begin(), buffer_b.end(),
                     buffer_out_2.begin()));
+
+        //Check that the input streams have "stopped"
+        //This only checks that the functions has been properly called
+        //since finite input streams will always stopped when they are readed
+
+        ASSERT_TRUE( input_stream.stopped() == true );
+        ASSERT_TRUE( input_stream_2.stopped() == true );
 
     }
 

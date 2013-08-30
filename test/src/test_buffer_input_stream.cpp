@@ -50,7 +50,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         const uint8_t* my_data = reinterpret_cast<const uint8_t*>(&buffer[0]);
 
-        sak::const_storage my_stor(my_data,buffer_size); 
+        sak::const_storage my_stor(my_data,buffer_size);
         sak::buffer_input_stream input_stream (my_stor);
 
         ASSERT_TRUE( input_stream.size() == buffer_size );
@@ -73,7 +73,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
 
 
-        // Reading from first storage 
+        // Reading from first storage
         std::vector<char> buffer_out;
 
         while ( input_stream.bytes_available() > 0 )
@@ -96,7 +96,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         ASSERT_TRUE(std::equal(buffer.begin(), buffer.end(),
                     buffer_out.begin()));
 
-        //Check the positions "buffer_size - 2" read from input and output 
+        //Check the positions "buffer_size - 2" read from input and output
         //buffer 1 with "seek" function
 
         input_stream.seek(buffer_size - 2);

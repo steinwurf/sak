@@ -4,15 +4,16 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest (minor)
+Latest
 ------
-* TBD
+* Bug: Fixed bug in the conversion functions for big endian platforms.
+  Reported by Martin Hundebøll.
 
 10.2.0
 ------
 * Minor: Added random_buffer class that can be filled and verified using an embedded random seed
 * Minor: Updated to waf-tools 2
-* Minor: Update to waf 1.7.10 
+* Minor: Update to waf 1.7.10
 * Minor: Remove unused boost::signals
 * Minor: Conforming to new coding style
 

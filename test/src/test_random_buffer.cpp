@@ -63,5 +63,3 @@ TEST(TestRandomBuffer, fill_and_verify_1234567)
 {
     test_random_buffer(1234567);
 }
-
-

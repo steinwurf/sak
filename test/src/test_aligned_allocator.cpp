@@ -99,5 +99,3 @@ TEST(TestAlignedAllocator, vector_zero_size)
     aligned_vector v(0);
     EXPECT_EQ(v.size(), 0U);
 }
-
-

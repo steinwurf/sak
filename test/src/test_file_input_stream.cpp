@@ -144,6 +144,3 @@ TEST(TestFileInputStream, ExceptionThrowConstructor)
     EXPECT_EQ(ec, sak::error::failed_open_file);
 
 }
-
-
-

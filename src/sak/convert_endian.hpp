@@ -44,125 +44,9 @@ namespace sak
 #endif
     };
 
-
-    template<bool Swap>
-    struct convert_endian;
-
-    template<>
-    struct convert_endian<true>
-    {
-        /// @copydoc big_endian::put16
-        static void put16(uint16_t value, uint8_t* buffer)
-        {
-            buffer[1] = (value & 0xFF);
-            buffer[0] = (value >> 8 & 0xFF);
-        }
-
-        /// @copydoc big_endian::put32
-        static void put32(uint32_t value, uint8_t* buffer)
-        {
-            buffer[3] = (value & 0xFF);
-            buffer[2] = ((value >> 8) & 0xFF);
-            buffer[1] = ((value >> 16) & 0xFF);
-            buffer[0] = ((value >> 24) & 0xFF);
-        }
-
-        /// @copydoc big_endian::put64
-        static void put64(uint64_t value, uint8_t* buffer)
-        {
-            buffer[7] = (value & 0xFF);
-            buffer[6] = ((value >> 8) & 0xFF);
-            buffer[5] = ((value >> 16) & 0xFF);
-            buffer[4] = ((value >> 24) & 0xFF);
-            buffer[3] = ((value >> 32) & 0xFF);
-            buffer[2] = ((value >> 40) & 0xFF);
-            buffer[1] = ((value >> 48) & 0xFF);
-            buffer[0] = ((value >> 56) & 0xFF);
-        }
-
-        /// @copydoc big_endian::get16
-        static uint16_t get16(const uint8_t* buffer)
-        {
-            return (buffer[0] << 8) | buffer[1];
-        }
-
-        /// @copydoc big_endian::get32
-        static uint32_t get32(const uint8_t* buffer)
-        {
-            return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
-        }
-
-        /// @copydoc big_endian::get64
-        static uint64_t get64(const uint8_t* buffer)
-        {
-            return (((uint64_t) buffer[0]) << 56) | (((uint64_t) buffer[1]) << 48) |
-                   (((uint64_t) buffer[2]) << 40) | (((uint64_t) buffer[3]) << 32) |
-                   (((uint64_t) buffer[4]) << 24) | (((uint64_t) buffer[5]) << 16) |
-                   (((uint64_t) buffer[6]) << 8)  | ((uint64_t) buffer[7]);
-        }
-    };
-
-    template<>
-    struct convert_endian<false>
-    {
-        /// @copydoc big_endian::put16
-        static void put16(uint16_t value, uint8_t* buffer)
-        {
-            buffer[0] = (value & 0xFF);
-            buffer[1] = (value >> 8 & 0xFF);
-        }
-
-        /// @copydoc big_endian::put32
-        static void put32(uint32_t value, uint8_t* buffer)
-        {
-            buffer[0] = (value & 0xFF);
-            buffer[1] = ((value >> 8) & 0xFF);
-            buffer[2] = ((value >> 16) & 0xFF);
-            buffer[3] = ((value >> 24) & 0xFF);
-        }
-
-        /// @copydoc big_endian::put64
-        static void put64(uint64_t value, uint8_t* buffer)
-        {
-            buffer[0] = (value & 0xFF);
-            buffer[1] = ((value >> 8) & 0xFF);
-            buffer[2] = ((value >> 16) & 0xFF);
-            buffer[3] = ((value >> 24) & 0xFF);
-            buffer[4] = ((value >> 32) & 0xFF);
-            buffer[5] = ((value >> 40) & 0xFF);
-            buffer[6] = ((value >> 48) & 0xFF);
-            buffer[7] = ((value >> 56) & 0xFF);
-        }
-
-        /// @copydoc big_endian::get16
-        static uint16_t get16(const uint8_t* buffer)
-        {
-            return (buffer[1] << 8) | buffer[0];
-        }
-
-        /// @copydoc big_endian::get32
-        static uint32_t get32(const uint8_t* buffer)
-        {
-            return (buffer[3] << 24) | (buffer[2] << 16) | (buffer[1] << 8) | buffer[0];
-        }
-
-        /// @copydoc big_endian::get64
-        static uint64_t get64(const uint8_t* buffer)
-        {
-            return (((uint64_t) buffer[7]) << 56) | (((uint64_t) buffer[6]) << 48) |
-                   (((uint64_t) buffer[5]) << 40) | (((uint64_t) buffer[4]) << 32) |
-                   (((uint64_t) buffer[3]) << 24) | (((uint64_t) buffer[2]) << 16) |
-                   (((uint64_t) buffer[1]) << 8)  | ((uint64_t) buffer[0]);
-        }
-    };
-
     // Inserts and extracts integers in big-endian format.
     struct big_endian
     {
-        /// If the host is not big endian swap becomes true
-        /// and all values read or written will be swapped
-        typedef convert_endian<host_endian::big_endian == false> convert;
-
         /// Gets an 8-bit value integer from a byte stream. Only exists for
         /// convince in the template based getters and putters!!
         /// @param buffer pointer to the byte stream buffer
@@ -189,7 +73,7 @@ namespace sak
         static uint16_t get16(const uint8_t* buffer)
         {
             assert(buffer != 0);
-            return convert::get16(buffer);
+            return (buffer[0] << 8) | buffer[1];
         }
 
         /// Inserts a 16-bit value into a byte stream in big-endian format.
@@ -197,7 +81,9 @@ namespace sak
         static void put16(uint16_t value, uint8_t* buffer)
         {
             assert(buffer != 0);
-            convert::put16(value, buffer);
+
+            buffer[1] = (value & 0xFF);
+            buffer[0] = (value >> 8 & 0xFF);
         }
 
         /// Gets a 32-bit value integer which is in big-endian format from a
@@ -206,7 +92,9 @@ namespace sak
         static uint32_t get32(const uint8_t* buffer)
         {
             assert(buffer != 0);
-            return convert::get32(buffer);
+            return (buffer[0] << 24) | (buffer[1] << 16) |
+                   (buffer[2] << 8)  | buffer[3];
+
         }
 
         /// Inserts a 32-bit value into a byte stream in big-endian format.
@@ -214,7 +102,11 @@ namespace sak
         static void put32(uint32_t value, uint8_t* buffer)
         {
             assert(buffer != 0);
-            convert::put32(value, buffer);
+
+            buffer[3] = (value & 0xFF);
+            buffer[2] = ((value >> 8) & 0xFF);
+            buffer[1] = ((value >> 16) & 0xFF);
+            buffer[0] = ((value >> 24) & 0xFF);
         }
 
         /// Gets a 64-bit value integer which is in big-endian format from a
@@ -223,7 +115,14 @@ namespace sak
         static uint64_t get64(const uint8_t* buffer)
         {
             assert(buffer != 0);
-            return convert::get64(buffer);
+            return (((uint64_t) buffer[0]) << 56) |
+                   (((uint64_t) buffer[1]) << 48) |
+                   (((uint64_t) buffer[2]) << 40) |
+                   (((uint64_t) buffer[3]) << 32) |
+                   (((uint64_t) buffer[4]) << 24) |
+                   (((uint64_t) buffer[5]) << 16) |
+                   (((uint64_t) buffer[6]) << 8)  |
+                   ((uint64_t) buffer[7]);
         }
 
         /// Inserts a 64-bit value into a byte stream in big-endian format.
@@ -231,7 +130,15 @@ namespace sak
         static void put64(uint64_t value, uint8_t* buffer)
         {
             assert(buffer != 0);
-            convert::put64(value, buffer);
+
+            buffer[7] = (value & 0xFF);
+            buffer[6] = ((value >> 8) & 0xFF);
+            buffer[5] = ((value >> 16) & 0xFF);
+            buffer[4] = ((value >> 24) & 0xFF);
+            buffer[3] = ((value >> 32) & 0xFF);
+            buffer[2] = ((value >> 40) & 0xFF);
+            buffer[1] = ((value >> 48) & 0xFF);
+            buffer[0] = ((value >> 56) & 0xFF);
         }
 
         /// Template based put and get functions, the main reason for these is

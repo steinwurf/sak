@@ -51,6 +51,7 @@ namespace sak
     void buffer_input_stream::read(uint8_t* buffer, uint32_t bytes)
     {
         assert(bytes > 0);
+        assert(buffer != 0);
         assert(bytes + m_current_pos <= m_buffer_storage.m_size);
 
         memcpy(buffer, m_buffer_storage.m_data + m_current_pos, bytes);

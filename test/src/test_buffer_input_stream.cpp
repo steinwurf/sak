@@ -37,7 +37,8 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
     srand(static_cast<uint32_t>(time(0)));
 
     {
-        uint32_t buffer_size = rand() % 100000;
+        // Ensure that  buffer size is greater than 2.
+        uint32_t buffer_size = (rand() % 100000) + 3;
 
         std::vector<char> buffer(buffer_size, '\0');
 

@@ -33,6 +33,7 @@
 #include <boost/static_assert.hpp>
 
 #include "finite_input_stream.hpp"
+#include "storage.hpp"
 
 namespace sak
 {
@@ -45,9 +46,8 @@ namespace sak
     public:
 
         /// Constructor
-        /// @param size the size in bytes of the buffer passed
-        /// @param data pointer to the data buffer
-        buffer_input_stream(uint32_t size, const uint8_t* data);
+        /// @param buffer_storage will be used as a data storage
+        buffer_input_stream(const const_storage& buffer_storage);
 
     public: // From finite_input_stream
 
@@ -73,33 +73,12 @@ namespace sak
 
     protected:
 
-        /// The size of the buffer contained
-        uint32_t m_size;
-
-        /// Pointer to the buffer
-        const uint8_t* m_data;
+        /// The buffer storage
+        const_storage m_buffer_storage;
 
         /// The current read position
         uint32_t m_current_pos;
 
     };
-
-    /// Helper functions making it easy to build a
-    /// buffer input stream over common buffer types
-    template<class T>
-    boost::shared_ptr<buffer_input_stream>
-    make_buffer_input(const std::vector<T>& v)
-    {
-        BOOST_STATIC_ASSERT(boost::is_pod<T>::value);
-        BOOST_STATIC_ASSERT(!boost::is_pointer<T>::value);
-
-        uint32_t size = static_cast<uint32_t>(v.size() * sizeof(T));
-        const uint8_t* data = reinterpret_cast<const uint8_t*>(&v[0]);
-
-        boost::shared_ptr<buffer_input_stream> b(
-            new buffer_input_stream(size, data));
-
-        return b;
-    }
 
 }

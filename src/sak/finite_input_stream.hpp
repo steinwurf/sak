@@ -60,5 +60,4 @@ namespace sak
         { return true; }
 
     };
-
 }

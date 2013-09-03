@@ -59,7 +59,3 @@ TEST(TestIsAligned, is_aligned16)
     EXPECT_EQ(sak::is_aligned((void*)0x0000000F, 16), false);
     EXPECT_EQ(sak::is_aligned((void*)0x00000010, 16), true);
 }
-
-
-
-

@@ -66,4 +66,3 @@ TEST(TestRandomInputStream, CreateRandomInputStream)
                                input_stream->data()));
     }
 }
-

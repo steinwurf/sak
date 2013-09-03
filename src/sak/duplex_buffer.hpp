@@ -167,5 +167,3 @@ namespace sak
         uint32_t m_data_size;
     };
 }
-
-

@@ -221,6 +221,3 @@ TEST(ConvertEndian, ConvertTemplate)
 
     }
 }
-
-
-

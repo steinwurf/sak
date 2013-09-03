@@ -60,16 +60,3 @@ class pear_factory
 public:
     boost::shared_ptr<pear> build(sak::object_registry&);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-

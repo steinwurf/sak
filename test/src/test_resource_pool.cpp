@@ -124,7 +124,3 @@ TEST(TestResourcePool, PoolDieBeforeObject)
     ASSERT_TRUE(dummy_object::m_count == 0);
 
 }
-
-
-
-

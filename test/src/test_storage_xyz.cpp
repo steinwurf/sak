@@ -215,5 +215,3 @@ TEST(TestStorage, test_equal)
 
 
 }
-
-

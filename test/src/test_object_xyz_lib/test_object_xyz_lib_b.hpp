@@ -51,16 +51,3 @@ class duck_factory
 public:
     boost::shared_ptr<duck> build(sak::object_registry&);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-

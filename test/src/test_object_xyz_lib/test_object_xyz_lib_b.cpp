@@ -53,15 +53,3 @@ boost::shared_ptr<duck> duck_factory::build(sak::object_registry& registry)
 {
     return boost::make_shared<duck>(registry);
 }
-
-
-
-
-
-
-
-
-
-
-
-

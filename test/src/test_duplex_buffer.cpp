@@ -73,7 +73,3 @@ TEST(TestDuplexBuffer, resize_and_fill)
     std::fill_n(buffer.data(), buffer.size(), 'b');
     EXPECT_EQ(buffer.size(), 10U);
 }
-
-
-
-

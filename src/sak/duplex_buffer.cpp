@@ -206,4 +206,3 @@ namespace sak
         m_back_capacity  = back_capacity;
     }
 }
-

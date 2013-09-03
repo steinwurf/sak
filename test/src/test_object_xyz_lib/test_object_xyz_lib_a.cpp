@@ -67,15 +67,3 @@ boost::shared_ptr<pear> pear_factory::build(sak::object_registry&)
 {
     return boost::make_shared<pear>();
 }
-
-
-
-
-
-
-
-
-
-
-
-

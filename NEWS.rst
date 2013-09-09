@@ -4,7 +4,7 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
-Latest
+10.2.1
 ------
 * Bug: Fixed bug in the conversion functions for big endian platforms.
   Reported by Martin Hundebøll.

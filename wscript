@@ -11,7 +11,7 @@ def recurse_helper(ctx, name):
         ctx.fatal('Load a tool to find %s as system dependency' % name)
     else:
         p = ctx.dependency_path(name)
-        ctx.recurse(p)
+        ctx.recurse([p])
 
 def options(opt):
 
@@ -73,6 +73,7 @@ def build(bld):
         # in a recurse call
         bld.recurse('test')
         bld.recurse('test/src/test_object_xyz_lib')
+
     bld.recurse('src/sak')
 
 

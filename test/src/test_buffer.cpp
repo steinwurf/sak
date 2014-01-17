@@ -27,32 +27,32 @@
 
 #include <sak/buffer.hpp>
 
-TEST(TestBuffer, construct)
-{
-    {
-        sak::buffer b;
-        EXPECT_EQ(b.size(), 0U);
-    }
+// TEST(TestBuffer, construct)
+// {
+//     {
+//         sak::buffer b;
+//         EXPECT_EQ(b.size(), 0U);
+//     }
+//
+//     {
+//         sak::buffer b;
+//         b.resize(100);
+//         EXPECT_EQ(b.size(), 100U);
+//     }
+//
+//     {
+//         sak::buffer b1;
+//         b1.resize(100);
+//         EXPECT_EQ(b1.size(), 100U);
+//
+//         sak::buffer b2 = b1;
+//         EXPECT_EQ(b2.size(), 100U);
+//     }
+// }
 
-    {
-        sak::buffer b;
-        b.resize(100);
-        EXPECT_EQ(b.size(), 100U);
-    }
 
-    {
-        sak::buffer b1;
-        b1.resize(100);
-        EXPECT_EQ(b1.size(), 100U);
-
-        sak::buffer b2 = b1;
-        EXPECT_EQ(b2.size(), 100U);
-    }
-}
-
-
-TEST(TestBuffer, append_to_empty)
-{
+//TEST(TestBuffer, append_to_empty)
+//{
 //     {
 //         sak::buffer b;
 //         EXPECT_EQ(b.size(), 0U);
@@ -79,8 +79,7 @@ TEST(TestBuffer, append_to_empty)
 //         b.append(sak::storage(data));
 //         EXPECT_EQ(b.size(), data.size());
 //     }
-
-}
+//}
 
 TEST(TestBuffer, append_to_initialized)
 {

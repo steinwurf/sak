@@ -61,25 +61,31 @@ TEST(TestBuffer, append_to_empty_with_size)
     b.append(&data[0], static_cast<uint32_t>(data.size()));
     EXPECT_EQ(data.size(), b.size());
 }
-//
-//     {
-//         sak::buffer b;
-//         EXPECT_EQ(b.size(), 0U);
-//
-//         std::vector<uint8_t> data(32);
-//         b.append(&data[0], &data[0] + data.size());
-//         EXPECT_EQ(b.size(), data.size());
-//     }
-//
-//     {
-//         sak::buffer b;
-//         EXPECT_EQ(b.size(), 0U);
-//
-//         std::vector<uint8_t> data(32);
-//         b.append(sak::storage(data));
-//         EXPECT_EQ(b.size(), data.size());
-//     }
-//}
+
+TEST(TestBuffer, append_to_empty_with_pointers)
+{
+    std::vector<uint8_t> data(32);
+    EXPECT_EQ(32U, data.size());
+
+    sak::buffer b;
+    EXPECT_EQ(b.size(), 0U);
+
+    b.append(&data[0], &data[0] + data.size());
+    EXPECT_EQ(b.size(), data.size());
+}
+
+TEST(TestBuffer, append_to_empty_with_storage)
+{
+    std::vector<uint8_t> data(32);
+    EXPECT_EQ(32U, data.size());
+
+    sak::buffer b;
+    EXPECT_EQ(b.size(), 0U);
+
+    b.append(sak::storage(data));
+    EXPECT_EQ(b.size(), data.size());
+}
+
 
 // TEST(TestBuffer, append_to_initialized)
 // {

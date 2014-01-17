@@ -53,32 +53,32 @@ TEST(TestBuffer, construct)
 
 TEST(TestBuffer, append_to_empty)
 {
-    {
-        sak::buffer b;
-        EXPECT_EQ(b.size(), 0U);
-
-        std::vector<uint8_t> data(32, 'x');
-        b.append(&data[0], static_cast<uint32_t>(data.size()));
-        EXPECT_EQ(b.size(), data.size());
-    }
-
-    {
-        sak::buffer b;
-        EXPECT_EQ(b.size(), 0U);
-
-        std::vector<uint8_t> data(32, 'x');
-        b.append(&data[0], &data[0] + data.size());
-        EXPECT_EQ(b.size(), data.size());
-    }
-
-    {
-        sak::buffer b;
-        EXPECT_EQ(b.size(), 0U);
-
-        std::vector<uint8_t> data(32, 'x');
-        b.append(sak::storage(data));
-        EXPECT_EQ(b.size(), data.size());
-    }
+//     {
+//         sak::buffer b;
+//         EXPECT_EQ(b.size(), 0U);
+//
+//         std::vector<uint8_t> data(32, 'x');
+//         b.append(&data[0], static_cast<uint32_t>(data.size()));
+//         EXPECT_EQ(b.size(), data.size());
+//     }
+//
+//     {
+//         sak::buffer b;
+//         EXPECT_EQ(b.size(), 0U);
+//
+//         std::vector<uint8_t> data(32, 'x');
+//         b.append(&data[0], &data[0] + data.size());
+//         EXPECT_EQ(b.size(), data.size());
+//     }
+//
+//     {
+//         sak::buffer b;
+//         EXPECT_EQ(b.size(), 0U);
+//
+//         std::vector<uint8_t> data(32, 'x');
+//         b.append(sak::storage(data));
+//         EXPECT_EQ(b.size(), data.size());
+//     }
 
 }
 

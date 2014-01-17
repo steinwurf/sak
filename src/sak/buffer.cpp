@@ -31,7 +31,7 @@ namespace sak
 {
 
     buffer::buffer()
-        : m_size(0)
+        : m_size(0), m_vector(10)
     { }
 
     buffer::buffer(uint32_t capacity)
@@ -54,15 +54,15 @@ namespace sak
         m_size += size;
     }
 
-//     void buffer::append(const uint8_t* data_start, const uint8_t* data_end)
-//     {
-//         assert(data_start != 0);
-//         assert(data_end != 0);
-//         assert(data_start < data_end);
-//
-//         uint32_t size = static_cast<uint32_t>(data_end - data_start);
-//         append(data_start, size);
-//     }
+    void buffer::append(const uint8_t* data_start, const uint8_t* data_end)
+    {
+        assert(data_start != 0);
+        assert(data_end != 0);
+        assert(data_start < data_end);
+
+        uint32_t size = static_cast<uint32_t>(data_end - data_start);
+        append(data_start, size);
+    }
 
     const uint8_t* buffer::data() const
     {

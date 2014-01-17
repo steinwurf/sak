@@ -111,36 +111,34 @@
 //     }
 //
 // }
-//
-//
-// TEST(TestBuffer, resize_and_clear)
-// {
-//     sak::buffer b(100);
-//     EXPECT_EQ(b.size(), 0U);
-//     std::fill_n(b.data(), b.size(), 'x');
-//
-//     b.resize(10);
-//     EXPECT_EQ(b.size(), 10U);
-//     std::fill_n(b.data(), b.size(), 'x');
-//
-//     b.resize(101);
-//     EXPECT_EQ(b.size(), 101U);
-//     std::fill_n(b.data(), b.size(), 'x');
-//
-//     b.clear();
-//     EXPECT_EQ(b.size(), 0U);
-//
-//     b.resize(0);
-//     EXPECT_EQ(b.size(), 0U);
-//
-//     b.resize(102);
-//     EXPECT_EQ(b.size(), 102U);
-//     std::fill_n(b.data(), b.size(), 'x');
-//
-//     b.resize(0);
-//     EXPECT_EQ(b.size(), 0U);
-//
-//     b.clear();
-//     EXPECT_EQ(b.size(), 0U);
-//
-// }
+
+TEST(TestBuffer, resize_and_clear)
+{
+    sak::buffer b(100);
+    EXPECT_EQ(b.size(), 0U);
+    std::fill_n(b.data(), b.size(), 'x');
+
+    b.resize(10);
+    EXPECT_EQ(b.size(), 10U);
+    std::fill_n(b.data(), b.size(), 'x');
+
+    b.resize(101);
+    EXPECT_EQ(b.size(), 101U);
+    std::fill_n(b.data(), b.size(), 'x');
+
+    b.clear();
+    EXPECT_EQ(b.size(), 0U);
+
+    b.resize(0);
+    EXPECT_EQ(b.size(), 0U);
+
+    b.resize(102);
+    EXPECT_EQ(b.size(), 102U);
+    std::fill_n(b.data(), b.size(), 'x');
+
+    b.resize(0);
+    EXPECT_EQ(b.size(), 0U);
+
+    b.clear();
+    EXPECT_EQ(b.size(), 0U);
+}

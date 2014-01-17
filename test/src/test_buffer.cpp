@@ -30,42 +30,42 @@
 TEST(TestBuffer, construct)
 {
     sak::buffer b;
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 }
 
 TEST(TestBuffer, resize)
 {
     sak::buffer b;
     b.resize(100);
-    EXPECT_EQ(b.size(), 100U);
+    EXPECT_EQ(100U, b.size());
 }
 
 TEST(TestBuffer, resize_and_copy)
 {
     sak::buffer b1;
     b1.resize(100);
-    EXPECT_EQ(b1.size(), 100U);
+    EXPECT_EQ(100U, b1.size());
 
     sak::buffer b2 = b1;
-    EXPECT_EQ(b2.size(), 100U);
+    EXPECT_EQ(100U, b2.size());
 }
 
 TEST(TestBuffer, append_to_empty_with_size)
 {
     sak::buffer b;
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 
-    std::vector<uint8_t> data(32, 'x');
-    EXPECT_EQ(data.size(), 32U);
+    std::vector<uint8_t> data(32);
+    EXPECT_EQ(32U, data.size());
     b.append(&data[0], static_cast<uint32_t>(data.size()));
-    EXPECT_EQ(b.size(), data.size());
+    EXPECT_EQ(data.size(), b.size());
 }
 //
 //     {
 //         sak::buffer b;
 //         EXPECT_EQ(b.size(), 0U);
 //
-//         std::vector<uint8_t> data(32, 'x');
+//         std::vector<uint8_t> data(32);
 //         b.append(&data[0], &data[0] + data.size());
 //         EXPECT_EQ(b.size(), data.size());
 //     }
@@ -74,7 +74,7 @@ TEST(TestBuffer, append_to_empty_with_size)
 //         sak::buffer b;
 //         EXPECT_EQ(b.size(), 0U);
 //
-//         std::vector<uint8_t> data(32, 'x');
+//         std::vector<uint8_t> data(32);
 //         b.append(sak::storage(data));
 //         EXPECT_EQ(b.size(), data.size());
 //     }
@@ -114,30 +114,30 @@ TEST(TestBuffer, append_to_empty_with_size)
 TEST(TestBuffer, resize_and_clear)
 {
     sak::buffer b(100);
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
     std::fill_n(b.data(), b.size(), 'x');
 
     b.resize(10);
-    EXPECT_EQ(b.size(), 10U);
+    EXPECT_EQ(10U, b.size());
     std::fill_n(b.data(), b.size(), 'x');
 
     b.resize(101);
-    EXPECT_EQ(b.size(), 101U);
+    EXPECT_EQ(101U, b.size());
     std::fill_n(b.data(), b.size(), 'x');
 
     b.clear();
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 
     b.resize(0);
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 
     b.resize(102);
-    EXPECT_EQ(b.size(), 102U);
+    EXPECT_EQ(102U, b.size());
     std::fill_n(b.data(), b.size(), 'x');
 
     b.resize(0);
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 
     b.clear();
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 }

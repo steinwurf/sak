@@ -32,7 +32,7 @@ namespace sak
 {
 
     buffer::buffer()
-        : m_size(0), m_vector(10)
+        : m_size(0)
     { }
 
     buffer::buffer(uint32_t capacity)

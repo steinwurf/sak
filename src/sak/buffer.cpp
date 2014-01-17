@@ -23,9 +23,10 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "buffer.hpp"
-
+#include <iostream>
 #include <algorithm>
+
+#include "buffer.hpp"
 
 namespace sak
 {
@@ -47,7 +48,9 @@ namespace sak
 
         if (m_size + size > m_vector.size())
         {
+            std::cout << "Before vector resize\n";
             m_vector.resize(m_size + size);
+            std::cout << "After vector resize\n";
         }
 
         std::copy_n(data, size, &m_vector[m_size]);

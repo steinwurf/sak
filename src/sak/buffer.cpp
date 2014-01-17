@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Steinwurf ApS
+// Copyright (c) 2012-2014 Steinwurf ApS
 // All Rights Reserved
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,7 +23,6 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <iostream>
 #include <algorithm>
 
 #include "buffer.hpp"
@@ -48,9 +47,7 @@ namespace sak
 
         if (m_size + size > m_vector.size())
         {
-            std::cout << "Before vector resize\n";
             m_vector.resize(m_size + size);
-            std::cout << "After vector resize\n";
         }
 
         std::copy_n(data, size, &m_vector[m_size]);

@@ -1,4 +1,4 @@
-// Copyright (c) 2012, Steinwurf ApS
+// Copyright (c) 2012-2014, Steinwurf ApS
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -68,10 +68,10 @@ TEST(TestBuffer, append_to_empty_with_pointers)
     EXPECT_EQ(32U, data.size());
 
     sak::buffer b;
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 
     b.append(&data[0], &data[0] + data.size());
-    EXPECT_EQ(b.size(), data.size());
+    EXPECT_EQ(data.size(), b.size());
 }
 
 TEST(TestBuffer, append_to_empty_with_storage)
@@ -80,10 +80,10 @@ TEST(TestBuffer, append_to_empty_with_storage)
     EXPECT_EQ(32U, data.size());
 
     sak::buffer b;
-    EXPECT_EQ(b.size(), 0U);
+    EXPECT_EQ(0U, b.size());
 
     b.append(sak::storage(data));
-    EXPECT_EQ(b.size(), data.size());
+    EXPECT_EQ(data.size(), b.size());
 }
 
 
@@ -94,10 +94,10 @@ TEST(TestBuffer, append_to_initialized)
         EXPECT_EQ(32U, data.size());
 
         sak::buffer b(10);
-        EXPECT_EQ(b.size(), 0U);
+        EXPECT_EQ(0U, b.size());
 
         b.append(&data[0], static_cast<uint32_t>(data.size()));
-        EXPECT_EQ(b.size(), data.size());
+        EXPECT_EQ(data.size(), b.size());
     }
 
     {
@@ -105,10 +105,10 @@ TEST(TestBuffer, append_to_initialized)
         EXPECT_EQ(32U, data.size());
 
         sak::buffer b(10);
-        EXPECT_EQ(b.size(), 0U);
+        EXPECT_EQ(0U, b.size());
 
         b.append(&data[0], &data[0] + data.size());
-        EXPECT_EQ(b.size(), data.size());
+        EXPECT_EQ(data.size(), b.size());
     }
 
     {
@@ -116,10 +116,10 @@ TEST(TestBuffer, append_to_initialized)
         EXPECT_EQ(32U, data.size());
 
         sak::buffer b(10);
-        EXPECT_EQ(b.size(), 0U);
+        EXPECT_EQ(0U, b.size());
 
         b.append(sak::storage(data));
-        EXPECT_EQ(b.size(), data.size());
+        EXPECT_EQ(data.size(), b.size());
     }
 }
 

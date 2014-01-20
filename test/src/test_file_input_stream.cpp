@@ -96,42 +96,42 @@ TEST(TestFileInputStream, ReadRandomFile)
     }
 }
 
-#if defined(__EXCEPTIONS)
+// #if defined(__EXCEPTIONS)
+
+// /// Tests error handling with exception
+// TEST(TestFileInputStream, ExceptionThrow)
+// {
+
+//     sak::file_input_stream fs;
+//     boost::system::error_code ec;
+
+//     try
+//     {
+//         fs.open("strange_file_that_should_not_exist.notfound");
+//     }
+//     catch (const boost::system::system_error& error)
+//     {
+//         ec = error.code();
+//     }
+
+//     EXPECT_EQ(ec, sak::error::failed_open_file);
+
+// }
+
+// #endif
 
 /// Tests error handling with exception
-TEST(TestFileInputStream, ExceptionThrow)
+TEST(TestFileInputStream, ExceptionReturn)
 {
 
     sak::file_input_stream fs;
-    boost::system::error_code ec;
 
-    try
-    {
-        fs.open("strange_file_that_should_not_exist.notfound");
-    }
-    catch (const boost::system::system_error& error)
-    {
-        ec = error.code();
-    }
+    boost::system::error_code ec;
+    fs.open("strange_file_that_should_not_exist.notfound", ec);
 
     EXPECT_EQ(ec, sak::error::failed_open_file);
 
 }
-
-#endif
-
-// /// Tests error handling with exception
-// TEST(TestFileInputStream, ExceptionReturn)
-// {
-//
-//     sak::file_input_stream fs;
-//
-//     boost::system::error_code ec;
-//     fs.open("strange_file_that_should_not_exist.notfound", ec);
-//
-//     EXPECT_EQ(ec, sak::error::failed_open_file);
-//
-// }
 //
 // /// Tests error handling with exception in constructor
 // TEST(TestFileInputStream, ExceptionThrowConstructor)

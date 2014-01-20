@@ -51,7 +51,7 @@ TEST(TestFileInputStream, ReadRandomFile)
         std::ofstream output_file(file_name.c_str(),
                                   std::ios::out | std::ios::binary);
 
-        ASSERT_TRUE(output_file);
+        ASSERT_TRUE(output_file.is_open());
 
         output_file.write(&output_buffer[0], file_size);
         output_file.close();

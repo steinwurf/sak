@@ -117,6 +117,10 @@ TEST(TestFileInputStream, ExceptionThrow)
     {
         ec = error.code();
     }
+    catch (...)
+    {
+        std::cout << "Catch default" << std::endl;
+    }
 
     EXPECT_EQ(ec, sak::error::failed_open_file);
 

@@ -70,14 +70,24 @@ namespace sak
         }
 
         m_file.seekg(0, std::ios::end);
+        assert(m_file);
+
         m_filesize = read_position();
         m_file.seekg(0, std::ios::beg);
+        assert(m_file);
     }
 
     void file_input_stream::seek(uint32_t pos)
     {
         assert(m_file.is_open());
-        assert(m_file.seekg(pos, std::ios::beg));
+        m_file.seekg(pos, std::ios::beg);
+        assert(m_file);
+
+        // if(m_file.fail())
+        // {
+        //     ec = error::make_error_code(error::failed_open_file);
+        //     return;
+        // }
     }
 
     uint32_t file_input_stream::read_position()

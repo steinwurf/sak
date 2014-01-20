@@ -115,6 +115,7 @@ TEST(TestFileInputStream, ExceptionThrow)
     }
     catch (const boost::system::system_error& error)
     {
+        std::cout << "In catch" << std::endl;
         ec = error.code();
     }
     catch (...)

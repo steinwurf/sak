@@ -94,6 +94,8 @@ namespace sak
     {
         assert(m_file.is_open());
 
+        std::cout << "EOF " << m_file.eof() << std::endl;
+
         std::streamoff pos = m_file.tellg();
         std::cout << "tellg = " << (int32_t) pos << std::endl;
 

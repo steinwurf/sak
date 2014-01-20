@@ -60,7 +60,10 @@ TEST(TestFileInputStream, ReadRandomFile)
         // Now test we can read it back
         sak::file_input_stream fs;
 
-        fs.open(file_name);
+        boost::system::error_code ec;
+
+        fs.open(file_name, ec);
+        ASSERT_TRUE(ec);
 
         ASSERT_EQ(file_size, fs.bytes_available());
 

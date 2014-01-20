@@ -34,6 +34,8 @@
 
 #include <sak/file_input_stream.hpp>
 
+#include <boost/preprocessor/facilities/is_empty.hpp>
+
 
 /// Tests reading a file, the file is crated a priori
 TEST(TestFileInputStream, ReadRandomFile)
@@ -112,7 +114,7 @@ TEST(TestFileInputStream, ExceptionThrow)
 #ifdef __GLIBCPP__
     std::printf("GLIBCPP: %d\n",__GLIBCPP__);
 #endif
-#ifdef __GLIBCXX__
+#if (defined(__GLIBCXX__) && !BOOST_PP_IS_EMPTY(__GLIBCXX__))
     std::printf("GLIBCXX: %d\n",__GLIBCXX__);
 #endif
 

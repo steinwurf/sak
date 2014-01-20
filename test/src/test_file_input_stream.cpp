@@ -63,7 +63,7 @@ TEST(TestFileInputStream, ReadRandomFile)
         boost::system::error_code ec;
 
         fs.open(file_name, ec);
-        ASSERT_TRUE(ec);
+        ASSERT_FALSE(ec);
 
         ASSERT_EQ(file_size, fs.bytes_available());
 

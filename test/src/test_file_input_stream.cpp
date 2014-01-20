@@ -74,7 +74,6 @@ TEST(TestFileInputStream, ReadRandomFile)
         while (fs.bytes_available() > 0)
         {
             uint32_t read = std::min(read_size, fs.bytes_available());
-            std::cout << "Read " << read << std::endl;
 
             ASSERT_TRUE(read <= read_size);
 

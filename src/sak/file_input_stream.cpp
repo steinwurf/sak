@@ -89,12 +89,6 @@ namespace sak
         assert(m_file.is_open());
         m_file.seekg(pos, std::ios::beg);
         assert(m_file);
-
-        // if(m_file.fail())
-        // {
-        //     ec = error::make_error_code(error::failed_open_file);
-        //     return;
-        // }
     }
 
     uint32_t file_input_stream::read_position()
@@ -113,8 +107,6 @@ namespace sak
         else
         {
             std::streamoff pos = m_file.tellg();
-            std::cout << "tellg = " << (int32_t) pos << std::endl;
-
             assert(pos >= 0);
 
             return static_cast<uint32_t>(pos);
@@ -124,8 +116,6 @@ namespace sak
     void file_input_stream::read(uint8_t* buffer, uint32_t bytes)
     {
         assert(m_file.is_open());
-        std::cout << "file_input_stream::read " << bytes << std::endl;
-
         m_file.read(reinterpret_cast<char*>(buffer), bytes);
 
         assert(bytes == static_cast<uint32_t>(m_file.gcount()));
@@ -134,8 +124,6 @@ namespace sak
     uint32_t file_input_stream::bytes_available()
     {
         assert(m_file.is_open());
-        std::cout << "file_input_stream::bytes_available " << std::endl;
-
         uint32_t pos = read_position();
         assert(pos <= m_filesize);
 

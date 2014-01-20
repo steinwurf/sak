@@ -105,7 +105,7 @@ TEST(TestFileInputStream, ExceptionThrow)
     sak::file_input_stream fs;
     boost::system::error_code ec;
 
-    std::cout << "Excpetions defined " << std::endl;
+    std::cout << "Excpetions defined" << std::endl;
 
     try
     {

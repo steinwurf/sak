@@ -52,6 +52,7 @@ namespace sak
         open(filename, ec);
 
         // If an error throw
+        std::cout << "before throw" << std::endl;
         error::throw_error(ec);
     }
 

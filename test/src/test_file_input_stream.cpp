@@ -109,7 +109,9 @@ TEST(TestFileInputStream, ExceptionThrow)
 
     try
     {
+        std::cout << "before open" << std::endl;
         fs.open("strange_file_that_should_not_exist.notfound");
+        std::cout << "after open" << std::endl;
     }
     catch (const boost::system::system_error& error)
     {

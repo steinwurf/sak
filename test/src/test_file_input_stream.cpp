@@ -96,29 +96,31 @@ TEST(TestFileInputStream, ReadRandomFile)
     }
 }
 
-// #if defined(__EXCEPTIONS)
+#if defined(__EXCEPTIONS)
 
-// /// Tests error handling with exception
-// TEST(TestFileInputStream, ExceptionThrow)
-// {
+/// Tests error handling with exception
+TEST(TestFileInputStream, ExceptionThrow)
+{
 
-//     sak::file_input_stream fs;
-//     boost::system::error_code ec;
+    sak::file_input_stream fs;
+    boost::system::error_code ec;
 
-//     try
-//     {
-//         fs.open("strange_file_that_should_not_exist.notfound");
-//     }
-//     catch (const boost::system::system_error& error)
-//     {
-//         ec = error.code();
-//     }
+    std::cout << "Excpetions defined " << std::endl;
 
-//     EXPECT_EQ(ec, sak::error::failed_open_file);
+    try
+    {
+        fs.open("strange_file_that_should_not_exist.notfound");
+    }
+    catch (const boost::system::system_error& error)
+    {
+        ec = error.code();
+    }
 
-// }
+    EXPECT_EQ(ec, sak::error::failed_open_file);
 
-// #endif
+}
+
+#endif
 
 /// Tests error handling with exception
 TEST(TestFileInputStream, ExceptionReturn)

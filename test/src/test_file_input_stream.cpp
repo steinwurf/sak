@@ -36,7 +36,6 @@
 /// Tests reading a file, the file is crated a priori
 TEST(TestFileInputStream, ReadRandomFile)
 {
-    srand(static_cast<uint32_t>(time(0)));
 
     {
         uint32_t file_size = 1000000;

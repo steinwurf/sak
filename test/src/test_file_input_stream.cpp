@@ -38,7 +38,7 @@ TEST(TestFileInputStream, ReadRandomFile)
 {
 
     {
-        uint32_t file_size = 1000000;
+        uint32_t file_size = 1000;
         std::string file_name("test.txt");
 
         std::vector<char> output_buffer(file_size, '\0');

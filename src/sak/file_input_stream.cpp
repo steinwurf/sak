@@ -108,7 +108,7 @@ namespace sak
 
         if(m_file.eof())
         {
-            return m_file_size;
+            return m_filesize;
         }
         else
         {

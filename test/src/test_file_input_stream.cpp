@@ -96,6 +96,8 @@ TEST(TestFileInputStream, ReadRandomFile)
     }
 }
 
+#if defined(__EXCEPTIONS)
+
 /// Tests error handling with exception
 TEST(TestFileInputStream, ExceptionThrow)
 {
@@ -115,6 +117,8 @@ TEST(TestFileInputStream, ExceptionThrow)
     EXPECT_EQ(ec, sak::error::failed_open_file);
 
 }
+
+#endif
 
 // /// Tests error handling with exception
 // TEST(TestFileInputStream, ExceptionReturn)

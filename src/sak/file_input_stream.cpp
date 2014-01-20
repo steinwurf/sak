@@ -53,7 +53,13 @@ namespace sak
 
         // If an error throw
         std::cout << "before throw" << std::endl;
-        error::throw_error(ec);
+        if(ec)
+        {
+            boost::system::system_error e(ec);
+            std::cout << "right before throw" << std::endl;
+            throw ec;
+        }
+        // error::throw_error(ec);
     }
 
     void file_input_stream::open(const std::string& filename,

@@ -23,6 +23,8 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <cstdio>
+
 #include <cstdint>
 #include <ctime>
 #include <algorithm>
@@ -36,64 +38,64 @@
 /// Tests reading a file, the file is crated a priori
 TEST(TestFileInputStream, ReadRandomFile)
 {
+    uint32_t file_size = 1000;
+    std::string file_name("test.txt");
 
+    std::vector<char> output_buffer(file_size, '\0');
+
+    for (uint32_t i = 0; i < file_size; ++i)
     {
-        uint32_t file_size = 1000;
-        std::string file_name("test.txt");
+        output_buffer[i] = (rand() % 255);
+    }
 
-        std::vector<char> output_buffer(file_size, '\0');
+    std::ofstream output_file(file_name.c_str(),
+                                std::ios::out | std::ios::binary);
 
-        for (uint32_t i = 0; i < file_size; ++i)
-        {
-            output_buffer[i] = (rand() % 255);
-        }
+    ASSERT_TRUE(output_file.is_open());
 
-        std::ofstream output_file(file_name.c_str(),
-                                  std::ios::out | std::ios::binary);
-
-        ASSERT_TRUE(output_file.is_open());
-
-        output_file.write(&output_buffer[0], file_size);
-        output_file.close();
+    output_file.write(&output_buffer[0], file_size);
+    output_file.close();
 
 
-        // Now test we can read it back
-        sak::file_input_stream fs;
+    // Now test we can read it back
+    sak::file_input_stream fs;
 
-        boost::system::error_code ec;
+    boost::system::error_code ec;
 
-        fs.open(file_name, ec);
-        ASSERT_FALSE(ec);
+    fs.open(file_name, ec);
+    ASSERT_FALSE(ec);
 
-        ASSERT_EQ(file_size, fs.bytes_available());
+    ASSERT_EQ(file_size, fs.bytes_available());
 
-        uint32_t read_size = 512;
+    uint32_t read_size = 512;
 
-        std::vector<char> input_buffer;
+    std::vector<char> input_buffer;
 
-        while (fs.bytes_available() > 0)
-        {
-            uint32_t read = std::min(read_size, fs.bytes_available());
+    while (fs.bytes_available() > 0)
+    {
+        uint32_t read = std::min(read_size, fs.bytes_available());
 
-            ASSERT_TRUE(read <= read_size);
+        ASSERT_TRUE(read <= read_size);
 
-            std::vector<char> temp(read, '\0');
-            fs.read(reinterpret_cast<uint8_t*>(&temp[0]), read);
+        std::vector<char> temp(read, '\0');
+        fs.read(reinterpret_cast<uint8_t*>(&temp[0]), read);
 
-            input_buffer.insert(input_buffer.end(),
-                                temp.begin(),
-                                temp.end());
-
-        }
-
-        bool result = std::equal( input_buffer.begin(),
-                                  input_buffer.end(),
-                                  output_buffer.begin() );
-
-
-        ASSERT_TRUE(result);
+        input_buffer.insert(input_buffer.end(),
+                            temp.begin(),
+                            temp.end());
 
     }
+    // Always close the input file stream
+    fs.close();
+
+    bool result = std::equal(input_buffer.begin(),
+                                input_buffer.end(),
+                                output_buffer.begin());
+
+    ASSERT_TRUE(result);
+
+    // Make sure that test.txt is removed after the test
+    EXPECT_EQ(0, std::remove(file_name.c_str()));
 }
 
 #if defined(__EXCEPTIONS)
@@ -106,6 +108,13 @@ TEST(TestFileInputStream, ExceptionThrow)
     boost::system::error_code ec;
 
     std::cout << "Excpetions defined" << std::endl;
+
+#ifdef __GLIBCPP__
+    std::printf("GLIBCPP: %d\n",__GLIBCPP__);
+#endif
+#ifdef __GLIBCXX__
+    std::printf("GLIBCXX: %d\n",__GLIBCXX__);
+#endif
 
     try
     {

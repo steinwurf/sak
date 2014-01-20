@@ -59,6 +59,9 @@ namespace sak
         /// @param ec on error set to indicate the type of error
         void open(const std::string& filename, boost::system::error_code& ec);
 
+        /// Closes the file
+        void close();
+
     public: // From finite_input_stream
 
         /// @copydoc finite_input_stream::seek()

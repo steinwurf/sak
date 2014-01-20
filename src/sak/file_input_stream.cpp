@@ -91,6 +91,12 @@ namespace sak
         assert(m_file);
     }
 
+    void file_input_stream::close()
+    {
+        assert(m_file.is_open());
+        m_file.close();
+    }
+
     void file_input_stream::seek(uint32_t pos)
     {
         assert(m_file.is_open());

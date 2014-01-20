@@ -57,7 +57,7 @@ namespace sak
         {
             boost::system::system_error e(ec);
             std::cout << "right before throw" << std::endl;
-            throw ec;
+            throw e;
         }
         // error::throw_error(ec);
     }

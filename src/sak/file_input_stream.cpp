@@ -72,7 +72,14 @@ namespace sak
         m_file.seekg(0, std::ios::end);
         assert(m_file);
 
-        m_filesize = read_position();
+        // We cannot use the read_position function here due to a
+        // problem on the iOS platform described in the read_position
+        // function.
+        auto pos = m_file.tellg();
+        assert(pos >= 0);
+
+        m_filesize = (uint32_t) pos;
+
         m_file.seekg(0, std::ios::beg);
         assert(m_file);
     }
@@ -94,14 +101,24 @@ namespace sak
     {
         assert(m_file.is_open());
 
-        std::cout << "EOF " << m_file.eof() << std::endl;
+        // Work around for problem on iOS where tellg returned -1 when
+        // reading the last byte. However the EOF flag was correctly
+        // set. So here we check for EOF if true we set the
+        // read_position = m_file_size
 
-        std::streamoff pos = m_file.tellg();
-        std::cout << "tellg = " << (int32_t) pos << std::endl;
+        if(m_file.eof())
+        {
+            return m_file_size;
+        }
+        else
+        {
+            std::streamoff pos = m_file.tellg();
+            std::cout << "tellg = " << (int32_t) pos << std::endl;
 
-        assert(pos >= 0);
+            assert(pos >= 0);
 
-        return static_cast<uint32_t>(pos);
+            return static_cast<uint32_t>(pos);
+        }
     }
 
     void file_input_stream::read(uint8_t* buffer, uint32_t bytes)

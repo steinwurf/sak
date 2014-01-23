@@ -33,7 +33,6 @@ TEST(TestAlignedAllocator, construct)
     EXPECT_EQ(alloc.alignment(), sak::platform::simd_align);
 }
 
-
 TEST(TestAlignedAllocator, vector)
 {
     typedef std::vector<uint32_t, sak::aligned_allocator<uint32_t> >
@@ -74,7 +73,6 @@ TEST(TestAlignedAllocator, vector)
     v2.push_back(11);
 
     EXPECT_TRUE(sak::is_aligned(&v2[0]));
-
 }
 
 TEST(TestAlignedAllocator, vector_resize)
@@ -89,7 +87,6 @@ TEST(TestAlignedAllocator, vector_resize)
     EXPECT_EQ(v.size(), 100U);
     v[10] = 0;
 }
-
 
 TEST(TestAlignedAllocator, vector_zero_size)
 {

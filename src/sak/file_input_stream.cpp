@@ -52,7 +52,14 @@ namespace sak
         open(filename, ec);
 
         // If an error throw
-        error::throw_error(ec);
+        std::cout << "before throw" << std::endl;
+        if(ec)
+        {
+            boost::system::system_error e(ec);
+            std::cout << "right before throw" << std::endl;
+            throw e;
+        }
+        // error::throw_error(ec);
     }
 
     void file_input_stream::open(const std::string& filename,
@@ -70,30 +77,58 @@ namespace sak
         }
 
         m_file.seekg(0, std::ios::end);
-        m_filesize = read_position();
+        assert(m_file);
+
+        // We cannot use the read_position function here due to a
+        // problem on the iOS platform described in the read_position
+        // function.
+        auto pos = m_file.tellg();
+        assert(pos >= 0);
+
+        m_filesize = (uint32_t) pos;
+
         m_file.seekg(0, std::ios::beg);
+        assert(m_file);
+    }
+
+    void file_input_stream::close()
+    {
+        assert(m_file.is_open());
+        m_file.close();
     }
 
     void file_input_stream::seek(uint32_t pos)
     {
         assert(m_file.is_open());
-        assert(m_file.seekg(pos, std::ios::beg));
+        m_file.seekg(pos, std::ios::beg);
+        assert(m_file);
     }
 
     uint32_t file_input_stream::read_position()
     {
         assert(m_file.is_open());
 
-        std::streamoff pos = m_file.tellg();
-        assert(pos >= 0);
+        // Work around for problem on iOS where tellg returned -1 when
+        // reading the last byte. However the EOF flag was correctly
+        // set. So here we check for EOF if true we set the
+        // read_position = m_file_size
 
-        return static_cast<uint32_t>(pos);
+        if(m_file.eof())
+        {
+            return m_filesize;
+        }
+        else
+        {
+            std::streamoff pos = m_file.tellg();
+            assert(pos >= 0);
+
+            return static_cast<uint32_t>(pos);
+        }
     }
 
     void file_input_stream::read(uint8_t* buffer, uint32_t bytes)
     {
         assert(m_file.is_open());
-
         m_file.read(reinterpret_cast<char*>(buffer), bytes);
 
         assert(bytes == static_cast<uint32_t>(m_file.gcount()));
@@ -102,7 +137,6 @@ namespace sak
     uint32_t file_input_stream::bytes_available()
     {
         assert(m_file.is_open());
-
         uint32_t pos = read_position();
         assert(pos <= m_filesize);
 

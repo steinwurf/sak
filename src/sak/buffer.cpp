@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Steinwurf ApS
+// Copyright (c) 2012-2014 Steinwurf ApS
 // All Rights Reserved
 //
 // Redistribution and use in source and binary forms, with or without
@@ -23,9 +23,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "buffer.hpp"
-
 #include <algorithm>
+
+#include "buffer.hpp"
 
 namespace sak
 {

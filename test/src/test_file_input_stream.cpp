@@ -100,48 +100,26 @@ TEST(TestFileInputStream, ReadRandomFile)
     EXPECT_EQ(0, std::remove(file_name.c_str()));
 }
 
-#if defined(__EXCEPTIONS)
-
 /// Tests error handling with exception
-TEST(TestFileInputStream, ExceptionThrow)
+TEST(TestFileInputStream, ThrowExceptionInOpen)
 {
-
     sak::file_input_stream fs;
     boost::system::error_code ec;
 
-    std::cout << "Excpetions defined" << std::endl;
-
-#ifdef __GLIBCPP__
-    std::printf("GLIBCPP: %d\n",__GLIBCPP__);
-#endif
-#if (defined(__GLIBCXX__) && !BOOST_PP_IS_EMPTY(__GLIBCXX__))
-    std::printf("GLIBCXX: %d\n",__GLIBCXX__);
-#endif
-
     try
     {
-        std::cout << "before open" << std::endl;
         fs.open("strange_file_that_should_not_exist.notfound");
-        std::cout << "after open" << std::endl;
     }
     catch (const boost::system::system_error& error)
     {
-        std::cout << "In catch" << std::endl;
         ec = error.code();
-    }
-    catch (...)
-    {
-        std::cout << "Catch default" << std::endl;
     }
 
     EXPECT_EQ(ec, sak::error::failed_open_file);
-
 }
 
-#endif
-
 /// Tests error handling with exception
-TEST(TestFileInputStream, ExceptionReturn)
+TEST(TestFileInputStream, ReturnErrorCode)
 {
 
     sak::file_input_stream fs;
@@ -152,24 +130,21 @@ TEST(TestFileInputStream, ExceptionReturn)
     EXPECT_EQ(ec, sak::error::failed_open_file);
 
 }
-//
-// /// Tests error handling with exception in constructor
-// TEST(TestFileInputStream, ExceptionThrowConstructor)
-// {
-//
-//
-//     boost::system::error_code ec;
-//
-//     try
-//     {
-//         sak::file_input_stream fs(
-//             "strange_file_that_should_not_exist.notfound");
-//     }
-//     catch (const boost::system::system_error& error)
-//     {
-//         ec = error.code();
-//     }
-//
-//     EXPECT_EQ(ec, sak::error::failed_open_file);
-//
-// }
+
+/// Tests error handling with exception in constructor
+TEST(TestFileInputStream, ThrowExceptionInConstructor)
+{
+    boost::system::error_code ec;
+
+    try
+    {
+        sak::file_input_stream fs(
+            "strange_file_that_should_not_exist.notfound");
+    }
+    catch (const boost::system::system_error& error)
+    {
+        ec = error.code();
+    }
+
+    EXPECT_EQ(ec, sak::error::failed_open_file);
+}

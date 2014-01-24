@@ -31,7 +31,6 @@
 
 namespace sak
 {
-
     file_input_stream::file_input_stream()
         : m_filesize(0)
     {
@@ -43,7 +42,6 @@ namespace sak
         open(filename);
     }
 
-
     void file_input_stream::open(const std::string& filename)
     {
         assert(!m_file.is_open());
@@ -51,15 +49,11 @@ namespace sak
         boost::system::error_code ec;
         open(filename, ec);
 
-        // If an error throw
-        std::cout << "before throw" << std::endl;
-        if(ec)
+        // If an error occurs, throw that
+        if (ec)
         {
-            boost::system::system_error e(ec);
-            std::cout << "right before throw" << std::endl;
-            throw e;
+            error::throw_error(ec);
         }
-        // error::throw_error(ec);
     }
 
     void file_input_stream::open(const std::string& filename,
@@ -108,12 +102,12 @@ namespace sak
     {
         assert(m_file.is_open());
 
-        // Work around for problem on iOS where tellg returned -1 when
+        // Workaround for problem on iOS where tellg returned -1 when
         // reading the last byte. However the EOF flag was correctly
-        // set. So here we check for EOF if true we set the
+        // set. So here we check for EOF, if it is true we set the
         // read_position = m_file_size
 
-        if(m_file.eof())
+        if (m_file.eof())
         {
             return m_filesize;
         }
@@ -148,5 +142,4 @@ namespace sak
         assert(m_file.is_open());
         return m_filesize;
     }
-
 }

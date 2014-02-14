@@ -2,7 +2,7 @@ sak license
 -----------
 sak is provided under the "BSD (3-clause) License"::
 
-  Copyright (c) 2014, Steinwurf ApS
+  Copyright (c) 2012, Steinwurf ApS
   All rights reserved.
 
   Redistribution and use in source and binary forms, with or without

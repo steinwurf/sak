@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <cassert>
+#include <limits>
 #include <type_traits>
 
 #include "platform.hpp"

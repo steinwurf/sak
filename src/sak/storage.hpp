@@ -230,6 +230,9 @@ namespace sak
         assert(dest.m_data != 0);
         assert(src.m_data != 0);
 
+        // Do not perform a copy if the two buffers are the same
+        if (dest.m_data == src.m_data) return;
+
         std::copy(src.m_data, src.m_data + src.m_size, dest.m_data);
     }
 

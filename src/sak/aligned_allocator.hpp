@@ -111,10 +111,11 @@ namespace sak
         /// can find the old_ptr again when we need to deallocate the memory
         pointer allocate(size_type num, const void* = 0)
         {
-            uint32_t space_needed = static_cast<uint32_t>(num * sizeof(T)) + Alignment;
+            uint32_t space_needed =
+                static_cast<uint32_t>(num * sizeof(T)) + Alignment;
 
-            uint8_t* old_ptr = reinterpret_cast<uint8_t*>(
-                                   ::operator new(space_needed));
+            uint8_t* old_ptr =
+                reinterpret_cast<uint8_t*>(::operator new(space_needed));
 
             uint8_t* new_ptr = find_aligned(old_ptr);
 
@@ -141,28 +142,11 @@ namespace sak
             return ptr + (Alignment - (p % Alignment));
         }
 
-        // Unfortunately no Microsoft Visual studio compilers support
-        // variadic templates. So we only enable the new type of construct
-        // for other compilers. When a version of msvc comes out that support
-        // variadic templates remove this.
-#ifdef _MSC_VER
-
-        /// initialize elements of allocated storage p with value value
-        void construct(pointer p, const T& value)
-        {
-            // initialize memory with placement new
-            ::new(static_cast<void*>(p)) T(value);
-        }
-
-#else
-
         template<class U, class... Args>
         void construct(U* p, Args&& ... args)
         {
             ::new(static_cast<void*>(p)) U(std::forward<Args>(args)...);
         }
-
-#endif
 
         /// destroy elements of initialized storage p
         void destroy (pointer p)
@@ -185,13 +169,13 @@ namespace sak
 
     /// @return that all specializations of this allocator are interchangeable
     template <class T1, class T2>
-    bool operator== (const aligned_allocator<T1>&, const aligned_allocator<T2>&)
+    bool operator==(const aligned_allocator<T1>&, const aligned_allocator<T2>&)
     {
         return true;
     }
 
     template <class T1, class T2>
-    bool operator!= (const aligned_allocator<T1>&, const aligned_allocator<T2>&)
+    bool operator!=(const aligned_allocator<T1>&, const aligned_allocator<T2>&)
     {
         return false;
     }

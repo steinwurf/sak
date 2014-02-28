@@ -4,6 +4,15 @@ News for sak
 This file lists the major changes between versions. For a more detailed list
 of every change, see the Git log.
 
+10.3.0
+------
+* Minor: Remove MSVC-specific code from aligned_allocator (variadic templates
+  are now supported by MSVC)
+* Minor: copy_storage now skips copying if the two buffers are the same
+* Minor: file_input_stream unit test deletes the created file after the test
+* Bug: Fix file_input_stream issues on iOS by checking for EOF in
+  read_position()
+
 10.2.1
 ------
 * Bug: Fixed bug in the conversion functions for big endian platforms.
@@ -11,7 +20,8 @@ of every change, see the Git log.
 
 10.2.0
 ------
-* Minor: Added random_buffer class that can be filled and verified using an embedded random seed
+* Minor: Added random_buffer class that can be filled and verified using
+  an embedded random seed
 * Minor: Updated to waf-tools 2
 * Minor: Update to waf 1.7.10
 * Minor: Remove unused boost::signals

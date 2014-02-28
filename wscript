@@ -4,7 +4,7 @@
 import os
 
 APPNAME = 'sak'
-VERSION = '10.2.1'
+VERSION = '10.3.0'
 
 def recurse_helper(ctx, name):
     if not ctx.has_dependency_path(name):

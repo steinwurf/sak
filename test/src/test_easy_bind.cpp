@@ -4,6 +4,7 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include <cstdint>
+#include <memory>
 #include <vector>
 #include <string>
 
@@ -33,16 +34,16 @@ namespace
 
     struct dummy_class
     {
+        uint32_t m_x;
+        double m_y;
+        std::string m_str;
+
         void method(uint32_t x, double y, std::string str)
         {
             m_x = x;
             m_y = y;
             m_str = str;
         }
-
-        uint32_t m_x;
-        double m_y;
-        std::string m_str;
     };
 }
 
@@ -83,7 +84,7 @@ TEST(TestEasyBind, test_free_function)
 
 TEST(TestEasyBind, test_member_function)
 {
-    dummy_class* dummy = new dummy_class();
+    std::shared_ptr<dummy_class> dummy(new dummy_class());
 
     auto function1 = sak::easy_bind(&dummy_class::method, dummy);
     function1(1, 1.5, "test1");
@@ -91,5 +92,22 @@ TEST(TestEasyBind, test_member_function)
     EXPECT_EQ(1.5, dummy->m_y);
     EXPECT_EQ("test1", dummy->m_str);
 
-    delete dummy;
+    auto function2 = sak::easy_bind(&dummy_class::method, dummy, 2);
+    function2(2.5, "test2");
+    EXPECT_EQ(2, dummy->m_x);
+    EXPECT_EQ(2.5, dummy->m_y);
+    EXPECT_EQ("test2", dummy->m_str);
+
+    auto function3 = sak::easy_bind(&dummy_class::method, dummy, 3, 3.5);
+    function3("test3");
+    EXPECT_EQ(3, dummy->m_x);
+    EXPECT_EQ(3.5, dummy->m_y);
+    EXPECT_EQ("test3", dummy->m_str);
+
+    auto function4 =
+        sak::easy_bind(&dummy_class::method, dummy, 4, 4.5, "test4");
+    function4();
+    EXPECT_EQ(4, dummy->m_x);
+    EXPECT_EQ(4.5, dummy->m_y);
+    EXPECT_EQ("test4", dummy->m_str);
 }

@@ -88,26 +88,26 @@ TEST(TestEasyBind, test_member_function)
 
     auto function1 = sak::easy_bind(&dummy_class::method, dummy);
     function1(1, 1.5, "test1");
-    EXPECT_EQ(1, dummy->m_x);
+    EXPECT_EQ(1U, dummy->m_x);
     EXPECT_EQ(1.5, dummy->m_y);
     EXPECT_EQ("test1", dummy->m_str);
 
     auto function2 = sak::easy_bind(&dummy_class::method, dummy, 2);
     function2(2.5, "test2");
-    EXPECT_EQ(2, dummy->m_x);
+    EXPECT_EQ(2U, dummy->m_x);
     EXPECT_EQ(2.5, dummy->m_y);
     EXPECT_EQ("test2", dummy->m_str);
 
     auto function3 = sak::easy_bind(&dummy_class::method, dummy, 3, 3.5);
     function3("test3");
-    EXPECT_EQ(3, dummy->m_x);
+    EXPECT_EQ(3U, dummy->m_x);
     EXPECT_EQ(3.5, dummy->m_y);
     EXPECT_EQ("test3", dummy->m_str);
 
     auto function4 =
         sak::easy_bind(&dummy_class::method, dummy, 4, 4.5, "test4");
     function4();
-    EXPECT_EQ(4, dummy->m_x);
+    EXPECT_EQ(4U, dummy->m_x);
     EXPECT_EQ(4.5, dummy->m_y);
     EXPECT_EQ("test4", dummy->m_str);
 }

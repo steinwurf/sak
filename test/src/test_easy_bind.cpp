@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <functional>
 
 #include <gtest/gtest.h>
 
@@ -111,3 +112,37 @@ TEST(TestEasyBind, test_member_function)
     EXPECT_EQ(4.5, dummy->m_y);
     EXPECT_EQ("test4", dummy->m_str);
 }
+
+TEST(TestEasyBind, test_std_function)
+{
+    uint32_t a = 1;
+    uint32_t b = 2;
+    uint32_t c = 3;
+
+    using namespace std::placeholders;
+
+    clear_state();
+
+    std::function<void(uint32_t,uint32_t,uint32_t)> f1 =
+        std::bind(&free_function, _1, _2, _3);
+
+    auto f2 = sak::easy_bind(f1);
+    f2(a, b, c);
+    EXPECT_EQ(a, global_a);
+    EXPECT_EQ(b, global_b);
+    EXPECT_EQ(c, global_c);
+
+    clear_state();
+
+    std::function<void(uint32_t)> f3 =
+        std::bind(&free_function, 10U, _1, 15U);
+
+    auto f4 = sak::easy_bind(f3);
+    f4(b);
+    EXPECT_EQ(10U, global_a);
+    EXPECT_EQ(b, global_b);
+    EXPECT_EQ(15U, global_c);
+}
+
+
+

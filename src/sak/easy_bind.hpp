@@ -50,7 +50,7 @@ namespace sak
         struct build_indices<0, Is...> : indices<Is...> {};
 
         template<std::size_t... Is, class F, class... Args>
-        auto easy_bind(indices<Is...>, F const& f, Args&&... args) ->
+        inline auto easy_bind(indices<Is...>, F const& f, Args&&... args) ->
             decltype(std::bind(
                 f, std::forward<Args>(args)..., placeholder<Is + 1>{}...))
         {
@@ -59,9 +59,23 @@ namespace sak
         }
     }
 
-    // Bind to an std::function instance
+    /// Bind to a std::function instance.
+    ///
+    /// Example:
+    ///
+    ///     void free_function(uint32_t a, uint32_t b, uint32_t c)
+    ///     {
+    ///         // Some fancy calculations
+    ///     }
+    ///
+    ///     std::function<void(uint32_t,uint32_t,uint32_t)> f1 =
+    ///         std::bind(&free_function, _1, _2, _3);
+    ///
+    ///     // Bind f2 to the std::function f1
+    ///     auto f2 = sak::easy_bind(f1);
+    ///
     template<class R, class... FArgs, class... Args>
-    auto easy_bind(std::function<R(FArgs...)> f, Args&&... args) ->
+    inline auto easy_bind(std::function<R(FArgs...)> f, Args&&... args) ->
         decltype(detail::easy_bind(
             detail::build_indices<sizeof...(FArgs) - sizeof...(Args)>{},
             f, std::forward<Args>(args)...))
@@ -71,9 +85,23 @@ namespace sak
             f, std::forward<Args>(args)...);
     }
 
-    // Bind to a free function
+    /// Bind to a free function.
+    ///
+    /// Example:
+    ///
+    ///     void free_function(uint32_t a, uint32_t b, uint32_t c)
+    ///     {
+    ///         // Some fancy calculations
+    ///     }
+    ///
+    ///     // Bind f to free_function
+    ///     auto f = sak::easy_bind(&free_function);
+    ///
+    ///     // Bind g to free_function specifying the first argument
+    ///     auto g = sak::easy_bind(&free_function, 1337);
+    ///
     template<class R, class... FArgs, class... Args>
-    auto easy_bind(R (*f)(FArgs...), Args&&... args) ->
+    inline auto easy_bind(R (*f)(FArgs...), Args&&... args) ->
         decltype(detail::easy_bind(
             detail::build_indices<sizeof...(FArgs) - sizeof...(Args)>{},
             f, std::forward<Args>(args)...))
@@ -83,9 +111,29 @@ namespace sak
             f, std::forward<Args>(args)...);
     }
 
-    // Bind to a member function
+    /// Bind to a member function.
+    ///
+    /// Example:
+    ///
+    ///     struct foo
+    ///     {
+    ///         void member_function(uint32_t a, uint32_t b, uint32_t c)
+    ///         {
+    ///             // Some fancy calculations
+    ///         }
+    ///     };
+    ///
+    ///     foo the_foo;
+    ///
+    ///     // Bind f to the_foo's member_function
+    ///     auto f = sak::easy_bind(&foo::member_function, &the_foo);
+    ///
+    ///     // Bind g to foo's member_function specifying the first argument
+    ///     auto g = sak::easy_bind(&foo::member_function, &the_foo,
+    ///                             1337);
+    ///
     template <typename R, typename T, typename... FArgs, typename... Args>
-    auto easy_bind(R (T::*mf)(FArgs...), Args&&... args) ->
+    inline auto easy_bind(R (T::*mf)(FArgs...), Args&&... args) ->
         decltype(detail::easy_bind(
             detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
             mf, std::forward<Args>(args)...))

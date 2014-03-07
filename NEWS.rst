@@ -1,15 +1,22 @@
 News for sak
 ============
 
-This file lists the major changes between versions. For a more detailed list
-of every change, see the Git log.
+This file lists the major changes between versions. For a more
+detailed list of every change, see the Git log.
+
+Latest
+------
+* Minor: Adding easy_bind.hpp template functions which removes the
+  need to manually insert placeholders for unspecified arguments.
 
 10.3.0
 ------
-* Minor: Remove MSVC-specific code from aligned_allocator (variadic templates
-  are now supported by MSVC)
-* Minor: copy_storage now skips copying if the two buffers are the same
-* Minor: file_input_stream unit test deletes the created file after the test
+* Minor: Remove MSVC-specific code from aligned_allocator (variadic
+  templates are now supported by MSVC)
+* Minor: copy_storage now skips copying if the two buffers are the
+  same
+* Minor: file_input_stream unit test deletes the created file after
+  the test
 * Bug: Fix file_input_stream issues on iOS by checking for EOF in
   read_position()
 
@@ -20,8 +27,8 @@ of every change, see the Git log.
 
 10.2.0
 ------
-* Minor: Added random_buffer class that can be filled and verified using
-  an embedded random seed
+* Minor: Added random_buffer class that can be filled and verified
+  using an embedded random seed
 * Minor: Updated to waf-tools 2
 * Minor: Update to waf 1.7.10
 * Minor: Remove unused boost::signals
@@ -50,14 +57,14 @@ of every change, see the Git log.
 8.1.0
 -----
 * Updated to use the new external-waf-tools repository.
-* Added offset function to storage classes & fixed bug in the split_storage
-  function.
+* Added offset function to storage classes & fixed bug in the
+  split_storage function.
 
 8.0.0
 -----
 * Allow setting a factory function on the object registry
-* Object registry is no longer a singleton, changed factory build methods to
-  take accept object registry reference.
+* Object registry is no longer a singleton, changed factory build
+  methods to take accept object registry reference.
 * Added random input stream.
 * Use new mkspec system to building
 
@@ -72,7 +79,8 @@ of every change, see the Git log.
 6.0.0
 -----
 * Bump major version due to an backwards incompatible change in the
-  storage.hpp code. Where we have removed the storage_list() functions.
+  storage.hpp code. Where we have removed the storage_list()
+  functions.
 
 5.0.0
 -----
@@ -95,8 +103,9 @@ of every change, see the Git log.
 
 4.2.2
 -----
-* Fixed custom allocator support for C++11. For win32 a preprocessor define is
-  used until variadic template is supported in Visual Studio.
+* Fixed custom allocator support for C++11. For win32 a preprocessor
+  define is used until variadic template is supported in Visual
+  Studio.
 
 4.2.1
 -----
@@ -115,10 +124,10 @@ of every change, see the Git log.
 -----
 * Changing header extension to .hpp from .h which makes it easier to
   differentiate between C and C++ code.
-* Added ``endian_buffer`` class for easy serializing and deserializing of
-  multibyte values
-* Added the ``duplex_buffer`` class as a container for data which supports
-  efficient prepending and appending of data.
+* Added ``endian_buffer`` class for easy serializing and deserializing
+  of multi-byte values
+* Added the ``duplex_buffer`` class as a container for data which
+  supports efficient prepending and appending of data.
 
 3.0.0
 -----

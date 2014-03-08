@@ -4,7 +4,7 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
-Latest
+10.4.0
 ------
 * Minor: Adding easy_bind.hpp template functions which removes the
   need to manually insert placeholders for unspecified arguments.

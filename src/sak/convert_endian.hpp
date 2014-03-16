@@ -11,9 +11,8 @@
 
 namespace sak
 {
-
-    // This struct defines a bool which defines whether the platform endiannes
-    // is big or little. We rely on the macros defined in Boost
+    // This struct defines a bool which indicates whether the platform
+    // endianness is big or little. We rely on the macros defined in Boost.
     struct host_endian
     {
         static const bool big_endian =
@@ -28,7 +27,7 @@ namespace sak
     struct big_endian
     {
         /// Gets an 8-bit value integer from a byte stream. Only exists for
-        /// convince in the template based getters and putters!!
+        /// convenience in the template-based getters and putters.
         /// @param buffer pointer to the byte stream buffer
         /// @return retrieved value from the byte stream
         static uint8_t get8(const uint8_t* buffer)
@@ -37,8 +36,8 @@ namespace sak
             return *buffer;
         }
 
-        /// Inserts an 8-bit value integer into the byte stream. Only exists for
-        /// convince in the template based getters and putters
+        /// Inserts an 8-bit value integer into the byte stream. Only exists
+        /// for convenience in the template-based getters and putters.
         /// @param value to put in the stream
         /// @param buffer pointer to the byte stream buffer
         static void put8(uint8_t value, uint8_t* buffer)
@@ -47,8 +46,8 @@ namespace sak
             *buffer = value;
         }
 
-        /// Gets a 16-bit value integer which is in big-endian format from a byte
-        /// stream.
+        /// Gets a 16-bit value integer which is in big-endian format from
+        /// a byte stream.
         /// @copydetails get8()
         static uint16_t get16(const uint8_t* buffer)
         {
@@ -74,7 +73,6 @@ namespace sak
             assert(buffer != 0);
             return (buffer[0] << 24) | (buffer[1] << 16) |
                    (buffer[2] << 8)  | buffer[3];
-
         }
 
         /// Inserts a 32-bit value into a byte stream in big-endian format.
@@ -123,13 +121,12 @@ namespace sak
 
         /// Template based put and get functions, the main reason for these is
         /// to allow generic code to be written where the "right" get/put
-        /// function will be called based on the a template determined data-type
+        /// function will be called based on the template parameter
         template<class ValueType>
         static void put(ValueType value, uint8_t* buffer);
 
         template<class ValueType>
         static ValueType get(const uint8_t* buffer);
-
     };
 
     template<>
@@ -179,6 +176,4 @@ namespace sak
     {
         return big_endian::get64(buffer);
     }
-
-
 }

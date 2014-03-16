@@ -20,6 +20,7 @@
 /// Tests reading a file, the file is crated a priori
 TEST(TestFileInputStream, ReadRandomFile)
 {
+    // Create a file with random contents
     uint32_t file_size = 1000;
     std::string file_name("test.txt");
 
@@ -30,14 +31,13 @@ TEST(TestFileInputStream, ReadRandomFile)
         output_buffer[i] = (rand() % 255);
     }
 
-    std::ofstream output_file(file_name.c_str(),
-                                std::ios::out | std::ios::binary);
+    std::ofstream output_file(
+        file_name.c_str(), std::ios::out | std::ios::binary);
 
     ASSERT_TRUE(output_file.is_open());
 
     output_file.write(&output_buffer[0], file_size);
     output_file.close();
-
 
     // Now test we can read it back
     sak::file_input_stream fs;
@@ -62,17 +62,14 @@ TEST(TestFileInputStream, ReadRandomFile)
         std::vector<char> temp(read, '\0');
         fs.read(reinterpret_cast<uint8_t*>(&temp[0]), read);
 
-        input_buffer.insert(input_buffer.end(),
-                            temp.begin(),
-                            temp.end());
-
+        input_buffer.insert(
+            input_buffer.end(), temp.begin(), temp.end());
     }
     // Always close the input file stream
     fs.close();
 
-    bool result = std::equal(input_buffer.begin(),
-                                input_buffer.end(),
-                                output_buffer.begin());
+    bool result = std::equal(
+        input_buffer.begin(), input_buffer.end(), output_buffer.begin());
 
     ASSERT_TRUE(result);
 
@@ -108,7 +105,6 @@ TEST(TestFileInputStream, ReturnErrorCode)
     fs.open("strange_file_that_should_not_exist.notfound", ec);
 
     EXPECT_EQ(ec, sak::error::failed_open_file);
-
 }
 
 /// Tests error handling with exception in constructor

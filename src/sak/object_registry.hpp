@@ -90,7 +90,7 @@ namespace sak
         void set_factory()
         {
             auto factory_id = get_object_id<Factory>();
-            auto object_id  = get_object_id<Object>();
+            auto object_id = get_object_id<Object>();
 
             boost::shared_ptr<object_factory> factory =
                 boost::make_shared< object_factory_impl<Factory> >();
@@ -113,7 +113,7 @@ namespace sak
         template<class Object>
         void set_factory(const boost::shared_ptr<object_factory>& factory)
         {
-            auto object_id  = get_object_id<Object>();
+            auto object_id = get_object_id<Object>();
 
             m_lookup_by_object_id[object_id] = factory;
 

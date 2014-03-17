@@ -183,6 +183,6 @@ namespace sak
         m_buffer.swap(buffer);
 
         m_front_capacity = front_capacity;
-        m_back_capacity  = back_capacity;
+        m_back_capacity = back_capacity;
     }
 }

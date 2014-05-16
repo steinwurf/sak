@@ -6,6 +6,10 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
+* Major: Renamed the sak::storage comparison function equal(...) to
+  is_equal(...).
+* Minor: Added a sak::storage comparison function is_same(...) to
+  check whether two storage objects point to exactly the same data.
 * Minor: Updated waf to 1.8.0-pre1.
 * Bug: Started using pep8 style for python files.
 
@@ -160,4 +164,3 @@ Latest
 * Bumped dependency version for gtest to 1.0.2-gtest_1_6_0
 * Bumped dependency version for boost to 1.1.1-boost_1_48_0
 * Fixed win32 link and cxx flags
-

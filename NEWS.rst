@@ -4,7 +4,7 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
-Latest
+11.0.0
 ------
 * Major: Renamed the sak::storage comparison function equal(...) to
   is_equal(...).

@@ -324,32 +324,53 @@ namespace sak
         return mutable_storage(data, size);
     }
 
-    /// Compares two storage objects to see whether they contain
-    /// the same data
+    /// Compares two storage objects checks whether they refer to the
+    /// same storage i.e. whether data pointer and size are the same.
     /// @param storage_a The first storage object
     /// @param storage_b The second storage object
-    /// @return True if the storage objects contain the same data
-    ///         otherwise false.
-    inline bool equal(const const_storage& storage_a,
-                      const const_storage& storage_b)
+    /// @return True if the two storage objects point to the same data
+    inline bool is_same(const const_storage& storage_a,
+                        const const_storage& storage_b)
     {
-
         if (storage_a.m_size != storage_b.m_size)
         {
             return false;
         }
 
         // They have the same size - do they point to the same data?
+        return storage_a.m_data == storage_b.m_data;
+    }
 
+    /// Compares two storage objects to see whether they are
+    /// equal. The condition for two storage objects are bit wider
+    /// than for is_same. Two storage objects are equal either if the
+    /// point to exactly the same storage or if they contain exactly
+    /// the same data.
+    ///
+    /// @param storage_a The first storage object
+    /// @param storage_b The second storage object
+    /// @return True if the storage objects contain the same data
+    ///         otherwise false.
+    inline bool is_equal(const const_storage& storage_a,
+                         const const_storage& storage_b)
+    {
+        // We cannot reuse is_same here since it does not tell use
+        // which condition failed i.e. if is_same returns false. Then
+        // we cannot just jump to a memory compare since it might be
+        // because the two storage objects have different sizes.
+        if (storage_a.m_size != storage_b.m_size)
+        {
+            return false;
+        }
+
+        // They have the same size - do they point to the same data?
         if (storage_a.m_data == storage_b.m_data)
         {
             return true;
         }
 
         // It is two different buffers - is the content equal?
-        auto zero_is_equal = std::memcmp(storage_a.m_data,
-                                         storage_b.m_data, storage_b.m_size);
-        return zero_is_equal == 0;
+        return std::equal(storage_a.m_data, storage_a.m_data + storage_a.m_size,
+                          storage_b.m_data);
     }
-
 }

@@ -148,50 +148,94 @@ TEST(TestStorage, test_offset_storage)
 }
 
 
-TEST(TestStorage, test_equal)
+TEST(TestStorage, is_equal)
 {
     {
         std::vector<uint8_t> d1(10);
         std::vector<uint8_t> d2(11);
 
-        EXPECT_FALSE(sak::equal(sak::storage(d1), sak::storage(d2)));
-        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d1)));
-        EXPECT_TRUE(sak::equal(sak::storage(d2), sak::storage(d2)));
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d2), sak::storage(d2)));
     }
 
     {
         std::vector<uint8_t> d1(10, 'a');
         std::vector<uint8_t> d2(10, 'b');
 
-        EXPECT_FALSE(sak::equal(sak::storage(d1), sak::storage(d2)));
-        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d1)));
-        EXPECT_TRUE(sak::equal(sak::storage(d2), sak::storage(d2)));
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d2), sak::storage(d2)));
     }
 
     {
         std::vector<uint8_t> d1(10, 'a');
         std::vector<uint8_t> d2(10, 'a');
 
-        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d2)));
-        EXPECT_TRUE(sak::equal(sak::storage(d1), sak::storage(d1)));
-        EXPECT_TRUE(sak::equal(sak::storage(d2), sak::storage(d2)));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d2), sak::storage(d2)));
     }
 
     {
         std::vector<uint8_t> d1(10, 'a');
         std::vector<uint8_t> d2(9, 'a');
 
-        EXPECT_FALSE(sak::equal(sak::storage(d1), sak::storage(d2)));
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
     }
 
     {
         std::vector<uint8_t> d1(10, 'a');
         auto d2 = sak::storage(d1);
-        EXPECT_TRUE(sak::equal(sak::storage(d1), d2));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d1), d2));
         d2 += 2;
 
-        EXPECT_FALSE(sak::equal(sak::storage(d1), d2));
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), d2));
+    }
+}
+
+TEST(TestStorage, is_same)
+{
+    {
+        std::vector<uint8_t> d1(10);
+        std::vector<uint8_t> d2(11);
+
+        EXPECT_FALSE(sak::is_same(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::is_same(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::is_same(sak::storage(d2), sak::storage(d2)));
     }
 
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        std::vector<uint8_t> d2(10, 'b');
 
+        EXPECT_FALSE(sak::is_same(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::is_same(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::is_same(sak::storage(d2), sak::storage(d2)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        std::vector<uint8_t> d2(10, 'a');
+
+        EXPECT_FALSE(sak::is_same(sak::storage(d1), sak::storage(d2)));
+        EXPECT_TRUE(sak::is_same(sak::storage(d1), sak::storage(d1)));
+        EXPECT_TRUE(sak::is_same(sak::storage(d2), sak::storage(d2)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        std::vector<uint8_t> d2(9, 'a');
+
+        EXPECT_FALSE(sak::is_same(sak::storage(d1), sak::storage(d2)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        auto d2 = sak::storage(d1);
+        EXPECT_TRUE(sak::is_same(sak::storage(d1), d2));
+        d2 += 2;
+
+        EXPECT_FALSE(sak::is_same(sak::storage(d1), d2));
+    }
 }

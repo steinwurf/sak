@@ -5,9 +5,9 @@
 
 #pragma once
 
-/// @file storage.h
-/// This implementation was inspired by the boost::asio buffer.h as
-/// a way of providing an abstraction for storage / buffers.
+/// @file storage.hpp This implementation was inspired by the
+/// boost::asio buffer.h as a way of providing an abstraction for
+/// storage / buffers.
 
 #include <cstdint>
 #include <cassert>
@@ -19,12 +19,10 @@
 
 namespace sak
 {
-
     /// The mutable storage class contains a pointer
     /// and size of a modifiable/mutable buffer
     struct mutable_storage
     {
-
         /// The value type used by the iterator
         typedef mutable_storage value_type;
 
@@ -85,15 +83,12 @@ namespace sak
 
         /// The size of the mutable buffer
         uint32_t m_size;
-
     };
-
 
     /// The const storage class contains a pointer and
     /// size of a non-modifiable/const buffer
     struct const_storage
     {
-
         /// The value type used by iterators
         typedef const_storage value_type;
 
@@ -168,7 +163,6 @@ namespace sak
 
         /// The size of the mutable buffer
         uint32_t m_size;
-
     };
 
     /// Splits a continuous storage buffer into a sequence of
@@ -254,8 +248,6 @@ namespace sak
         return reinterpret_cast<const ValueType*>(s.m_data);
     }
 
-
-
     /// Storage function for pointers to const data
     /// @param data pointer to the data buffer
     /// @param size_in_bytes the size of data buffer in bytes
@@ -275,7 +267,6 @@ namespace sak
         uint8_t* data_ptr = reinterpret_cast<uint8_t*>(data);
         return mutable_storage(data_ptr, size_in_bytes);
     }
-
 
     /// Creates a const storage object
     /// @param v is a std::vector buffer
@@ -300,7 +291,6 @@ namespace sak
 
         return mutable_storage(data, size);
     }
-
 
     /// Creates a const storage object from a string
     /// @param str is a std::string

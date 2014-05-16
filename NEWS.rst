@@ -4,6 +4,11 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
+Latest
+------
+* Minor: Updated waf to 1.8.0-pre1.
+* Bug: Started using pep8 style for python files.
+
 10.4.0
 ------
 * Minor: Adding easy_bind.hpp template functions which removes the

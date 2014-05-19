@@ -173,19 +173,58 @@ namespace sak
 
     namespace detail
     {
+        template<typename T> struct remove_class
+        {
+            using type = void();
+        };
+        template<typename C, typename R, typename... A>
+        struct remove_class<R(C::*)(A...)> { using type = R(A...); };
+        template<typename C, typename R, typename... A>
+        struct remove_class<R(C::*)(A...) const> { using type = R(A...); };
+        template<typename C, typename R, typename... A>
+        struct remove_class<R(C::*)(A...) volatile> { using type = R(A...); };
+        template<typename C, typename R, typename... A>
+        struct remove_class<R(C::*)(A...) const volatile> { using type = R(A...); };
+        // template<typename C, typename R, typename... A>
+        // struct remove_class<R(C::*&)(A...) const volatile> { using type = R(A...); };
+
+        // template<typename T>
+        // struct get_signature_impl { using type = typename remove_class<
+        //     decltype(&std::remove_reference<T>::type::operator())>::type; };
+        template<typename T>
+        struct get_signature_impl { using type = typename remove_class<T>::type; };
+
+        template<typename R, typename... A>
+        struct get_signature_impl<R(A...)> { using type = R(A...); };
+        template<typename R, typename... A>
+        struct get_signature_impl<R(&)(A...)> { using type = R(A...); };
+        template<typename R, typename... A>
+        struct get_signature_impl<R(*)(A...)> { using type = R(A...); };
+        template<typename T> using get_signature = typename get_signature_impl<T>::type;
+
+        template<typename F> using make_function_type = std::function<get_signature<F>>;
+        template<typename F> make_function_type<F> make_function(F f) {
+            return make_function_type<F>(f); }
+    }
+
+    namespace detail
+    {
         template<class F, class... Args>
-        std::function<void()> try_bind(F, Args..., uint8_t)
+        std::function<void()> try_bind(F, Args..., char)
         {
             return std::function<void()>();
         }
 
         template<class F, class... Args>
         auto try_bind(F f, Args... args, int) ->
-            decltype(sak::easy_bind(f, args...))
+            decltype(sak::easy_bind(f, args...), make_function(f))
         {
-            return sak::easy_bind(f, args...);
-        }
 
+            make_function_type<F> v;
+            v = sak::easy_bind(f, args...);
+
+            return v;//sak::easy_bind(f, args...);
+        }
     }
 
     template<class F, class... Args>
@@ -194,62 +233,5 @@ namespace sak
     {
         return detail::try_bind<F,Args...>(f, args..., 0);
     }
-
-
-
-    //     template<class F, class... Args>
-    //     struct can_easy_bind
-    //     {
-    //     private:
-    //         typedef std::true_type yes;
-    //         typedef std::false_type no;
-
-    //         static auto test(int) ->
-    //             decltype(easy_bind(std::declval<F>(), std::declval<Args>()...), yes());
-
-    //         static no test(...);
-
-    //     public:
-
-    //         static const bool value = std::is_same<decltype(test(0)),yes>::value;
-    //     };
-    // }
-
-    // template
-    // <
-    //     class F,
-    //     typename... Args,
-    //     typename std::enable_if<
-    //         detail::can_easy_bind<F,Args...>::value, uint8_t>::type = 0
-    // >
-    // inline auto try_bind(F f, Args&&... args) ->
-    //     decltype(easy_bind(f, args...))
-    // {
-    //     return easy_bind(f, args...);
-    // }
-
-    //     template
-    // <
-    //     class F,
-    //     typename... Args,
-    //     typename std::enable_if<!detail::can_easy_bind<F,Args...>::value, uint8_t>::type = 0
-    // >
-    //     inline std::function<void()> try_bind(F f, Args&&... args)
-    // {
-    //     return std::function<void()>();
-    // }
-
-    // template <class F, typename... Args>
-    // inline std::function<void()> try_bind(F f, Args&&... args, ...)
-    // {
-    //     return std::function<void()>();
-    // }
-
-    // template<class F, class... Args>
-    // bool test_test(F f, Args... args)
-    // {
-    //     return detail::can_easy_bind<F, Args...>::value;
-    // }
-
 
 }

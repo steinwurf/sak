@@ -208,9 +208,10 @@ TEST(TestTryBind, test_try_bind)
 
     auto function1 = sak::try_bind(&dummy_class::method, dummy);
 
+
     function1(1, 1.5, "test1");
-    // this needs to also work
-    //EXPECT_TRUE((bool)function1);
+    // // this needs to also work
+    EXPECT_TRUE((bool)function1);
 
     EXPECT_EQ(1U, dummy->m_x);
     EXPECT_EQ(1.5, dummy->m_y);
@@ -218,5 +219,8 @@ TEST(TestTryBind, test_try_bind)
 
     auto function2 = sak::try_bind(32, dummy);
     EXPECT_FALSE((bool)function2);
+
+    auto function3 = sak::try_bind(&dummy_class::method2, dummy);
+    EXPECT_TRUE((bool)function3);
 
 }

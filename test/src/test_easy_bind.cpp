@@ -197,3 +197,21 @@ TEST(TestEasyBind, test_std_function)
     EXPECT_EQ(b, global_b);
     EXPECT_EQ(15U, global_c);
 }
+
+TEST(TestTryBind, test_try_bind)
+{
+    std::shared_ptr<dummy_class> dummy(new dummy_class());
+
+    //std::cout << sak::test_test(&dummy_class::method, dummy) << std::endl;
+
+
+
+    auto function1 = sak::try_bind(&dummy_class::method, dummy);
+    auto function2 = sak::try_bind(32, dummy);
+    // function1(1, 1.5, "test1");
+    // EXPECT_EQ(1U, dummy->m_x);
+    // EXPECT_EQ(1.5, dummy->m_y);
+    // EXPECT_EQ("test1", dummy->m_str);
+
+
+}

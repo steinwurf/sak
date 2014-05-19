@@ -162,4 +162,94 @@ namespace sak
             detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
             mf, std::forward<Args>(args)...);
     }
+
+
+
+
+
+
+
+    //////////////////////////////////////////////////////
+
+    namespace detail
+    {
+        template<class F, class... Args>
+        std::function<void()> try_bind(F, Args..., uint8_t)
+        {
+            return std::function<void()>();
+        }
+
+        template<class F, class... Args>
+        auto try_bind(F f, Args... args, int) ->
+            decltype(sak::easy_bind(f, args...))
+        {
+            return sak::easy_bind(f, args...);
+        }
+
+    }
+
+    template<class F, class... Args>
+    auto try_bind(F f, Args... args) ->
+        decltype(detail::try_bind<F, Args...>(f, args..., 0))
+    {
+        return detail::try_bind<F,Args...>(f, args..., 0);
+    }
+
+
+
+    //     template<class F, class... Args>
+    //     struct can_easy_bind
+    //     {
+    //     private:
+    //         typedef std::true_type yes;
+    //         typedef std::false_type no;
+
+    //         static auto test(int) ->
+    //             decltype(easy_bind(std::declval<F>(), std::declval<Args>()...), yes());
+
+    //         static no test(...);
+
+    //     public:
+
+    //         static const bool value = std::is_same<decltype(test(0)),yes>::value;
+    //     };
+    // }
+
+    // template
+    // <
+    //     class F,
+    //     typename... Args,
+    //     typename std::enable_if<
+    //         detail::can_easy_bind<F,Args...>::value, uint8_t>::type = 0
+    // >
+    // inline auto try_bind(F f, Args&&... args) ->
+    //     decltype(easy_bind(f, args...))
+    // {
+    //     return easy_bind(f, args...);
+    // }
+
+    //     template
+    // <
+    //     class F,
+    //     typename... Args,
+    //     typename std::enable_if<!detail::can_easy_bind<F,Args...>::value, uint8_t>::type = 0
+    // >
+    //     inline std::function<void()> try_bind(F f, Args&&... args)
+    // {
+    //     return std::function<void()>();
+    // }
+
+    // template <class F, typename... Args>
+    // inline std::function<void()> try_bind(F f, Args&&... args, ...)
+    // {
+    //     return std::function<void()>();
+    // }
+
+    // template<class F, class... Args>
+    // bool test_test(F f, Args... args)
+    // {
+    //     return detail::can_easy_bind<F, Args...>::value;
+    // }
+
+
 }

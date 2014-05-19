@@ -4,6 +4,10 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
+Latest
+------
+* Minor: Added support for const member function in sak::easy_bind
+
 11.0.0
 ------
 * Major: Renamed the sak::storage comparison function equal(...) to

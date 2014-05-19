@@ -35,6 +35,12 @@ namespace
 
     struct dummy_class
     {
+
+        dummy_class() :
+            m_x(0),
+            m_y(0)
+        {}
+
         uint32_t m_x;
         double m_y;
         std::string m_str;
@@ -45,6 +51,34 @@ namespace
             m_y = y;
             m_str = str;
         }
+
+        uint32_t method2() const
+        {
+            return m_x * 32;
+        }
+    };
+
+
+    struct dummy_parent : public dummy_class
+    {
+        using method_function =
+            std::function<void (uint32_t, double, std::string)>;
+
+        using method2_function =
+            std::function<uint32_t ()>;
+
+        method_function bind()
+        {
+            return sak::easy_bind(&dummy_class::method, this);
+        }
+
+        method2_function bind2()
+        {
+            return sak::easy_bind(&dummy_class::method2, this);
+            //return std::bind(&dummy_class::method2, this);
+        }
+
+
     };
 }
 
@@ -113,6 +147,26 @@ TEST(TestEasyBind, test_member_function)
     EXPECT_EQ("test4", dummy->m_str);
 }
 
+TEST(TestEasyBind, test_member_function_derived)
+{
+    dummy_parent dummy;
+
+    auto function1 = sak::easy_bind(&dummy_parent::method, &dummy);
+    function1(2, 1.5, "test1");
+    EXPECT_EQ(2U, dummy.m_x);
+    EXPECT_EQ(1.5, dummy.m_y);
+    EXPECT_EQ("test1", dummy.m_str);
+
+    auto function2 = dummy.bind();
+    function1(3, 1.5, "test1");
+    EXPECT_EQ(3U, dummy.m_x);
+    EXPECT_EQ(1.5, dummy.m_y);
+    EXPECT_EQ("test1", dummy.m_str);
+
+    auto function3 = dummy.bind2();
+    EXPECT_EQ(function3(), 96U);
+}
+
 TEST(TestEasyBind, test_std_function)
 {
     uint32_t a = 1;
@@ -143,6 +197,3 @@ TEST(TestEasyBind, test_std_function)
     EXPECT_EQ(b, global_b);
     EXPECT_EQ(15U, global_c);
 }
-
-
-

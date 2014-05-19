@@ -146,4 +146,20 @@ namespace sak
             detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
             mf, std::forward<Args>(args)...);
     }
+
+    /// Bind to const member function
+    template <typename R, typename T, typename... FArgs, typename... Args>
+    inline auto easy_bind(R (T::*mf)(FArgs...) const, Args&&... args) ->
+        decltype(detail::easy_bind(
+            detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
+            mf, std::forward<Args>(args)...))
+    {
+        // The extra argument is the object pointer (this)
+        static_assert(sizeof...(Args) <= sizeof...(FArgs) + 1,
+                      "Too many arguments to easy_bind");
+
+        return detail::easy_bind(
+            detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
+            mf, std::forward<Args>(args)...);
+    }
 }

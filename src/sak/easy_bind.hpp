@@ -238,11 +238,10 @@ namespace sak
 
         template<class F, class... Args>
         auto try_bind(F f, Args... args, int) ->
-            decltype(sak::easy_bind(f, args...), make_function(f))
+            decltype(sak::easy_bind(f, args...), make_function_type<F>())
         {
 
-            make_function_type<F> v;
-            v = sak::easy_bind(f, args...);
+            make_function_type<F> v = sak::easy_bind(f, args...);
 
             return v;//sak::easy_bind(f, args...);
         }

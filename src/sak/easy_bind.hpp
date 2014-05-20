@@ -231,9 +231,9 @@ namespace sak
     namespace detail
     {
         template<class F, class... Args>
-        std::function<void()> try_bind(F, Args..., char)
+        bool try_bind(F, Args..., char)
         {
-            return std::function<void()>();
+            return false;
         }
 
         template<class F, class... Args>
@@ -244,20 +244,22 @@ namespace sak
             return v;
         }
 
-        template<class F>
-        std::function<void()> bind_method(F&, char)
+        struct not_valid_bind
+        { };
+
+        template<class B, class F>
+        not_valid_bind bind_method(F&, char)
         {
-            return std::function<void()>();
+            return not_valid_bind();
         }
 
-        template<class F>
-        auto bind_method(F& f, int) ->
-            decltype(sak::easy_bind(&F::method, &f),
-                     std::function<void(uint32_t, double, std::string)>())
-
+        template<class B, class F>
+        auto bind_method(F& f, int) -> decltype(B::bind(f))
         {
-            return sak::easy_bind(&F::method, &f);
+            return B::bind(f);
         }
+
+
 
     }
 
@@ -268,11 +270,24 @@ namespace sak
         return detail::try_bind<F,Args...>(f, args..., 0);
     }
 
-    template<class F>
-    auto bind_method(F& f) ->
-        decltype(detail::bind_method<F>(f, 0))
+    template<class B, class F>
+    auto optional_bind(F& f) ->
+        decltype(detail::bind_method<B, F>(f, 0))
     {
-        return detail::bind_method<F>(f, 0);
+        return detail::bind_method<B, F>(f, 0);
     }
+
+    template<class T>
+    bool is_bind_valid(const T&)
+    {
+        return true;
+    }
+
+    template<>
+    bool is_bind_valid<detail::not_valid_bind>(const detail::not_valid_bind&)
+    {
+        return false;
+    }
+
 
 }

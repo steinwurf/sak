@@ -173,36 +173,57 @@ namespace sak
 
     namespace detail
     {
-        template<typename T> struct remove_class
-        {
-            using type = void();
-        };
-        template<typename C, typename R, typename... A>
-        struct remove_class<R(C::*)(A...)> { using type = R(A...); };
-        template<typename C, typename R, typename... A>
-        struct remove_class<R(C::*)(A...) const> { using type = R(A...); };
-        template<typename C, typename R, typename... A>
-        struct remove_class<R(C::*)(A...) volatile> { using type = R(A...); };
-        template<typename C, typename R, typename... A>
-        struct remove_class<R(C::*)(A...) const volatile> { using type = R(A...); };
-        // template<typename C, typename R, typename... A>
-        // struct remove_class<R(C::*&)(A...) const volatile> { using type = R(A...); };
-
-        // template<typename T>
-        // struct get_signature_impl { using type = typename remove_class<
-        //     decltype(&std::remove_reference<T>::type::operator())>::type; };
         template<typename T>
-        struct get_signature_impl { using type = typename remove_class<T>::type; };
+        struct get_signature_impl;
+
+        template<typename C, typename R, typename... A>
+        struct get_signature_impl<R(C::*)(A...)>
+        {
+            using type = R(A...);
+        };
+
+        template<typename C, typename R, typename... A>
+        struct get_signature_impl<R(C::*)(A...) const>
+        {
+            using type = R(A...);
+        };
+
+        template<typename C, typename R, typename... A>
+        struct get_signature_impl<R(C::*)(A...) volatile>
+        {
+            using type = R(A...);
+        };
+
+        template<typename C, typename R, typename... A>
+        struct get_signature_impl<R(C::*)(A...) const volatile>
+        {
+            using type = R(A...);
+        };
 
         template<typename R, typename... A>
-        struct get_signature_impl<R(A...)> { using type = R(A...); };
-        template<typename R, typename... A>
-        struct get_signature_impl<R(&)(A...)> { using type = R(A...); };
-        template<typename R, typename... A>
-        struct get_signature_impl<R(*)(A...)> { using type = R(A...); };
-        template<typename T> using get_signature = typename get_signature_impl<T>::type;
+        struct get_signature_impl<R(A...)>
+        {
+            using type = R(A...);
+        };
 
-        template<typename F> using make_function_type = std::function<get_signature<F>>;
+        template<typename R, typename... A>
+        struct get_signature_impl<R(&)(A...)>
+        {
+            using type = R(A...);
+        };
+
+        template<typename R, typename... A>
+        struct get_signature_impl<R(*)(A...)>
+        {
+            using type = R(A...);
+        };
+
+        template<typename T> using get_signature =
+            typename get_signature_impl<T>::type;
+
+        template<typename F> using make_function_type =
+            std::function<get_signature<F>>;
+
         template<typename F> make_function_type<F> make_function(F f) {
             return make_function_type<F>(f); }
     }

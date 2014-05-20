@@ -223,9 +223,6 @@ namespace sak
 
         template<typename F> using make_function_type =
             std::function<get_signature<F>>;
-
-        template<typename F> make_function_type<F> make_function(F f) {
-            return make_function_type<F>(f); }
     }
 
     namespace detail
@@ -240,11 +237,6 @@ namespace sak
         auto try_bind(F f, Args... args, int) ->
             decltype(sak::easy_bind(f, args...), make_function_type<F>())
         {
-            // make_function_type<F> v(sak::ea;
-            // v = sak::easy_bind(f, args...);
-
-            // return v;//sak::easy_bind(f, args...);
-
             return sak::easy_bind(f, args...);
         }
     }

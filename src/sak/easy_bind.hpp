@@ -179,49 +179,42 @@ namespace sak
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...)>
         {
-//            using type = R(A...);
             typedef R type(A...);
         };
 
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...) const>
         {
-            // using type = R(A...);
             typedef R type(A...);
         };
 
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...) volatile>
         {
-            // using type = R(A...);
             typedef R type(A...);
         };
 
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...) const volatile>
         {
-            // using type = R(A...);
             typedef R type(A...);
         };
 
         template<typename R, typename... A>
         struct get_signature_impl<R(A...)>
         {
-            // using type = R(A...);
             typedef R type(A...);
         };
 
         template<typename R, typename... A>
         struct get_signature_impl<R(&)(A...)>
         {
-            // using type = R(A...);
             typedef R type(A...);
         };
 
         template<typename R, typename... A>
         struct get_signature_impl<R(*)(A...)>
         {
-            // using type = R(A...);
             typedef R type(A...);
         };
 
@@ -245,13 +238,14 @@ namespace sak
 
         template<class F, class... Args>
         auto try_bind(F f, Args... args, int) ->
-            decltype(sak::easy_bind(f, args...), make_function(f))
+            decltype(sak::easy_bind(f, args...), make_function_type<F>())
         {
+            // make_function_type<F> v(sak::ea;
+            // v = sak::easy_bind(f, args...);
 
-            make_function_type<F> v;
-            v = sak::easy_bind(f, args...);
+            // return v;//sak::easy_bind(f, args...);
 
-            return v;//sak::easy_bind(f, args...);
+            return sak::easy_bind(f, args...);
         }
     }
 

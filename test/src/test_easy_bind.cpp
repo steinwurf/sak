@@ -12,6 +12,7 @@
 #include <gtest/gtest.h>
 
 #include <sak/easy_bind.hpp>
+#include <sak/optional_bind.hpp>
 
 namespace
 {
@@ -223,7 +224,7 @@ struct not_existing
 };
 
 
-TEST(TestTryBind, test_try_bind)
+TEST(TestTryBind, test_optional_bind)
 {
     std::shared_ptr<dummy_class> dummy(new dummy_class());
 

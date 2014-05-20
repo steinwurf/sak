@@ -179,43 +179,50 @@ namespace sak
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...)>
         {
-            using type = R(A...);
+//            using type = R(A...);
+            typedef R type(A...);
         };
 
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...) const>
         {
-            using type = R(A...);
+            // using type = R(A...);
+            typedef R type(A...);
         };
 
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...) volatile>
         {
-            using type = R(A...);
+            // using type = R(A...);
+            typedef R type(A...);
         };
 
         template<typename C, typename R, typename... A>
         struct get_signature_impl<R(C::*)(A...) const volatile>
         {
-            using type = R(A...);
+            // using type = R(A...);
+            typedef R type(A...);
         };
 
         template<typename R, typename... A>
         struct get_signature_impl<R(A...)>
         {
-            using type = R(A...);
+            // using type = R(A...);
+            typedef R type(A...);
         };
 
         template<typename R, typename... A>
         struct get_signature_impl<R(&)(A...)>
         {
-            using type = R(A...);
+            // using type = R(A...);
+            typedef R type(A...);
         };
 
         template<typename R, typename... A>
         struct get_signature_impl<R(*)(A...)>
         {
-            using type = R(A...);
+            // using type = R(A...);
+            typedef R type(A...);
         };
 
         template<typename T> using get_signature =

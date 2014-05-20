@@ -97,8 +97,30 @@ namespace sak
     ///
     /// The following example shows optional_bind in action:
     ///
-    ///     class foo
+    ///     struct foo
     ///     {
+    ///         void make_coffee()
+    ///         {
+    ///             std::cout << "coffee on its way" << std::endl;
+    ///         }
+    ///     };
+    ///
+    /// Now somewhere in your code you want to bind to two different
+    /// member functions, but if they are not there it is ok.
+    ///
+    /// To do this we need to define two helpers which implement the
+    /// actual bind (we will utilize the easy_bind helper here to make
+    /// the code simple but you can also use std::bind):
+    ///
+    ///     struct bind_make_coffee
+    ///     {
+    ///         template<class T>
+    ///         static auto bind(T& t) ->
+    ///             decltype(sak::easy_bind(&T::make_coffee, &t))
+    ///         {
+    ///             return sak::easy_bind(&T::make_coffee, &t);
+    ///         }
+    ///     };
     ///
     ///
     ///

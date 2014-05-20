@@ -198,6 +198,9 @@ TEST(TestEasyBind, test_std_function)
     EXPECT_EQ(15U, global_c);
 }
 
+class no_function
+{ };
+
 TEST(TestTryBind, test_try_bind)
 {
     std::shared_ptr<dummy_class> dummy(new dummy_class());
@@ -206,7 +209,7 @@ TEST(TestTryBind, test_try_bind)
 
 
 
-    auto function1 = sak::try_bind(&dummy_class::method, dummy);
+    auto function1 = sak::bind_method(*dummy);
 
 
     function1(1, 1.5, "test1");
@@ -220,7 +223,13 @@ TEST(TestTryBind, test_try_bind)
     auto function2 = sak::try_bind(32, dummy);
     EXPECT_FALSE((bool)function2);
 
-    auto function3 = sak::try_bind(&dummy_class::method2, dummy);
-    EXPECT_TRUE((bool)function3);
+    no_function nof;
+    auto function3 = sak::bind_method(nof);
+    EXPECT_FALSE((bool)function3);
+
+
+
+    auto function4 = sak::try_bind(&dummy_class::method2, dummy);
+    EXPECT_TRUE((bool)function4);
 
 }

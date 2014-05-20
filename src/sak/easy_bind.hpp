@@ -243,6 +243,22 @@ namespace sak
             make_function_type<F> v = sak::easy_bind(f, args...);
             return v;
         }
+
+        template<class F>
+        std::function<void()> bind_method(F&, char)
+        {
+            return std::function<void()>();
+        }
+
+        template<class F>
+        auto bind_method(F& f, int) ->
+            decltype(sak::easy_bind(&F::method, &f),
+                     std::function<void(uint32_t, double, std::string)>())
+
+        {
+            return sak::easy_bind(&F::method, &f);
+        }
+
     }
 
     template<class F, class... Args>
@@ -250,6 +266,13 @@ namespace sak
         decltype(detail::try_bind<F, Args...>(f, args..., 0))
     {
         return detail::try_bind<F,Args...>(f, args..., 0);
+    }
+
+    template<class F>
+    auto bind_method(F& f) ->
+        decltype(detail::bind_method<F>(f, 0))
+    {
+        return detail::bind_method<F>(f, 0);
     }
 
 }

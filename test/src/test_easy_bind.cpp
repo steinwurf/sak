@@ -12,7 +12,6 @@
 #include <gtest/gtest.h>
 
 #include <sak/easy_bind.hpp>
-#include <sak/optional_bind.hpp>
 
 namespace
 {
@@ -197,64 +196,4 @@ TEST(TestEasyBind, test_std_function)
     EXPECT_EQ(10U, global_a);
     EXPECT_EQ(b, global_b);
     EXPECT_EQ(15U, global_c);
-}
-
-
-struct method
-{
-    template<class T>
-    static auto bind(T& t) -> decltype(sak::easy_bind(&T::method, &t))
-    { return sak::easy_bind(&T::method, &t); }
-};
-
-
-struct method2
-{
-    template<class T>
-    static auto bind(T& t) -> decltype(sak::easy_bind(&T::method2, &t))
-    { return sak::easy_bind(&T::method2, &t); }
-};
-
-
-struct not_existing
-{
-    template<class T>
-    static auto bind(T& t) -> decltype(sak::easy_bind(&T::not_existing, &t))
-    { return sak::easy_bind(&T::not_existing, &t); }
-};
-
-
-TEST(TestTryBind, test_optional_bind)
-{
-    std::shared_ptr<dummy_class> dummy(new dummy_class());
-
-    auto function1 = sak::optional_bind<method>(*dummy);
-    EXPECT_TRUE(sak::is_bind_expression(function1));
-
-    auto function2 = sak::optional_bind<method2>(*dummy);
-    EXPECT_TRUE(sak::is_bind_expression(function2));
-
-    auto function3 = sak::optional_bind<not_existing>(*dummy);
-    EXPECT_FALSE(sak::is_bind_expression(function3));
-
-    function1(1, 1.5, "test1");
-    // // // this needs to also work
-    // EXPECT_TRUE((bool)function1);
-
-    // EXPECT_EQ(1U, dummy->m_x);
-    // EXPECT_EQ(1.5, dummy->m_y);
-    // EXPECT_EQ("test1", dummy->m_str);
-
-    // auto function2 = sak::try_bind(32, dummy);
-    // EXPECT_FALSE((bool)function2);
-
-    // no_function nof;
-    // auto function3 = sak::bind_method(nof);
-    // EXPECT_FALSE((bool)function3);
-
-
-
-    // auto function4 = sak::try_bind(&dummy_class::method2, dummy);
-    // EXPECT_TRUE((bool)function4);
-
 }

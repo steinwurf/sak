@@ -228,20 +228,14 @@ TEST(TestTryBind, test_optional_bind)
 {
     std::shared_ptr<dummy_class> dummy(new dummy_class());
 
-    //std::cout << sak::test_test(&dummy_class::method, dummy) << std::endl;
-
-
-
     auto function1 = sak::optional_bind<method>(*dummy);
-    EXPECT_TRUE(sak::is_bind_valid(function1));
-
+    EXPECT_TRUE(sak::is_bind_expression(function1));
 
     auto function2 = sak::optional_bind<method2>(*dummy);
-    EXPECT_TRUE(sak::is_bind_valid(function2));
+    EXPECT_TRUE(sak::is_bind_expression(function2));
 
     auto function3 = sak::optional_bind<not_existing>(*dummy);
-    EXPECT_FALSE(sak::is_bind_valid(function3));
-
+    EXPECT_FALSE(sak::is_bind_expression(function3));
 
     function1(1, 1.5, "test1");
     // // // this needs to also work

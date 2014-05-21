@@ -5,69 +5,11 @@
 
 #pragma once
 
-#include "easy_bind.hpp"
+#include <functional>
 
 namespace sak
 {
     // Do not expose implementation details to users of this header file
-
-    // namespace detail
-    // {
-    //     template<typename T>
-    //     struct get_signature_impl;
-
-    //     template<typename C, typename R, typename... A>
-    //     struct get_signature_impl<R(C::*)(A...)>
-    //     {
-    //         typedef R type(A...);
-    //     };
-
-    //     template<typename C, typename R, typename... A>
-    //     struct get_signature_impl<R(C::*)(A...) const>
-    //     {
-    //         typedef R type(A...);
-    //     };
-
-    //     template<typename C, typename R, typename... A>
-    //     struct get_signature_impl<R(C::*)(A...) volatile>
-    //     {
-    //         typedef R type(A...);
-    //     };
-
-    //     template<typename C, typename R, typename... A>
-    //     struct get_signature_impl<R(C::*)(A...) const volatile>
-    //     {
-    //         typedef R type(A...);
-    //     };
-
-    //     template<typename R, typename... A>
-    //     struct get_signature_impl<R(A...)>
-    //     {
-    //         typedef R type(A...);
-    //     };
-
-    //     template<typename R, typename... A>
-    //     struct get_signature_impl<R(&)(A...)>
-    //     {
-    //         typedef R type(A...);
-    //     };
-
-    //     template<typename R, typename... A>
-    //     struct get_signature_impl<R(*)(A...)>
-    //     {
-    //         typedef R type(A...);
-    //     };
-
-    //     template<typename T> using get_signature =
-    //         typename get_signature_impl<T>::type;
-
-    //     template<typename F> using make_function_type =
-    //         std::function<get_signature<F>>;
-
-    //     template<typename F> make_function_type<F> make_function(F f) {
-    //         return make_function_type<F>(f); }
-    // }
-
     namespace detail
     {
         /// Helper struct which serves a return value if we were not able

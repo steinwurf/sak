@@ -93,7 +93,7 @@ namespace sak
     /// available otherwise we want to skip the bind.
     ///
     /// optional_bind is designed with a quite narrow scope, but it
-    /// can probably be extended to server more purposes if needed.
+    /// can probably be extended to serve more purposes if needed.
     ///
     /// The following example shows optional_bind in action:
     ///
@@ -122,11 +122,22 @@ namespace sak
     ///         }
     ///     };
     ///
+    ///     struct bind_grind_some_beans
+    ///     {
+    ///         template<class T>
+    ///         static auto bind(T& t) ->
+    ///             decltype(sak::easy_bind(&T::grind_some_beans, &t))
+    ///         {
+    ///             return sak::easy_bind(&T::grind_some_beans, &t);
+    ///         }
+    ///     };
+    ///
+    /// With these helpers
+    ///
     ///
     ///
     template<class B, class F>
-    auto optional_bind(F& f) ->
-        decltype(detail::bind_method<B, F>(f, 0))
+    auto optional_bind(F& f) -> decltype(detail::bind_method<B, F>(f, 0))
     {
         return detail::bind_method<B, F>(f, 0);
     }

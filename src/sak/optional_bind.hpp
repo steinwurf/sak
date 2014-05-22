@@ -26,9 +26,10 @@ namespace sak
         /// int version does not require an implict conversion of the
         /// numeric constant form int to char it will be preferred.
         template<class B, class F>
-        not_valid_bind optional_bind(F&&, char)
+        auto optional_bind(F&& f, char) ->
+            decltype(B::failure(std::forward<F>(f)))
         {
-            return not_valid_bind();
+            return B::failure(std::forward<F>(f));//not_valid_bind();
         }
 
         template<class B, class F>

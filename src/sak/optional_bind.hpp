@@ -26,15 +26,16 @@ namespace sak
         /// int version does not require an implict conversion of the
         /// numeric constant form int to char it will be preferred.
         template<class B, class F>
-        not_valid_bind optional_bind(F&, char)
+        not_valid_bind optional_bind(F&&, char)
         {
             return not_valid_bind();
         }
 
         template<class B, class F>
-        auto optional_bind(F& f, int) -> decltype(B::bind(f))
+        auto optional_bind(F&& f, int) ->
+            decltype(B::bind(std::forward<F>(f)))
         {
-            return B::bind(f);
+            return B::bind(std::forward<F>(f));
         }
     }
 
@@ -65,20 +66,20 @@ namespace sak
     ///     struct bind_make_coffee
     ///     {
     ///         template<class T>
-    ///         static auto bind(T& t) ->
-    ///             decltype(sak::easy_bind(&T::make_coffee, &t))
+    ///         static auto bind(T* t) ->
+    ///             decltype(sak::easy_bind(&T::make_coffee, t))
     ///         {
-    ///             return sak::easy_bind(&T::make_coffee, &t);
+    ///             return sak::easy_bind(&T::make_coffee, t);
     ///         }
     ///     };
     ///
     ///     struct bind_grind_beans
     ///     {
     ///         template<class T>
-    ///         static auto bind(T& t) ->
-    ///             decltype(sak::easy_bind(&T::grind_beans, &t))
+    ///         static auto bind(T* t) ->
+    ///             decltype(sak::easy_bind(&T::grind_beans, t))
     ///         {
-    ///             return sak::easy_bind(&T::grind_beans, &t);
+    ///             return sak::easy_bind(&T::grind_beans, t);
     ///         }
     ///     };
     ///
@@ -93,6 +94,28 @@ namespace sak
     ///
     /// The nice thing about this is that is can be done without
     /// having to directly utilize SFINAE tricks directly in the code.
+    ///
+    /// One thing we have to be careful with is that our bind helpers
+    /// will get T as we passed it when calling optional bind so if we
+    /// did not pass a pointer to foo we would get it by reference
+    /// e.g.:
+    ///
+    ///     struct bind_make_coffee
+    ///     {
+    ///         template<class T>
+    ///         static auto bind(T& t) ->
+    ///             decltype(sak::easy_bind(&T::make_coffee, &t))
+    ///         {
+    ///             return sak::easy_bind(&T::make_coffee, &t);
+    ///         }
+    ///     };
+    ///
+    ///    Used like this:
+    ///
+    ///    foo f;
+    ///    auto make_coffee = sak::optinal_bind<bind_make_coffee>(f);
+    ///
+    ///    assert(sak::is_bind_expression(make_coffee) == true);
     ///
     /// The return value of optional_bind can only be used if
     /// sak::is_bind_expression returns true. If that is the case then the
@@ -110,9 +133,10 @@ namespace sak
     ///  - F is the object to which we wish to bind
     ///
     template<class B, class F>
-    auto optional_bind(F& f) -> decltype(detail::optional_bind<B, F>(f, 0))
+    auto optional_bind(F&& f) ->
+        decltype(detail::optional_bind<B>(std::forward<F>(f), 0))
     {
-        return detail::optional_bind<B, F>(f, 0);
+        return detail::optional_bind<B>(std::forward<F>(f), 0);
     }
 
     /// Checks whether the optional_bind return a valid bind expression

@@ -7,6 +7,11 @@ detailed list of every change, see the Git log.
 Latest
 ------
 * Minor: Added support for const member function in sak::easy_bind
+* Minor: Adding optional_bind which is a small helper function
+  occasionally useful when writing generic code where some types define
+  specific member function and some do not. If that is the case
+  optional bind will allow us to bind to a member function if available
+  otherwise optional bind will return a predefined return value.
 
 11.0.0
 ------

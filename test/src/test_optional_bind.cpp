@@ -57,11 +57,7 @@ namespace
             return sak::easy_bind(&T::method, t);
         }
 
-        template<class T>
-        static auto failure(T) -> std::function<void(uint32_t, uint32_t)>
-        {
-            return std::function<void(uint32_t, uint32_t)>();
-        }
+        using result_type = std::function<void(uint32_t,uint32_t)>;
     };
 
     struct bind_const_method
@@ -73,11 +69,7 @@ namespace
             return sak::easy_bind(&T::const_method, t);
         }
 
-        template<class T>
-        static auto failure(T) -> std::function<uint32_t(uint32_t, uint32_t)>
-        {
-            return std::function<uint32_t(uint32_t, uint32_t)>();
-        }
+        using result_type = std::function<uint32_t(uint32_t,uint32_t)>;
 
     };
 
@@ -90,11 +82,7 @@ namespace
             return sak::easy_bind(&T::no_method, t);
         }
 
-        template<class T>
-        static auto failure(T) -> std::function<void()>
-        {
-            return std::function<void()>();
-        }
+        using result_type = std::function<void()>;
 
     };
 }
@@ -106,14 +94,14 @@ TEST(TestOptionalBind, test_member_function)
         dummy_class dummy;
 
         auto f1 = sak::optional_bind<bind_method>(&dummy);
-        EXPECT_TRUE(sak::is_bind_expression(f1));
+        EXPECT_TRUE((bool)f1);
 
         f1(2,3);
         EXPECT_EQ(dummy.m_a, 2U);
         EXPECT_EQ(dummy.m_b, 3U);
 
         auto f2 = sak::optional_bind<bind_method>(dummy);
-        EXPECT_TRUE(sak::is_bind_expression(f2));
+        EXPECT_TRUE((bool)f2);
 
         f2(4,5);
         EXPECT_EQ(dummy.m_a, 4U);
@@ -126,7 +114,7 @@ TEST(TestOptionalBind, test_member_function)
         auto dummy = std::make_shared<dummy_class>();
 
         auto f1 = sak::optional_bind<bind_method>(dummy);
-        EXPECT_TRUE(sak::is_bind_expression(f1));
+        EXPECT_TRUE((bool)f1);
 
         f1(2,3);
         EXPECT_EQ(dummy->m_a, 2U);
@@ -141,11 +129,11 @@ TEST(TestOptionalBind, test_member_function)
         const dummy_class* const_dummy = &dummy;
 
         auto f1 = sak::optional_bind<bind_const_method>(non_const_dummy);
-        EXPECT_TRUE(sak::is_bind_expression(f1));
+        EXPECT_TRUE((bool)f1);
         EXPECT_EQ(5U, f1(2,3));
 
         auto f2 = sak::optional_bind<bind_const_method>(const_dummy);
-        EXPECT_TRUE(sak::is_bind_expression(f2));
+        EXPECT_TRUE((bool)f2);
         EXPECT_EQ(7U, f2(3,4));
     }
 
@@ -154,25 +142,34 @@ TEST(TestOptionalBind, test_member_function)
         dummy_class dummy;
 
         auto f1 = sak::optional_bind<bind_no_method>(&dummy);
-        EXPECT_FALSE(sak::is_bind_expression(f1));
+        EXPECT_FALSE((bool)f1);
     }
 }
 
 namespace
 {
     template<class T>
-    std::function<void()> test_return(T& t)
+    std::function<void()> return_no_method(T& t)
     {
         return sak::optional_bind<bind_no_method>(&t);
+    }
+
+    template<class T>
+    std::function<void(uint32_t,uint32_t)> return_method(T& t)
+    {
+        return sak::optional_bind<bind_method>(&t);
     }
 }
 
 TEST(TestOptionalBind, test_function_return)
 {
     dummy_class dummy;
-    auto f = test_return(dummy);
-    EXPECT_FALSE((bool)f);
-    EXPECT_FALSE(sak::is_bind_expression(f));
+
+    auto f1 = return_no_method(dummy);
+    EXPECT_FALSE((bool)f1);
+
+    auto f2 = return_method(dummy);
+    EXPECT_TRUE((bool)f2);
 }
 
 TEST(TestOptionalBind, tests)
@@ -185,8 +182,12 @@ TEST(TestOptionalBind, tests)
     auto f2 = std::function<void(uint32_t,uint32_t)>(f1);
     auto f3 = std::function<void(uint32_t,uint32_t)>();
 
-    EXPECT_TRUE(sak::is_bind_expression(f1));
-    EXPECT_TRUE(sak::is_bind_expression(f2));
-    EXPECT_FALSE(sak::is_bind_expression(f3));
+    EXPECT_TRUE((bool)f2);
+    EXPECT_FALSE((bool)f3);
+}
 
+
+
+TEST(TestOptionalFunction, test)
+{
 }

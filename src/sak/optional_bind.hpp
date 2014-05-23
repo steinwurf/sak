@@ -26,15 +26,14 @@ namespace sak
         /// int version does not require an implict conversion of the
         /// numeric constant form int to char it will be preferred.
         template<class B, class F>
-        auto optional_bind(F&& f, char) ->
-            decltype(B::failure(std::forward<F>(f)))
+        auto optional_bind(F&&, char) -> typename B::result_type
         {
-            return B::failure(std::forward<F>(f));//not_valid_bind();
+            return typename B::result_type();
         }
 
         template<class B, class F>
         auto optional_bind(F&& f, int) ->
-            decltype(B::bind(std::forward<F>(f)))
+            decltype(B::bind(std::forward<F>(f)), typename B::result_type())
         {
             return B::bind(std::forward<F>(f));
         }
@@ -72,6 +71,8 @@ namespace sak
     ///         {
     ///             return sak::easy_bind(&T::make_coffee, t);
     ///         }
+    ///
+    ///         using return_type = std::function<void()>;
     ///     };
     ///
     ///     struct bind_grind_beans
@@ -82,6 +83,8 @@ namespace sak
     ///         {
     ///             return sak::easy_bind(&T::grind_beans, t);
     ///         }
+    ///
+    ///         using return_type = std::function<void()>;
     ///     };
     ///
     /// With these helpers we can now write the following:
@@ -90,8 +93,8 @@ namespace sak
     ///    auto make_coffee = sak::optinal_bind<bind_make_coffee>(&f);
     ///    auto grind_beans = sak::optional_bind<bind_grind_beans>(&f);
     ///
-    ///    assert(sak::is_bind_expression(make_coffee) == true);
-    ///    assert(sak::is_bind_expression(grind_beans) == false);
+    ///    assert(make_coffee == true);
+    ///    assert(grind_beans == false);
     ///
     /// The nice thing about this is that is can be done without
     /// having to directly utilize SFINAE tricks directly in the code.
@@ -138,14 +141,5 @@ namespace sak
         decltype(detail::optional_bind<B>(std::forward<F>(f), 0))
     {
         return detail::optional_bind<B>(std::forward<F>(f), 0);
-    }
-
-    /// Checks whether the optional_bind return a valid bind expression
-    /// @param The return value of optional_bind
-    /// @return True if the type T is a valid bind expression otherwise false
-    template<class T>
-    bool is_bind_expression(const T&)
-    {
-        return std::is_bind_expression<T>::value;
     }
 }

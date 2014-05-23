@@ -4,7 +4,7 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
-Latest
+11.1.0
 ------
 * Minor: Added support for const member function in sak::easy_bind
 * Minor: Adding optional_bind which is a small helper function

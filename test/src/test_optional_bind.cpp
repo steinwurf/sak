@@ -167,9 +167,11 @@ TEST(TestOptionalBind, test_function_return)
 
     auto f1 = return_no_method(dummy);
     EXPECT_FALSE((bool)f1);
+    assert(!f1);
 
     auto f2 = return_method(dummy);
     EXPECT_TRUE((bool)f2);
+    assert(f2);
 }
 
 TEST(TestOptionalBind, tests)

@@ -12,11 +12,6 @@ namespace sak
     // Do not expose implementation details to users of this header file
     namespace detail
     {
-        /// Helper struct which serves a return value if we were not able
-        /// to bind to the specified function
-        struct not_valid_bind
-        { };
-
         /// Overload of the internal optional_bind. This overload is
         /// chosen if the B::bind(f) expression cannot be
         /// instantiated. Thanks to SFINAE this means that this
@@ -24,7 +19,7 @@ namespace sak
         /// it will be chosen. If however the bind expression is valid
         /// then both overloads will be available, however since the
         /// int version does not require an implict conversion of the
-        /// numeric constant form int to char it will be preferred.
+        /// numeric constant from int to char it will be preferred.
         template<class B, class F>
         auto optional_bind(F&&, char) -> typename B::result_type
         {
@@ -72,7 +67,7 @@ namespace sak
     ///             return sak::easy_bind(&T::make_coffee, t);
     ///         }
     ///
-    ///         using return_type = std::function<void()>;
+    ///         using result_type = std::function<void()>;
     ///     };
     ///
     ///     struct bind_grind_beans
@@ -84,23 +79,25 @@ namespace sak
     ///             return sak::easy_bind(&T::grind_beans, t);
     ///         }
     ///
-    ///         using return_type = std::function<void()>;
+    ///         using result_type = std::function<void()>;
     ///     };
     ///
     /// With these helpers we can now write the following:
     ///
     ///    foo f;
-    ///    auto make_coffee = sak::optinal_bind<bind_make_coffee>(&f);
+    ///    auto make_coffee = sak::optional_bind<bind_make_coffee>(&f);
     ///    auto grind_beans = sak::optional_bind<bind_grind_beans>(&f);
     ///
-    ///    assert(make_coffee == true);
-    ///    assert(grind_beans == false);
+    ///    // Using std::function's built-in operator bool() we can check
+    ///    // if the bind was successful
+    ///    assert(make_coffee);
+    ///    assert(!grind_beans);
     ///
     /// The nice thing about this is that is can be done without
     /// having to directly utilize SFINAE tricks directly in the code.
     ///
     /// One thing we have to be careful with is that our bind helpers
-    /// will get T as we passed it when calling optional bind so if we
+    /// will get T as we passed it when calling optional_bind so if we
     /// did not pass a pointer to foo we would get it by reference
     /// e.g.:
     ///
@@ -119,14 +116,11 @@ namespace sak
     ///    foo f;
     ///    auto make_coffee = sak::optinal_bind<bind_make_coffee>(f);
     ///
-    ///    assert(sak::is_bind_expression(make_coffee) == true);
+    ///    assert(make_coffee);
     ///
-    /// The return value of optional_bind can only be used if
-    /// sak::is_bind_expression returns true. If that is the case then the
-    /// return value will be the equal to the return value of the bind
-    /// expression used in the helper. In the example given above we
-    /// are using sak::easy_bind which internally uses std::bind so
-    /// the return value is that of std::bind.
+    /// The return value of optional_bind is specified by the type
+    /// result_type defined in the bind helper. The result_type must
+    /// be default constructable i.e. define a trivial constructor.
     ///
     /// The optional_bind helper takes the following arguments:
     ///

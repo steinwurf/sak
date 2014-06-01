@@ -4,6 +4,10 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
+Latest
+------
+* Bug: Add missing include for size_t definition in easy_bind.hpp
+
 11.1.0
 ------
 * Minor: Added support for const member function in sak::easy_bind

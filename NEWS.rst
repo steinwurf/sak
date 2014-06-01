@@ -4,7 +4,7 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
-Latest
+11.1.1
 ------
 * Bug: Add missing include for size_t definition in easy_bind.hpp
 

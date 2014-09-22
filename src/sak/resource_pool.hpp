@@ -23,8 +23,8 @@ namespace sak
         /// The pointer to the resource
         using value_ptr = std::shared_ptr<value_type>;
 
-        /// The allocator function
-        using allocator_function = std::function<value_ptr()>;
+        /// The allocate function
+        using allocate_function = std::function<value_ptr()>;
 
         /// The recycle function
         using recycle_function = std::function<void(value_ptr)>;
@@ -36,18 +36,15 @@ namespace sak
             m_pool(std::make_shared<impl>())
         { }
 
-        void set_allocator(const allocator_function& allocator)
-        {
-            assert(m_pool);
-            m_pool->set_allocator(allocator);
-        }
+        template<class Allocate>
+        resource_pool(const Allocate& allocate) :
+            m_pool(std::make_shared<impl>())
+        { }
 
-        void set_recycle_callback(const recycle_function& allocator)
-        {
-            assert(m_pool);
-            assert(0);
-            // m_pool->set_allocator(allocator);
-        }
+        template<class Allocate, class Recycle>
+        resource_pool(const Allocate& allocate, const Recycle& recycle) :
+            m_pool(std::make_shared<impl>())
+        { }
 
         /// @returns the number of resource in use
         uint32_t total_resources() const
@@ -84,17 +81,19 @@ namespace sak
         {
 
             impl()
-                : m_allocator(std::make_shared<value_type>),
+                : m_allocator(
                   m_pool_size(0)
-            {
-                assert(m_allocator);
-            }
+            { }
 
-            void set_allocator(const allocator_function& allocator)
-            {
-                assert(allocator);
-                m_allocator = allocator;
-            }
+            template<class Allocate>
+            impl(const Allocate& allocate) :
+                m_pool(std::make_shared<impl>())
+            { }
+
+            template<class Allocate, class Recycle>
+            impl(const Allocate& allocate, const Recycle& recycle) :
+                m_pool(std::make_shared<impl>())
+            { }
 
             value_ptr allocate()
             {
@@ -138,7 +137,10 @@ namespace sak
             std::list<value_ptr> m_free_list;
 
             // The allocator to use
-            allocator_function m_allocator;
+            allocate_function m_allocate;
+
+            // The allocator to use
+            recycle_function m_recycle;
 
             // The total number of resource allocated
             uint32_t m_pool_size;

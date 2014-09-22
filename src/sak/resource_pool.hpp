@@ -5,66 +5,95 @@
 
 #pragma once
 
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-
+#include <functional>
+#include <memory>
 #include <list>
 
 namespace sak
 {
-    template<class Resource>
+    /// @brief The resource pool stores value objects and recycles them
+    template<class Value>
     class resource_pool
     {
     public:
 
-        /// the type managed
-        typedef Resource value_type;
+        /// The type managed
+        using value_type = Value;
 
-        /// the pointer to the resource
-        typedef boost::shared_ptr<value_type> value_ptr;
+        /// The pointer to the resource
+        using value_ptr = std::shared_ptr<value_type>;
 
-        /// the allocator function
-        typedef boost::function<value_ptr ()> allocator_type;
+        /// The allocator function
+        using allocator_function = std::function<value_ptr()>;
+
+        /// The recycle function
+        using recycle_function = std::function<void(value_ptr)>;
 
     public:
 
-        /// Create a new resource pool
-        /// @param allocator the allocator to be used by the pool
-        resource_pool(const allocator_type& allocator)
+        /// Default constructor
+        resource_pool() :
+            m_pool(std::make_shared<impl>())
+        { }
+
+        void set_allocator(const allocator_function& allocator)
         {
-            m_pool.reset( new pool_impl(allocator) );
+            assert(m_pool);
+            m_pool->set_allocator(allocator);
+        }
+
+        void set_recycle_callback(const recycle_function& allocator)
+        {
+            assert(m_pool);
+            assert(0);
+            // m_pool->set_allocator(allocator);
         }
 
         /// @returns the number of resource in use
-        uint32_t size() const
+        uint32_t total_resources() const
         {
+            assert(m_pool);
+            return m_pool->size();
+        }
+
+        /// @returns the number of resource in use
+        uint32_t used_resources() const
+        {
+            assert(m_pool);
             return m_pool->size();
         }
 
         /// @returns the number of unused resources
-        uint32_t free() const
+        uint32_t unused_resources() const
         {
+            assert(m_pool);
             return m_pool->free();
         }
 
         /// @returns a resource from the pool
         value_ptr allocate()
         {
+            assert(m_pool);
             return m_pool->allocate();
         }
 
     private:
 
-        struct pool_impl : public boost::enable_shared_from_this<pool_impl>
+        // The
+        struct impl : public std::enable_shared_from_this<impl>
         {
 
-            pool_impl(const allocator_type& allocator)
-                : m_allocator(allocator),
+            impl()
+                : m_allocator(std::make_shared<value_type>),
                   m_pool_size(0)
             {
                 assert(m_allocator);
+            }
+
+            void set_allocator(const allocator_function& allocator)
+            {
+                assert(allocator);
+                m_allocator = allocator;
             }
 
             value_ptr allocate()
@@ -83,7 +112,7 @@ namespace sak
                     ++m_pool_size;
                 }
 
-                boost::shared_ptr<pool_impl> pool = pool_impl::shared_from_this();
+                auto pool = impl::shared_from_this();
 
                 return value_ptr(resource.get(), deleter(pool, resource));
             }
@@ -105,26 +134,24 @@ namespace sak
 
         private:
 
-            // The free resource list type
-            typedef std::list<value_ptr> resource_list;
-
             // Stores all the free resources
-            resource_list m_free_list;
+            std::list<value_ptr> m_free_list;
 
             // The allocator to use
-            allocator_type m_allocator;
+            allocator_function m_allocator;
 
             // The total number of resource allocated
             uint32_t m_pool_size;
         };
 
-        typedef boost::shared_ptr<pool_impl> pool_ptr;
-        typedef boost::weak_ptr<pool_impl> pool_weak_ptr;
+        typedef std::shared_ptr<impl> pool_ptr;
+        typedef std::weak_ptr<impl> pool_weak_ptr;
 
 
         struct deleter
         {
-            deleter(const pool_weak_ptr& pool, const value_ptr& resource)
+            deleter(const std::weak_ptr<impl>& pool,
+                    const value_ptr& resource)
                 : m_pool(pool),
                   m_resource(resource)
             {
@@ -135,7 +162,7 @@ namespace sak
             void operator()(value_type*)
             {
                 // Place the resource in the free list
-                pool_ptr pool = m_pool.lock();
+                auto pool = m_pool.lock();
 
                 if (pool)
                 {
@@ -144,7 +171,7 @@ namespace sak
             }
 
             // Poiner to the pool needed for recycling
-            pool_weak_ptr m_pool;
+            std::weak_ptr<impl> m_pool;
 
             // The resource object
             value_ptr m_resource;
@@ -153,7 +180,7 @@ namespace sak
     private:
 
         // The pool impl
-        boost::shared_ptr<pool_impl> m_pool;
+        std::shared_ptr<impl> m_pool;
 
     };
 }

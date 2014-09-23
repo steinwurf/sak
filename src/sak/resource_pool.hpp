@@ -31,21 +31,28 @@ namespace sak
 
     public:
 
-        /// Default constructor
-        resource_pool() :
-            m_pool(std::make_shared<impl>())
+        // Default constructor
+        // resource_pool() :
+        //     m_pool(std::make_shared<impl>(std::make_shared<value_type>))
+        // { }
+
+        // template<class Allocate>
+        // resource_pool(Allocate&& allocate) :
+        //     m_pool(std::make_shared<impl>(std::forward<Allocate>(allocate)))
+        // { }
+
+        // template<class Allocate, class Recycle>
+        // resource_pool(Allocate&& allocate, Recycle&& recycle) :
+        //     m_pool(std::make_shared<impl>(std::forward<Allocate>(allocate),
+        //                                   std::forward<Recycle>(recycle)))
+        // { }
+        resource_pool(allocate_function allocate) :
+            m_pool(std::make_shared<impl>(std::move(allocate)))
         { }
 
-        template<class Allocate>
-        resource_pool(const Allocate& allocate) :
-            m_pool(std::make_shared<impl>())
-        { }
-
-        template<class Allocate, class Recycle>
-        resource_pool(const Allocate& allocate, const Recycle& recycle) :
-            m_pool(std::make_shared<impl>())
-        { }
-
+       // resource_pool(allocate_function allocate, recycle_function recycle)
+       //             m_pool(std::make_shared<impl>(std::move(allocate), std::move(recycle)))
+       //  { }
         /// @returns the number of resource in use
         uint32_t total_resources() const
         {
@@ -67,6 +74,13 @@ namespace sak
             return m_pool->free();
         }
 
+        /// Frees all unused resources
+        void free_unused()
+        {
+            assert(m_pool);
+            m_pool->free_unused();
+        }
+
         /// @returns a resource from the pool
         value_ptr allocate()
         {
@@ -80,20 +94,34 @@ namespace sak
         struct impl : public std::enable_shared_from_this<impl>
         {
 
-            impl()
-                : m_allocator(
-                  m_pool_size(0)
-            { }
+            // template<class Allocate>
+            // impl(Allocate&& allocate) :
+            //     m_pool_size(0),
+            //     m_allocate(std::forward<Allocate>(allocate))
+            // { }
 
-            template<class Allocate>
-            impl(const Allocate& allocate) :
-                m_pool(std::make_shared<impl>())
-            { }
+            // template<class Allocate, class Recycle>
+            // impl(Allocate&& allocate, Recycle&& recycle) :
+            //     m_pool_size(0),
+            //     m_allocate(std::forward<Allocate>(allocate)),
+            //     m_recycle(std::forward<Recycle>(recycle))
+            // { }
 
-            template<class Allocate, class Recycle>
-            impl(const Allocate& allocate, const Recycle& recycle) :
-                m_pool(std::make_shared<impl>())
-            { }
+            impl(allocate_function allocate) :
+                m_pool_size(0),
+                m_allocate(std::move(allocate))
+            {
+                assert(m_allocate);
+            }
+
+            impl(allocate_function allocate, recycle_function recycle) :
+                m_pool_size(0),
+                m_allocate(std::move(allocate)),
+                m_recycle(std::move(recycle))
+            {
+                assert(m_allocate);
+                assert(m_recycle);
+            }
 
             value_ptr allocate()
             {
@@ -106,14 +134,22 @@ namespace sak
                 }
                 else
                 {
-                    assert(m_allocator);
-                    resource = m_allocator();
+                    assert(m_allocate);
+                    resource = m_allocate();
                     ++m_pool_size;
                 }
 
                 auto pool = impl::shared_from_this();
 
                 return value_ptr(resource.get(), deleter(pool, resource));
+            }
+
+            void free_unused()
+            {
+                assert(m_pool_size >= m_free_list.size());
+
+                m_pool_size -= m_free_list.size();
+                m_free_list.clear();
             }
 
             uint32_t size() const
@@ -128,13 +164,18 @@ namespace sak
 
             void recycle(const value_ptr& resource)
             {
+                if (m_recycle)
+                {
+                    m_recycle(resource);
+                }
+
                 m_free_list.push_back(resource);
             }
 
         private:
 
-            // Stores all the free resources
-            std::list<value_ptr> m_free_list;
+            // The total number of resource allocated
+            uint32_t m_pool_size;
 
             // The allocator to use
             allocate_function m_allocate;
@@ -142,8 +183,9 @@ namespace sak
             // The allocator to use
             recycle_function m_recycle;
 
-            // The total number of resource allocated
-            uint32_t m_pool_size;
+            // Stores all the free resources
+            std::list<value_ptr> m_free_list;
+
         };
 
         typedef std::shared_ptr<impl> pool_ptr;

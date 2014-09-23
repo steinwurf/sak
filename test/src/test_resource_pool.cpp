@@ -137,7 +137,13 @@ TEST(TestResourcePool, NonDefaultConstructable)
 
     EXPECT_EQ(dummy_two::m_count, 0U);
 
-make);
+    {
+        auto make = []()->std::shared_ptr<dummy_two>
+        {
+            return std::make_shared<dummy_two>(3U);
+        };
+
+        sak::resource_pool<dummy_two> pool(make);
 
         auto o1 = pool.allocate();
         auto o2 = pool.allocate();
@@ -148,42 +154,74 @@ make);
 
 /// Test that the pool works for non constructable objects, even if
 /// we do not provide the allocator
-// TEST(TestResourcePool, DefaultConstructable)
-// {
-//     {
-//         sak::resource_pool<dummy_one> pool;
+TEST(TestResourcePool, DefaultConstructable)
+{
+    {
+        sak::resource_pool<dummy_one> pool;
 
-//         auto o1 = pool.allocate();
-//         auto o2 = pool.allocate();
+        auto o1 = pool.allocate();
+        auto o2 = pool.allocate();
 
-//         EXPECT_EQ(dummy_one::m_count, 2U);
-//     }
+        EXPECT_EQ(dummy_one::m_count, 2U);
+    }
 
-//     EXPECT_EQ(dummy_one::m_count, 0U);
-// }
+    EXPECT_EQ(dummy_one::m_count, 0U);
+}
 
+/// Test that everything works even if the pool dies before the
+// objects allocated
+TEST(TestResourcePool, PoolDieBeforeObject)
+{
+    {
+        std::shared_ptr<dummy_one> d1;
+        std::shared_ptr<dummy_one> d2;
+        std::shared_ptr<dummy_one> d3;
 
+        {
+            sak::resource_pool<dummy_one> pool;
 
-// TEST(TestResourcePool, PoolDieBeforeObject)
-// {
+            d1 = pool.allocate();
+            d2 = pool.allocate();
+            d3 = pool.allocate();
 
-//     {
-//         dummy_ptr d1;
-//         dummy_ptr d2;
-//         dummy_ptr d3;
+            EXPECT_EQ(pool.total_resources(), 3U);
+            EXPECT_EQ(dummy_one::m_count, 3U);
+        }
 
-//         {
-//             sak::resource_pool<dummy_object> pool;
-//             pool.set_allocator( std::bind(make_dummy) );
+        EXPECT_EQ(dummy_one::m_count, 3U);
 
-//             d1 = pool.allocate();
-//             d2 = pool.allocate();
-//             d3 = pool.allocate();
+    }
 
-//             ASSERT_TRUE(pool.total_resources() == 3);
-//         }
+    EXPECT_EQ(dummy_one::m_count, 0U);
+}
 
-//     }
-//     ASSERT_TRUE(dummy_object::m_count == 0);
+/// Test that copying the resource_pool works as expected
+///
+/// When we copy a resource pool, we will shallow copy it so:
+///
+///     sak::resource_pool<dummy_one> pool;
+///
+///     auto o1 = pool.allocate();
+///     auto o2 = pool.allocate();
+///
+///     sak::resource_pool<dummy_one> new_pool = pool;
+///
+///     o1.reset();
+///
+///
+///
+///
 
-// }
+TEST(TestResourcePool, Copy)
+{
+    // {
+    //     sak::resource_pool<dummy_one> pool;
+
+    //     auto o1 = pool.allocate();
+    //     auto o2 = pool.allocate();
+
+    //     EXPECT_EQ(dummy_one::m_count, 2U);
+    // }
+
+    // EXPECT_EQ(dummy_one::m_count, 0U);
+}

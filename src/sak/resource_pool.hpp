@@ -53,7 +53,7 @@ namespace sak
             m_pool(std::make_shared<impl>(*other.m_pool))
         { }
 
-        resource_pool(resource_pool&& other) noexcept :
+        resource_pool(resource_pool&& other) :
             m_pool(std::move(other.m_pool))
         {
             assert(m_pool);
@@ -66,7 +66,7 @@ namespace sak
             return *this;
         }
 
-        resource_pool& operator=(resource_pool&& other) noexcept
+        resource_pool& operator=(resource_pool&& other)
         {
             m_pool = std::move(other.m_pool);
             return *this;
@@ -128,7 +128,7 @@ namespace sak
                 }
             }
 
-            impl(impl&& other) noexcept :
+            impl(impl&& other) :
                 std::enable_shared_from_this<impl>(other),
                 m_allocate(std::move(other.m_allocate)),
                 m_recycle(std::move(other.m_recycle)),
@@ -142,7 +142,7 @@ namespace sak
                 return *this;
             }
 
-            impl& operator=(impl&& other) noexcept
+            impl& operator=(impl&& other)
             {
                 m_allocate = std::move(other.m_allocate);
                 m_recycle = std::move(other.m_recycle);

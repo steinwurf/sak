@@ -40,6 +40,7 @@ namespace sak
                        allocate_function(std::make_shared<value_type>)))
         { }
 
+        /// Create a resource
         resource_pool(allocate_function allocate) :
             m_pool(std::make_shared<impl>(std::move(allocate)))
         { }

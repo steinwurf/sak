@@ -21,6 +21,10 @@ namespace
             ++m_count;
         }
 
+        void recycle()
+        { }
+
+
         ~dummy_one()
         {
             --m_count;
@@ -57,70 +61,51 @@ namespace
     }
 }
 
-// typedef std::shared_ptr<dummy_object> dummy_ptr;
+/// Test that our resource pool is a regular type. We are not
+/// implementing equality or less than here, but maybe we could.
+TEST(TestResourcePool, RegularType)
+{
+    EXPECT_TRUE(sak::is_regular<sak::resource_pool<dummy_one>>::value);
+    EXPECT_TRUE(sak::is_regular<sak::resource_pool<dummy_two>>::value);
+}
 
+TEST(TestResourcePool, Construct)
+{
+    {
+        sak::resource_pool<dummy_one> pool;
 
+        EXPECT_EQ(pool.unused_resources(), 0U);
 
+        {
+            auto d1 = pool.allocate();
+            EXPECT_EQ(pool.unused_resources(), 0U);
+        }
 
-// std::shared_ptr<dummy_object> make_dummy()
-// {
-//     std::shared_ptr<dummy_object> obj(new dummy_object);
-//     return obj;
-// }
+        EXPECT_EQ(pool.unused_resources(), 1U);
 
-// TEST(TestResourcePool, RegularType)
-// {
-//     EXPECT_TRUE(sak::is_regular<sak::resource_pool<dummy_object>>::value);
-// }
+        auto d2 = pool.allocate();
 
+        EXPECT_EQ(pool.unused_resources(), 0U);
 
-// TEST(TestResourcePool, Construct)
-// {
+        auto d3 = pool.allocate();
 
-//     {
-//         sak::resource_pool<dummy_object> pool;
-//         pool.set_allocator( std::bind(make_dummy) );
+        EXPECT_EQ(pool.unused_resources(), 0U);
+        EXPECT_EQ(dummy_one::m_count, 2);
 
-//         EXPECT_EQ(pool.total_resources(), 0U);
-//         EXPECT_EQ(pool.unused_resources(), 0U);
+        {
+            auto d4 = pool.allocate();
+            EXPECT_EQ(pool.unused_resources(), 0U);
+        }
 
-//         {
-//             dummy_ptr d1 = pool.allocate();
+        EXPECT_EQ(pool.unused_resources(), 1U);
 
-//             EXPECT_EQ(pool.total_resources(), 1U);
-//             EXPECT_EQ(pool.unused_resources(), 0U);
-//         }
+        pool.free_unused();
 
-//         EXPECT_EQ(pool.total_resources(), 1U);
-//         EXPECT_EQ(pool.unused_resources(), 1U);
+        EXPECT_EQ(pool.unused_resources(), 0U);
+    }
 
-//         dummy_ptr d2 = pool.allocate();
-
-//         EXPECT_EQ(pool.total_resources(), 1U);
-//         EXPECT_EQ(pool.unused_resources(), 0U);
-
-//         dummy_ptr d3 = pool.allocate();
-
-//         EXPECT_EQ(pool.total_resources(), 2U);
-//         EXPECT_EQ(pool.unused_resources(), 0U);
-
-//         EXPECT_EQ(dummy_object::m_count, 2);
-
-//         {
-//             dummy_ptr d4 = pool.allocate();
-
-//             EXPECT_EQ(pool.total_resources(), 3U);
-//             EXPECT_EQ(pool.unused_resources(), 0U);
-//         }
-
-//         EXPECT_EQ(pool.total_resources(), 3U);
-//         EXPECT_EQ(pool.unused_resources(), 1U);
-
-//     }
-
-//     EXPECT_EQ(dummy_object::m_count, 0);
-
-// }
+    EXPECT_EQ(dummy_one::m_count, 0);
+}
 
 /// Test that the pool works for non default constructable objects, if
 /// we provide the allocator
@@ -150,6 +135,8 @@ TEST(TestResourcePool, NonDefaultConstructable)
 
         EXPECT_EQ(dummy_two::m_count, 2U);
     }
+
+    EXPECT_EQ(dummy_two::m_count, 0U);
 }
 
 /// Test that the pool works for non constructable objects, even if
@@ -169,7 +156,7 @@ TEST(TestResourcePool, DefaultConstructable)
 }
 
 /// Test that everything works even if the pool dies before the
-// objects allocated
+/// objects allocated
 TEST(TestResourcePool, PoolDieBeforeObject)
 {
     {
@@ -184,7 +171,7 @@ TEST(TestResourcePool, PoolDieBeforeObject)
             d2 = pool.allocate();
             d3 = pool.allocate();
 
-            EXPECT_EQ(pool.total_resources(), 3U);
+            // EXPECT_EQ(pool.total_resources(), 3U);
             EXPECT_EQ(dummy_one::m_count, 3U);
         }
 
@@ -195,33 +182,149 @@ TEST(TestResourcePool, PoolDieBeforeObject)
     EXPECT_EQ(dummy_one::m_count, 0U);
 }
 
-/// Test that copying the resource_pool works as expected
-///
-/// When we copy a resource pool, we will shallow copy it so:
-///
-///     sak::resource_pool<dummy_one> pool;
-///
-///     auto o1 = pool.allocate();
-///     auto o2 = pool.allocate();
-///
-///     sak::resource_pool<dummy_one> new_pool = pool;
-///
-///     o1.reset();
-///
-///
-///
-///
-
-TEST(TestResourcePool, Copy)
+/// Test that the recycle functionality works
+TEST(TestResourcePool, Recycle)
 {
-    // {
-    //     sak::resource_pool<dummy_one> pool;
+    uint32_t recycled = 0;
 
-    //     auto o1 = pool.allocate();
-    //     auto o2 = pool.allocate();
+    auto recycle = [&recycled](std::shared_ptr<dummy_two> o)
+        {
+            EXPECT_TRUE((bool) o);
+            ++recycled;
+        };
 
-    //     EXPECT_EQ(dummy_one::m_count, 2U);
-    // }
+    auto make = []()->std::shared_ptr<dummy_two>
+        {
+            return std::make_shared<dummy_two>(3U);
+        };
 
-    // EXPECT_EQ(dummy_one::m_count, 0U);
+    sak::resource_pool<dummy_two> pool(make, recycle);
+
+    auto o1 = pool.allocate();
+    o1.reset();
+
+    EXPECT_EQ(recycled, 1U);
+}
+
+/// Test that copying the resource_pool works as expected.
+///
+/// For a type to be regular then:
+///
+///     T a = b; assert(a == b);
+///     T a; a = b; <-> T a = b;
+///     T a = c; T b = c; a = d; assert(b == c);
+///     T a = c; T b = c; zap(a); assert(b == c && a != b);
+///
+TEST(TestResourcePool, CopyConstructor)
+{
+    sak::resource_pool<dummy_one> pool;
+
+    auto o1 = pool.allocate();
+    auto o2 = pool.allocate();
+
+    o1.reset();
+
+    sak::resource_pool<dummy_one> new_pool(pool);
+
+    EXPECT_EQ(pool.unused_resources(), 1U);
+    EXPECT_EQ(new_pool.unused_resources(), 1U);
+
+    o2.reset();
+
+    EXPECT_EQ(pool.unused_resources(), 2U);
+    EXPECT_EQ(new_pool.unused_resources(), 1U);
+
+    EXPECT_EQ(dummy_one::m_count, 3U);
+
+    pool.free_unused();
+    new_pool.free_unused();
+
+    EXPECT_EQ(dummy_one::m_count, 0U);
+}
+
+/// Test copy assignment works
+TEST(TestResourcePool, CopyAssignment)
+{
+    sak::resource_pool<dummy_one> pool;
+
+    auto o1 = pool.allocate();
+    auto o2 = pool.allocate();
+
+    o1.reset();
+
+    sak::resource_pool<dummy_one> new_pool;
+    new_pool = pool;
+
+    EXPECT_EQ(dummy_one::m_count, 3U);
+    auto o3 = new_pool.allocate();
+    EXPECT_EQ(dummy_one::m_count, 3U);
+}
+
+/// Test move constructor
+TEST(TestResourcePool, MoveConstructor)
+{
+    sak::resource_pool<dummy_one> pool;
+
+    auto o1 = pool.allocate();
+    auto o2 = pool.allocate();
+
+    o1.reset();
+
+    sak::resource_pool<dummy_one> new_pool(std::move(pool));
+
+    o2.reset();
+    EXPECT_EQ(new_pool.unused_resources(), 2U);
+}
+
+/// Test move assignment
+TEST(TestResourcePool, MoveAssignment)
+{
+    sak::resource_pool<dummy_one> pool;
+
+    auto o1 = pool.allocate();
+    auto o2 = pool.allocate();
+
+    o1.reset();
+
+    sak::resource_pool<dummy_one> new_pool;
+    new_pool = std::move(pool);
+
+    o2.reset();
+
+    EXPECT_EQ(new_pool.unused_resources(), 2U);
+}
+
+/// Test that copy assignment works when we copy from an object with
+/// recycle functionality
+TEST(TestResourcePool, CopyRecycle)
+{
+    uint32_t recycled = 0;
+
+    auto recycle = [&recycled](std::shared_ptr<dummy_two> o)
+        {
+            EXPECT_TRUE((bool) o);
+            ++recycled;
+        };
+
+    auto make = []()->std::shared_ptr<dummy_two>
+        {
+            return std::make_shared<dummy_two>(3U);
+        };
+
+    sak::resource_pool<dummy_two> pool(make, recycle);
+    sak::resource_pool<dummy_two> new_pool = pool;
+
+    EXPECT_EQ(pool.unused_resources(), 0U);
+    EXPECT_EQ(new_pool.unused_resources(), 0U);
+
+    auto o1 = new_pool.allocate();
+
+    EXPECT_EQ(dummy_two::m_count, 1U);
+
+    o1.reset();
+    EXPECT_EQ(recycled, 1U);
+
+    new_pool.free_unused();
+
+    EXPECT_EQ(dummy_two::m_count, 0U);
 }

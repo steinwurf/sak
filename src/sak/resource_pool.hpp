@@ -11,13 +11,6 @@
 
 namespace sak
 {
-    namespace detail
-    {
-        template<class T>
-        using value_default_constructible = std::enable_if<
-            std::is_default_constructible<T>::value, uint32_t>;
-    }
-
     /// @brief The resource pool stores value objects and recycles them.
     ///
     /// The resource pool
@@ -50,7 +43,8 @@ namespace sak
         template
         <
             class T = Value,
-            typename detail::value_default_constructible<T>::type = 0
+        typename std::enable_if<
+            std::is_default_constructible<T>::value, uint8_t>::type = 0
         >
         resource_pool() :
             m_pool(std::make_shared<impl>(

@@ -6,7 +6,6 @@
 #include <cstdint>
 #include <gtest/gtest.h>
 #include <sak/resource_pool.hpp>
-#include <sak/is_regular.hpp>
 
 // Put tests classes in an anonymous namespace to avoid violations of
 // ODF (one-definition-rule) in other translation units
@@ -68,10 +67,26 @@ namespace
 
 /// Test that our resource pool is a regular type. We are not
 /// implementing equality or less than here, but maybe we could.
+namespace
+{
+    /// This code checks whether a type is regular or not. See the
+    /// Eric Niebler's talk from C++Now
+    /// 2014. http://youtu.be/zgOF4NrQllo
+    template<class T>
+    struct is_regular :
+        std::integral_constant<bool,
+        std::is_default_constructible<T>::value &&
+        std::is_copy_constructible<T>::value &&
+        std::is_move_constructible<T>::value &&
+        std::is_copy_assignable<T>::value &&
+        std::is_move_assignable<T>::value>
+    { };
+}
+
 TEST(TestResourcePool, RegularType)
 {
-    EXPECT_TRUE(sak::is_regular<sak::resource_pool<dummy_one>>::value);
-    EXPECT_FALSE(sak::is_regular<sak::resource_pool<dummy_two>>::value);
+    EXPECT_TRUE(is_regular<sak::resource_pool<dummy_one>>::value);
+    EXPECT_FALSE(is_regular<sak::resource_pool<dummy_two>>::value);
 }
 
 /// Test the basic API construct and free some objects

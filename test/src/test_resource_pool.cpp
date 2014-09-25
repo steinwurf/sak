@@ -66,10 +66,11 @@ namespace
 TEST(TestResourcePool, RegularType)
 {
     EXPECT_TRUE(sak::is_regular<sak::resource_pool<dummy_one>>::value);
-    EXPECT_TRUE(sak::is_regular<sak::resource_pool<dummy_two>>::value);
+    EXPECT_FALSE(sak::is_regular<sak::resource_pool<dummy_two>>::value);
 }
 
-TEST(TestResourcePool, Construct)
+/// Test the basic API construct and free some objects
+TEST(TestResourcePool, Api)
 {
     {
         sak::resource_pool<dummy_one> pool;

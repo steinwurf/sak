@@ -37,6 +37,11 @@ namespace
 
     int32_t dummy_one::m_count = 0;
 
+    std::shared_ptr<dummy_one> make_dummy_one()
+    {
+        return std::make_shared<dummy_one>();
+    }
+
     // Non Default constructible dummy object
     struct dummy_two
     {
@@ -55,9 +60,9 @@ namespace
 
     int32_t dummy_two::m_count = 0;
 
-    std::shared_ptr<dummy_two> make_dummy_two()
+    std::shared_ptr<dummy_two> make_dummy_two(uint32_t v)
     {
-        return std::make_shared<dummy_two>(3U);
+        return std::make_shared<dummy_two>(v);
     }
 }
 
@@ -108,12 +113,31 @@ TEST(TestResourcePool, Api)
     EXPECT_EQ(dummy_one::m_count, 0);
 }
 
+/// Test the pool works with std::bind
+TEST(TestResourcePool, bind)
+{
+    {
+        sak::resource_pool<dummy_one> pool_one(std::bind(make_dummy_one));
+        sak::resource_pool<dummy_two> pool_two(std::bind(make_dummy_two, 4U));
+
+        auto o1 = pool_one.allocate();
+        auto o2 = pool_two.allocate();
+
+        EXPECT_EQ(dummy_one::m_count, 1U);
+        EXPECT_EQ(dummy_two::m_count, 1U);
+    }
+
+    EXPECT_EQ(dummy_one::m_count, 0U);
+    EXPECT_EQ(dummy_two::m_count, 0U);
+}
+
+
 /// Test that the pool works for non default constructable objects, if
 /// we provide the allocator
 TEST(TestResourcePool, NonDefaultConstructable)
 {
     {
-        sak::resource_pool<dummy_two> pool(make_dummy_two);
+        sak::resource_pool<dummy_two> pool(std::bind(make_dummy_two, 4U));
 
         auto o1 = pool.allocate();
         auto o2 = pool.allocate();

@@ -26,40 +26,53 @@ namespace sak
         /// The pointer to the resource
         using value_ptr = std::shared_ptr<value_type>;
 
-        /// The allocate function
+        /// The allocate function type
+        /// Should take no arguments and return an std::shared_ptr to the Value
         using allocate_function = std::function<value_ptr()>;
 
-        /// The recycle function
+        /// The recycle function type
+        /// If specified the recycle function will be called every time a
+        /// resource gets recycled into the pool. This allows temporary
+        /// resources, e.g., file handles to be closed when an object is longer
+        /// used.
         using recycle_function = std::function<void(value_ptr)>;
 
     public:
 
-        // Default constructor
+        /// Default constructor
         resource_pool() :
             m_pool(std::make_shared<impl>(
                        allocate_function(std::make_shared<value_type>)))
         { }
 
-        /// Create a resource
+        /// Create a resource pool using a specific allocate function.
+        /// @param allocate Allocation function
         resource_pool(allocate_function allocate) :
             m_pool(std::make_shared<impl>(std::move(allocate)))
         { }
 
+        /// Create a resource pool using a specific allocate function and
+        /// recycle function.
+        /// @param allocate Allocation function
+        /// @param recycle Recycle function
         resource_pool(allocate_function allocate, recycle_function recycle) :
             m_pool(std::make_shared<impl>(std::move(allocate),
                                           std::move(recycle)))
         { }
 
+        /// Copy constructor
         resource_pool(const resource_pool& other) :
             m_pool(std::make_shared<impl>(*other.m_pool))
         { }
 
+        /// Move constructor
         resource_pool(resource_pool&& other) :
             m_pool(std::move(other.m_pool))
         {
             assert(m_pool);
         }
 
+        /// Copy assignment
         resource_pool& operator=(const resource_pool& other)
         {
             resource_pool tmp(other);
@@ -67,6 +80,7 @@ namespace sak
             return *this;
         }
 
+        /// Move assignment
         resource_pool& operator=(resource_pool&& other)
         {
             m_pool = std::move(other.m_pool);
@@ -104,6 +118,7 @@ namespace sak
         struct impl : public std::enable_shared_from_this<impl>
         {
 
+            /// @copydoc resource_pool::resource_pool()
             impl(allocate_function allocate) :
                 m_allocate(std::move(allocate))
             {

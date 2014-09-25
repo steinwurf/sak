@@ -4,6 +4,12 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
+Latest
+------
+* Major: Updated API for resource_pool.hpp. The pool now also supports
+  calling a custom recycle function on objects as they get recycled
+  back into the pool.
+
 11.1.1
 ------
 * Bug: Add missing include for size_t definition in easy_bind.hpp

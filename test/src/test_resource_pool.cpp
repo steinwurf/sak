@@ -6,7 +6,6 @@
 #include <cstdint>
 #include <gtest/gtest.h>
 #include <sak/resource_pool.hpp>
-#include <sak/is_regular.hpp>
 
 // Put tests classes in an anonymous namespace to avoid violations of
 // ODF (one-definition-rule) in other translation units
@@ -37,6 +36,11 @@ namespace
 
     int32_t dummy_one::m_count = 0;
 
+    std::shared_ptr<dummy_one> make_dummy_one()
+    {
+        return std::make_shared<dummy_one>();
+    }
+
     // Non Default constructible dummy object
     struct dummy_two
     {
@@ -55,18 +59,34 @@ namespace
 
     int32_t dummy_two::m_count = 0;
 
-    std::shared_ptr<dummy_two> make_dummy_two()
+    std::shared_ptr<dummy_two> make_dummy_two(uint32_t v)
     {
-        return std::make_shared<dummy_two>(3U);
+        return std::make_shared<dummy_two>(v);
     }
 }
 
 /// Test that our resource pool is a regular type. We are not
 /// implementing equality or less than here, but maybe we could.
+namespace
+{
+    /// This code checks whether a type is regular or not. See the
+    /// Eric Niebler's talk from C++Now
+    /// 2014. http://youtu.be/zgOF4NrQllo
+    template<class T>
+    struct is_regular :
+        std::integral_constant<bool,
+        std::is_default_constructible<T>::value &&
+        std::is_copy_constructible<T>::value &&
+        std::is_move_constructible<T>::value &&
+        std::is_copy_assignable<T>::value &&
+        std::is_move_assignable<T>::value>
+    { };
+}
+
 TEST(TestResourcePool, RegularType)
 {
-    EXPECT_TRUE(sak::is_regular<sak::resource_pool<dummy_one>>::value);
-    EXPECT_FALSE(sak::is_regular<sak::resource_pool<dummy_two>>::value);
+    EXPECT_TRUE(is_regular<sak::resource_pool<dummy_one>>::value);
+    EXPECT_FALSE(is_regular<sak::resource_pool<dummy_two>>::value);
 }
 
 /// Test the basic API construct and free some objects
@@ -108,12 +128,31 @@ TEST(TestResourcePool, Api)
     EXPECT_EQ(dummy_one::m_count, 0);
 }
 
+/// Test the pool works with std::bind
+TEST(TestResourcePool, bind)
+{
+    {
+        sak::resource_pool<dummy_one> pool_one(std::bind(make_dummy_one));
+        sak::resource_pool<dummy_two> pool_two(std::bind(make_dummy_two, 4U));
+
+        auto o1 = pool_one.allocate();
+        auto o2 = pool_two.allocate();
+
+        EXPECT_EQ(dummy_one::m_count, 1U);
+        EXPECT_EQ(dummy_two::m_count, 1U);
+    }
+
+    EXPECT_EQ(dummy_one::m_count, 0U);
+    EXPECT_EQ(dummy_two::m_count, 0U);
+}
+
+
 /// Test that the pool works for non default constructable objects, if
 /// we provide the allocator
 TEST(TestResourcePool, NonDefaultConstructable)
 {
     {
-        sak::resource_pool<dummy_two> pool(make_dummy_two);
+        sak::resource_pool<dummy_two> pool(std::bind(make_dummy_two, 4U));
 
         auto o1 = pool.allocate();
         auto o2 = pool.allocate();

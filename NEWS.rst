@@ -4,7 +4,7 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
-Latest
+12.0.0
 ------
 * Major: Updated API for resource_pool.hpp. The pool now also supports
   calling a custom recycle function on objects as they get recycled

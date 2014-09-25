@@ -12,9 +12,6 @@
 namespace sak
 {
     /// @brief The resource pool stores value objects and recycles them.
-    ///
-    /// The resource pool
-
     template<class Value>
     class resource_pool
     {
@@ -39,12 +36,26 @@ namespace sak
 
     public:
 
-        /// Default constructor
+        /// Default constructor, we only want this to be available
+        /// i.e. the resource_pool to be default constructible if the
+        /// value_type we build is default constructible.
+        ///
+        /// This means that we only want
+        /// std::is_default_constructible<resource_pool<T>>::value to
+        /// be true if the type T is default constructible.
+        ///
+        /// Unfortunately this does not work if we don't do the
+        /// template magic seen below. What we do there is to use
+        /// SFINAE to disable the default constructor for non default
+        /// constructible types.
+        ///
+        /// It looks quite ugly and if somebody can fix in a simpler way
+        /// please do :)
         template
         <
             class T = Value,
-        typename std::enable_if<
-            std::is_default_constructible<T>::value, uint8_t>::type = 0
+            typename std::enable_if<
+                std::is_default_constructible<T>::value, uint8_t>::type = 0
         >
         resource_pool() :
             m_pool(std::make_shared<impl>(
@@ -124,13 +135,15 @@ namespace sak
         struct impl : public std::enable_shared_from_this<impl>
         {
 
-            /// @copydoc resource_pool::resource_pool()
+            /// @copydoc resource_pool::resource_pool(allocate_function)
             impl(allocate_function allocate) :
                 m_allocate(std::move(allocate))
             {
                 assert(m_allocate);
             }
 
+            /// @copydoc resource_pool::resource_pool(allocate_function,
+            ///                                       recycle_function)
             impl(allocate_function allocate, recycle_function recycle) :
                 m_allocate(std::move(allocate)),
                 m_recycle(std::move(recycle))
@@ -139,6 +152,7 @@ namespace sak
                 assert(m_recycle);
             }
 
+            /// Copy constructor
             impl(const impl& other) :
                 std::enable_shared_from_this<impl>(other),
                 m_allocate(other.m_allocate),
@@ -150,6 +164,7 @@ namespace sak
                 }
             }
 
+            /// Move constructor
             impl(impl&& other) :
                 std::enable_shared_from_this<impl>(other),
                 m_allocate(std::move(other.m_allocate)),
@@ -157,6 +172,7 @@ namespace sak
                 m_free_list(std::move(other.m_free_list))
             { }
 
+            /// Copy assignment
             impl& operator=(const impl& other)
             {
                 impl tmp(other);
@@ -164,6 +180,7 @@ namespace sak
                 return *this;
             }
 
+            /// Move assignment
             impl& operator=(impl&& other)
             {
                 m_allocate = std::move(other.m_allocate);
@@ -196,8 +213,10 @@ namespace sak
                 // things:
                 //
                 //   1. A std::weak_ptr<T> to the pool (used when we
-                //      need to put the resource back in the
-                //      pool)
+                //      need to put the resource back in the pool). If
+                //      the pool dies before the resource then we can
+                //      detect this with the weak_ptr and no try to
+                //      access it.
                 //
                 //   2. A std::shared_ptr<T> that points to the actual
                 //      resource and is the one actually keeping it alive.
@@ -205,16 +224,20 @@ namespace sak
                 return value_ptr(resource.get(), deleter(pool, resource));
             }
 
+            /// @copydoc resource_pool::free_unused()
             void free_unused()
             {
                 m_free_list.clear();
             }
 
+            /// @copydoc resource_pool::unused_resources()
             uint32_t unused_resources() const
             {
                 return static_cast<uint32_t>(m_free_list.size());
             }
 
+            /// This function called when a resource should be added
+            /// back into the pool
             void recycle(const value_ptr& resource)
             {
                 if (m_recycle)
@@ -238,10 +261,10 @@ namespace sak
 
         };
 
-        /// The delete object used by the std::shared_ptr<T> to
-        /// de-allocate the object if the pool goes out of scope. When
-        /// a std::hared_ptr wants to de-allocate the object contained
-        /// it will call the operator() define here.
+        /// The custom deleter object used by the std::shared_ptr<T>
+        /// to de-allocate the object if the pool goes out of
+        /// scope. When a std::shared_ptr wants to de-allocate the
+        /// object contained it will call the operator() define here.
         struct deleter
         {
             /// @param pool. A weak_ptr to the pool

@@ -36,7 +36,7 @@ namespace sak
         public: // From boost::system::error_category
 
             /// @see boost::system::error_category::name()
-            const char* name() const;
+            const char* name() const noexcept;
 
             /// @see boost::system::error_category::message()
             std::string message(int /*ev*/) const;

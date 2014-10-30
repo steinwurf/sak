@@ -18,7 +18,7 @@ namespace sak
 #undef      ERROR_TAG
         };
 
-        const char* sak_category_impl::name() const
+        const char* sak_category_impl::name() const noexcept
         {
             return "sak";
         }

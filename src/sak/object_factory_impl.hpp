@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
+#include <cassert>
+#include <memory>
+#include <functional>
 
 #include "object_factory.hpp"
 
@@ -21,12 +22,12 @@ namespace sak
     {
 
         object_factory_impl() :
-            m_factory(boost::make_shared<Factory>())
+            m_factory(std::make_shared<Factory>())
         {}
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<void> build(object_registry& registry)
+        virtual std::shared_ptr<void> build(object_registry& registry)
         {
             assert(m_factory);
 
@@ -34,7 +35,7 @@ namespace sak
         }
 
         /// The user provided factory
-        boost::shared_ptr<Factory> m_factory;
+        std::shared_ptr<Factory> m_factory;
 
     };
 
@@ -42,7 +43,7 @@ namespace sak
     struct object_factory_function : public object_factory
     {
 
-        typedef boost::function < boost::shared_ptr<void> (object_registry&) >
+        typedef std::function < std::shared_ptr<void> (object_registry&) >
         factory_callback;
 
         object_factory_function(const factory_callback& function) :
@@ -51,7 +52,7 @@ namespace sak
 
         /// @return an object created using the user provided
         ///         factory
-        virtual boost::shared_ptr<void> build(object_registry& registry)
+        virtual std::shared_ptr<void> build(object_registry& registry)
         {
             assert(m_function);
 

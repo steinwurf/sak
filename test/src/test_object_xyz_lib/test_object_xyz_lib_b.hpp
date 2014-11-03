@@ -5,6 +5,9 @@
 
 #pragma once
 
+#include <string>
+#include <memory>
+
 #include <sak/object_registry.hpp>
 #include "test_object_xyz_lib_a.hpp"
 
@@ -29,5 +32,5 @@ SAK_DEFINE_PARENT(duck, bird)
 class duck_factory
 {
 public:
-    boost::shared_ptr<duck> build(sak::object_registry&);
+    std::shared_ptr<duck> build(sak::object_registry&);
 };

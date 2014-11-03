@@ -15,6 +15,7 @@
 #include <sak/file_input_stream.hpp>
 
 #include <boost/preprocessor/facilities/is_empty.hpp>
+#include <boost/system/error_code.hpp>
 
 
 /// Tests reading a file, the file is crated a priori

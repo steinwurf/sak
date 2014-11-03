@@ -6,9 +6,7 @@
 #pragma once
 
 #include <cstdint>
-
-#include <boost/function.hpp>
-#include <boost/shared_ptr.hpp>
+#include <functional>
 
 namespace sak
 {
@@ -40,7 +38,7 @@ namespace sak
     public:
 
         /// Signal emitted when data can be read
-        typedef boost::function<void ()> ready_read_callback;
+        typedef std::function<void ()> ready_read_callback;
 
         /// Specify callbacks to allow the caller to determine if
         /// new data has arrived which is ready to be read.
@@ -52,7 +50,7 @@ namespace sak
 
 
         /// Signal emitted on error
-        typedef boost::function<void (const std::string&)> error_callback;
+        typedef std::function<void (const std::string&)> error_callback;
 
         /// Connect to the error signal
         /// @param slot the function to call
@@ -63,7 +61,7 @@ namespace sak
 
 
         /// Signal emitted when the stream is stopped
-        typedef boost::function<void ()> stopped_callback;
+        typedef std::function<void ()> stopped_callback;
 
         /// Connect to the stopped signal
         /// @param slot the function to call
@@ -82,7 +80,5 @@ namespace sak
 
         /// The stopped signals
         stopped_callback m_stopped_callback;
-
     };
-
 }

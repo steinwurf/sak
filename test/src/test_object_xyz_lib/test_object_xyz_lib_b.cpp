@@ -3,6 +3,9 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <memory>
+#include <string>
+
 #include "test_object_xyz_lib_b.hpp"
 
 //
@@ -29,7 +32,7 @@ std::string duck::eat()
 // Duck Factory
 //
 
-boost::shared_ptr<duck> duck_factory::build(sak::object_registry& registry)
+std::shared_ptr<duck> duck_factory::build(sak::object_registry& registry)
 {
-    return boost::make_shared<duck>(registry);
+    return std::make_shared<duck>(registry);
 }

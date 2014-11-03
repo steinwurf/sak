@@ -3,8 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <functional>
 #include <gtest/gtest.h>
-#include <boost/bind.hpp>
 
 #include <sak/object_registry.hpp>
 #include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
@@ -34,9 +34,9 @@ public:
 
     typedef rate_socket object_type;
 
-    boost::shared_ptr<rate_socket> build(sak::object_registry&)
+    std::shared_ptr<rate_socket> build(sak::object_registry&)
     {
-        return boost::make_shared<rate_socket>();
+        return std::make_shared<rate_socket>();
     }
 };
 
@@ -54,9 +54,9 @@ TEST(ObjectFactory, register_type)
     EXPECT_EQ("rate_socket write", s->write());
 }
 
-boost::shared_ptr<rate_socket> build_rate_socket(sak::object_registry&)
+std::shared_ptr<rate_socket> build_rate_socket(sak::object_registry&)
 {
-    return boost::make_shared<rate_socket>();
+    return std::make_shared<rate_socket>();
 }
 
 // Testing factory function
@@ -64,7 +64,7 @@ TEST(ObjectFactory, register_type_function)
 {
     sak::object_registry registry;
     registry.set_factory<rate_socket>(
-        boost::bind(build_rate_socket, _1));
+        std::bind(build_rate_socket, std::placeholders::_1));
 
     auto s = registry.build<socket>();
     EXPECT_EQ("rate_socket write", s->write());
@@ -103,9 +103,9 @@ namespace foobar
 
         typedef rate_socket object_type;
 
-        boost::shared_ptr<magic_socket> build(sak::object_registry&)
+        std::shared_ptr<magic_socket> build(sak::object_registry&)
         {
-            return boost::make_shared<magic_socket>();
+            return std::make_shared<magic_socket>();
         }
     };
 }
@@ -154,9 +154,9 @@ public:
 
     void set_color(Color c) { m_color = c; }
 
-    boost::shared_ptr<flower> build(sak::object_registry&)
+    std::shared_ptr<flower> build(sak::object_registry&)
     {
-        return boost::make_shared<flower>(m_color);
+        return std::make_shared<flower>(m_color);
     }
 };
 

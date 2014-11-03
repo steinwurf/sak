@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
 #include "input_stream.hpp"
 
@@ -19,7 +20,7 @@ namespace sak
     public:
 
         /// pointer to finite input streams
-        typedef boost::shared_ptr<finite_input_stream> ptr;
+        typedef std::shared_ptr<finite_input_stream> ptr;
 
         /// Seeks the read position to a certain position in the input stream.
         /// @param pos position to seek to

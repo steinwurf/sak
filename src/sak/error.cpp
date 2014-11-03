@@ -3,6 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <boost/system/error_code.hpp>
+
 #include "error.hpp"
 
 namespace sak

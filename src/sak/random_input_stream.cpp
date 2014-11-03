@@ -3,6 +3,11 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <cassert>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
+
 #include "random_input_stream.hpp"
 
 namespace sak
@@ -39,7 +44,7 @@ namespace sak
         assert(bytes > 0);
         assert(bytes + m_current_pos <= m_data.size());
 
-        memcpy(buffer, &m_data[m_current_pos], bytes);
+        std::memcpy(buffer, &m_data[m_current_pos], bytes);
 
         m_current_pos += bytes;
     }

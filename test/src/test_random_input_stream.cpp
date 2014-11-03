@@ -3,12 +3,15 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <algorithm>
 #include <cstdint>
+#include <cstdlib>
 #include <ctime>
+#include <memory>
+#include <vector>
 
 #include <gtest/gtest.h>
 
-#include <boost/make_shared.hpp>
 
 #include <sak/random_input_stream.hpp>
 
@@ -20,7 +23,7 @@ TEST(TestRandomInputStream, CreateRandomInputStream)
 
     {
         uint32_t buffer_size = 1143;
-        auto input_stream = boost::make_shared<sak::random_input_stream>( buffer_size );
+        auto input_stream = std::make_shared<sak::random_input_stream>( buffer_size );
 
         ASSERT_TRUE( input_stream->size() == buffer_size );
         ASSERT_TRUE( input_stream->read_position() == 0 );

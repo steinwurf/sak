@@ -5,9 +5,13 @@
 
 #pragma once
 
+#include <algorithm>
+#include <cassert>
+#include <cstdint>
 #include <functional>
-#include <memory>
 #include <list>
+#include <memory>
+#include <utility>
 
 namespace sak
 {

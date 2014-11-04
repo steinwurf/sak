@@ -3,6 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <cstdlib>
+
 #include "random_input_stream.hpp"
 
 namespace sak

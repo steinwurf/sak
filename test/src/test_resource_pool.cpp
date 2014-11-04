@@ -4,6 +4,9 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include <cstdint>
+#include <memory>
+#include <type_traits>
+
 #include <gtest/gtest.h>
 #include <sak/resource_pool.hpp>
 
@@ -138,12 +141,12 @@ TEST(TestResourcePool, bind)
         auto o1 = pool_one.allocate();
         auto o2 = pool_two.allocate();
 
-        EXPECT_EQ(dummy_one::m_count, 1U);
-        EXPECT_EQ(dummy_two::m_count, 1U);
+        EXPECT_EQ(dummy_one::m_count, 1);
+        EXPECT_EQ(dummy_two::m_count, 1);
     }
 
-    EXPECT_EQ(dummy_one::m_count, 0U);
-    EXPECT_EQ(dummy_two::m_count, 0U);
+    EXPECT_EQ(dummy_one::m_count, 0);
+    EXPECT_EQ(dummy_two::m_count, 0);
 }
 
 
@@ -157,10 +160,10 @@ TEST(TestResourcePool, NonDefaultConstructable)
         auto o1 = pool.allocate();
         auto o2 = pool.allocate();
 
-        EXPECT_EQ(dummy_two::m_count, 2U);
+        EXPECT_EQ(dummy_two::m_count, 2);
     }
 
-    EXPECT_EQ(dummy_two::m_count, 0U);
+    EXPECT_EQ(dummy_two::m_count, 0);
 
     {
         auto make = []()->std::shared_ptr<dummy_two>
@@ -173,10 +176,10 @@ TEST(TestResourcePool, NonDefaultConstructable)
         auto o1 = pool.allocate();
         auto o2 = pool.allocate();
 
-        EXPECT_EQ(dummy_two::m_count, 2U);
+        EXPECT_EQ(dummy_two::m_count, 2);
     }
 
-    EXPECT_EQ(dummy_two::m_count, 0U);
+    EXPECT_EQ(dummy_two::m_count, 0);
 }
 
 /// Test that the pool works for non constructable objects, even if
@@ -189,10 +192,10 @@ TEST(TestResourcePool, DefaultConstructable)
         auto o1 = pool.allocate();
         auto o2 = pool.allocate();
 
-        EXPECT_EQ(dummy_one::m_count, 2U);
+        EXPECT_EQ(dummy_one::m_count, 2);
     }
 
-    EXPECT_EQ(dummy_one::m_count, 0U);
+    EXPECT_EQ(dummy_one::m_count, 0);
 }
 
 /// Test that everything works even if the pool dies before the
@@ -212,14 +215,14 @@ TEST(TestResourcePool, PoolDieBeforeObject)
             d3 = pool.allocate();
 
             // EXPECT_EQ(pool.total_resources(), 3U);
-            EXPECT_EQ(dummy_one::m_count, 3U);
+            EXPECT_EQ(dummy_one::m_count, 3);
         }
 
-        EXPECT_EQ(dummy_one::m_count, 3U);
+        EXPECT_EQ(dummy_one::m_count, 3);
 
     }
 
-    EXPECT_EQ(dummy_one::m_count, 0U);
+    EXPECT_EQ(dummy_one::m_count, 0);
 }
 
 /// Test that the recycle functionality works
@@ -274,12 +277,12 @@ TEST(TestResourcePool, CopyConstructor)
     EXPECT_EQ(pool.unused_resources(), 2U);
     EXPECT_EQ(new_pool.unused_resources(), 1U);
 
-    EXPECT_EQ(dummy_one::m_count, 3U);
+    EXPECT_EQ(dummy_one::m_count, 3);
 
     pool.free_unused();
     new_pool.free_unused();
 
-    EXPECT_EQ(dummy_one::m_count, 0U);
+    EXPECT_EQ(dummy_one::m_count, 0);
 }
 
 /// Test copy assignment works
@@ -295,9 +298,9 @@ TEST(TestResourcePool, CopyAssignment)
     sak::resource_pool<dummy_one> new_pool;
     new_pool = pool;
 
-    EXPECT_EQ(dummy_one::m_count, 3U);
+    EXPECT_EQ(dummy_one::m_count, 3);
     auto o3 = new_pool.allocate();
-    EXPECT_EQ(dummy_one::m_count, 3U);
+    EXPECT_EQ(dummy_one::m_count, 3);
 }
 
 /// Test move constructor
@@ -341,15 +344,15 @@ TEST(TestResourcePool, CopyRecycle)
     uint32_t recycled = 0;
 
     auto recycle = [&recycled](std::shared_ptr<dummy_two> o)
-        {
-            EXPECT_TRUE((bool) o);
-            ++recycled;
-        };
+    {
+        EXPECT_TRUE((bool) o);
+        ++recycled;
+    };
 
     auto make = []()->std::shared_ptr<dummy_two>
-        {
-            return std::make_shared<dummy_two>(3U);
-        };
+    {
+        return std::make_shared<dummy_two>(3U);
+    };
 
     sak::resource_pool<dummy_two> pool(make, recycle);
     sak::resource_pool<dummy_two> new_pool = pool;
@@ -359,12 +362,12 @@ TEST(TestResourcePool, CopyRecycle)
 
     auto o1 = new_pool.allocate();
 
-    EXPECT_EQ(dummy_two::m_count, 1U);
+    EXPECT_EQ(dummy_two::m_count, 1);
 
     o1.reset();
     EXPECT_EQ(recycled, 1U);
 
     new_pool.free_unused();
 
-    EXPECT_EQ(dummy_two::m_count, 0U);
+    EXPECT_EQ(dummy_two::m_count, 0);
 }

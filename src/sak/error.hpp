@@ -6,18 +6,11 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
 #include <boost/throw_exception.hpp>
-
-// Since windows doesn't support noexcept yet, we need this define.
-// http://stackoverflow.com/a/18387764/660982
-#ifndef _MSC_VER
-#define NOEXCEPT noexcept
-#else
-#define NOEXCEPT
-#endif
 
 namespace sak
 {
@@ -41,10 +34,11 @@ namespace sak
         /// 100% compatible, i.e. simply replace the name-spaces.
         class sak_category_impl : public boost::system::error_category
         {
-        public: // From boost::system::error_category
+        // From boost::system::error_category
+        public:
 
             /// @see boost::system::error_category::name()
-            const char* name() const NOEXCEPT;
+            const char* name() const;
 
             /// @see boost::system::error_category::message()
             std::string message(int /*ev*/) const;

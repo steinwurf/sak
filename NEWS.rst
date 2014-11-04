@@ -6,9 +6,11 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* Minor: Added ``NOEXCEPT`` define to accommodate MSVC's lack of the
-  ``noexcept`` keyword.
-* Minor: Added ``noexcept`` to ``sak_category_impl::name() const``.
+* tbd
+
+12.1.0
+------
+* Minor: Added support for Emscripten.
 * Patch: Fixed warnings in unit test.
 
 12.0.0

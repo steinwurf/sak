@@ -11,6 +11,14 @@
 #include <boost/system/system_error.hpp>
 #include <boost/throw_exception.hpp>
 
+// Since windows doesn't support noexcept yet, we need this define.
+// http://stackoverflow.com/a/18387764/660982
+#ifndef _MSC_VER
+#define NOEXCEPT noexcept
+#else
+#define NOEXCEPT
+#endif
+
 namespace sak
 {
 
@@ -36,7 +44,7 @@ namespace sak
         public: // From boost::system::error_category
 
             /// @see boost::system::error_category::name()
-            const char* name() const noexcept;
+            const char* name() const NOEXCEPT;
 
             /// @see boost::system::error_category::message()
             std::string message(int /*ev*/) const;

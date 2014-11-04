@@ -148,7 +148,7 @@ Latest
 
 4.2.0
 -----
-* Added object agregation functionality
+* Added object aggregation functionality
 
 4.1.0
 ------------

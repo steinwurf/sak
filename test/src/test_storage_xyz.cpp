@@ -3,6 +3,10 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <vector>
+#include <cstdint>
+#include <iterator>
+
 #include <gtest/gtest.h>
 #include <sak/storage.hpp>
 
@@ -15,12 +19,12 @@ void test_vector_helper(uint32_t vector_size)
     sak::const_storage cs = sak::storage(v);
     EXPECT_EQ(cs.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(cs), &v[0]);
-    EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1U);
+    EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1);
 
     sak::mutable_storage ms = sak::storage(v);
     EXPECT_EQ(ms.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v[0]);
-    EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1U);
+    EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1);
 
     // Check const
     const std::vector<PodType>& v_ref = v;
@@ -28,7 +32,7 @@ void test_vector_helper(uint32_t vector_size)
     sak::const_storage const_cs = sak::storage(v_ref);
     EXPECT_EQ(const_cs.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(const_cs), &v_ref[0]);
-    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1U);
+    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1);
 }
 
 TEST(TestStorage, test_storage_function_vector)
@@ -55,13 +59,13 @@ void test_buffer_helper(uint32_t vector_size)
     sak::const_storage cs = sak::storage(v_data, v_size);
     EXPECT_EQ(cs.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(cs), &v_data[0]);
-    EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1U);
+    EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1);
 
 
     sak::mutable_storage ms = sak::storage(v_data, v_size);
     EXPECT_EQ(ms.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v_data[0]);
-    EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1U);
+    EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1);
 
     // Check const
     const PodType* v_data_const = v_data;
@@ -69,7 +73,7 @@ void test_buffer_helper(uint32_t vector_size)
     sak::const_storage const_cs = sak::storage(v_data_const, v_size);
     EXPECT_EQ(const_cs.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(const_cs), &v_data_const[0]);
-    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1U);
+    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1);
 }
 
 TEST(TestStorage, test_storage_function_buffer)

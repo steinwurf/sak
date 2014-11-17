@@ -4,20 +4,20 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include "file_input_stream.hpp"
-#include "error.hpp"
 
-#include <fstream>
 #include <cassert>
+#include <fstream>
+
+#include "error.hpp"
 
 namespace sak
 {
-    file_input_stream::file_input_stream()
-        : m_filesize(0)
-    {
-    }
+    file_input_stream::file_input_stream() :
+        m_filesize(0)
+    { }
 
-    file_input_stream::file_input_stream(const std::string& filename)
-        : m_filesize(0)
+    file_input_stream::file_input_stream(const std::string& filename) :
+        m_filesize(0)
     {
         open(filename);
     }

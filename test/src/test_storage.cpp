@@ -3,13 +3,13 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <vector>
+#include <sak/storage.hpp>
+
 #include <cstdint>
+#include <vector>
 #include <iterator>
 
 #include <gtest/gtest.h>
-#include <sak/storage.hpp>
-
 
 template<class PodType>
 void test_vector_helper(uint32_t vector_size)
@@ -46,7 +46,6 @@ TEST(TestStorage, test_storage_function_vector)
     test_vector_helper<uint32_t>(size);
     test_vector_helper<uint64_t>(size);
 }
-
 
 template<class PodType>
 void test_buffer_helper(uint32_t vector_size)
@@ -88,7 +87,6 @@ TEST(TestStorage, test_storage_function_buffer)
     test_buffer_helper<uint64_t>(size);
 }
 
-
 TEST(TestStorage, test_mutable_to_const_conversion)
 {
     uint32_t size = 500;
@@ -114,7 +112,6 @@ TEST(TestStorage, test_split_storage)
         EXPECT_EQ(storage_sequence[i].m_size, split);
     }
 }
-
 
 TEST(TestStorage, test_offset_storage)
 {
@@ -150,7 +147,6 @@ TEST(TestStorage, test_offset_storage)
         EXPECT_EQ(new_storage.m_data, &v[200]);
     }
 }
-
 
 TEST(TestStorage, is_equal)
 {

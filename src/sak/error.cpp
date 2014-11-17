@@ -3,16 +3,12 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <boost/system/error_code.hpp>
-
 #include "error.hpp"
 
 namespace sak
 {
-
     namespace error
     {
-
         const char* error_tags[256] =
         {
 #define     ERROR_TAG(id, msg) msg,
@@ -41,7 +37,5 @@ namespace sak
             return boost::system::error_code(static_cast<int>(t),
                                              sak_category());
         }
-
     }
-
 }

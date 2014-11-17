@@ -3,8 +3,9 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <gtest/gtest.h>
 #include <sak/duplex_buffer.hpp>
+
+#include <gtest/gtest.h>
 
 TEST(TestDuplexBuffer, construct)
 {
@@ -21,7 +22,6 @@ TEST(TestDuplexBuffer, construct)
     sak::duplex_buffer buffer2(buffer);
     EXPECT_EQ(buffer2.size(), 10U);
 }
-
 
 TEST(TestDuplexBuffer, resize_and_fill)
 {

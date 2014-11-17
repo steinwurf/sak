@@ -3,6 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include "random_buffer.hpp"
+
 #include <ctime>
 #include <cassert>
 
@@ -11,11 +13,8 @@
 
 #include "convert_endian.hpp"
 
-#include "random_buffer.hpp"
-
 namespace sak
 {
-
     void random_buffer::fill(uint32_t size, bool embed_seed)
     {
         buffer::resize(size);
@@ -71,5 +70,4 @@ namespace sak
         }
         return true;
     }
-
 }

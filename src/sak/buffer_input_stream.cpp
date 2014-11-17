@@ -7,10 +7,10 @@
 
 namespace sak
 {
-
-    buffer_input_stream::buffer_input_stream(const const_storage& buffer_storage)
-        : m_buffer_storage(buffer_storage),
-          m_current_pos(0)
+    buffer_input_stream::buffer_input_stream(
+        const const_storage& buffer_storage) :
+        m_buffer_storage(buffer_storage),
+        m_current_pos(0)
     {
         assert(m_buffer_storage.m_size > 0);
         assert(m_buffer_storage.m_data != 0);
@@ -53,5 +53,4 @@ namespace sak
     {
         return m_buffer_storage.m_size;
     }
-
 }

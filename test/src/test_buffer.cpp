@@ -3,9 +3,9 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <gtest/gtest.h>
-
 #include <sak/buffer.hpp>
+
+#include <gtest/gtest.h>
 
 TEST(TestBuffer, construct)
 {

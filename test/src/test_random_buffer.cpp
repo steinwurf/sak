@@ -3,13 +3,12 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <sak/random_buffer.hpp>
+
 #include <cstdint>
 #include <ctime>
 
 #include <gtest/gtest.h>
-
-#include <sak/random_buffer.hpp>
-
 
 void test_random_buffer(uint32_t buffer_size)
 {

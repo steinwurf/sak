@@ -3,17 +3,19 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include "random_input_stream.hpp"
+
 #include <cassert>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
 
-#include "random_input_stream.hpp"
+
 
 namespace sak
 {
-    random_input_stream::random_input_stream(uint32_t size)
-        : m_current_pos(0)
+    random_input_stream::random_input_stream(uint32_t size) :
+        m_current_pos(0)
     {
         assert(size > 0);
         m_data.resize(size);
@@ -63,5 +65,4 @@ namespace sak
     {
         return static_cast<uint32_t>(m_data.size());
     }
-
 }

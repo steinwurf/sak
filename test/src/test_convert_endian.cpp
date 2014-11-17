@@ -3,8 +3,9 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <gtest/gtest.h>
 #include <sak/convert_endian.hpp>
+
+#include <gtest/gtest.h>
 
 // From test proposed here:
 // http://stackoverflow.com/questions/1001307/

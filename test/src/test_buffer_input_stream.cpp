@@ -3,12 +3,12 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <sak/buffer_input_stream.hpp>
+
 #include <cstdint>
 #include <ctime>
 
 #include <gtest/gtest.h>
-
-#include <sak/buffer_input_stream.hpp>
 
 TEST(TestBufferInputStream, CreateBufferInputStream)
 {
@@ -37,9 +37,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         ASSERT_TRUE( input_stream.size() == buffer_size );
         ASSERT_TRUE( input_stream.read_position() == 0 );
 
-
         // Second: Implementation through storage conversion function
-
 
         // buffer_b is another test buffer
         std::vector<char> buffer_b(buffer_size, '\0');
@@ -51,8 +49,6 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         ASSERT_TRUE( input_stream_2.size() == buffer_size );
         ASSERT_TRUE( input_stream_2.read_position() == 0 );
-
-
 
         // Reading from first storage
         std::vector<char> buffer_out;
@@ -118,7 +114,5 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         ASSERT_TRUE( input_stream.stopped() == true );
         ASSERT_TRUE( input_stream_2.stopped() == true );
-
     }
-
 }

@@ -3,20 +3,15 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <cstdio>
+#include <sak/file_input_stream.hpp>
 
+#include <cstdio>
 #include <cstdint>
 #include <ctime>
 #include <algorithm>
 #include <fstream>
 
 #include <gtest/gtest.h>
-
-#include <sak/file_input_stream.hpp>
-
-#include <boost/preprocessor/facilities/is_empty.hpp>
-#include <boost/system/error_code.hpp>
-
 
 /// Tests reading a file, the file is crated a priori
 TEST(TestFileInputStream, ReadRandomFile)
@@ -99,7 +94,6 @@ TEST(TestFileInputStream, ThrowExceptionInOpen)
 /// Tests error handling with exception
 TEST(TestFileInputStream, ReturnErrorCode)
 {
-
     sak::file_input_stream fs;
 
     boost::system::error_code ec;

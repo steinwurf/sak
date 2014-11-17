@@ -3,14 +3,14 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <sak/endian_stream.hpp>
+
 #include <cstdlib>
 #include <vector>
 #include <string>
 #include <algorithm>
 
 #include <gtest/gtest.h>
-
-#include <sak/endian_stream.hpp>
 
 TEST(TestEndianStream, create_stream)
 {

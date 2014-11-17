@@ -3,13 +3,14 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <sak/optional_bind.hpp>
+
 #include <functional>
 #include <memory>
 
 #include <gtest/gtest.h>
 
 #include <sak/easy_bind.hpp>
-#include <sak/optional_bind.hpp>
 
 namespace
 {
@@ -70,7 +71,6 @@ namespace
         }
 
         using result_type = std::function<uint32_t(uint32_t,uint32_t)>;
-
     };
 
     struct bind_no_method
@@ -83,7 +83,6 @@ namespace
         }
 
         using result_type = std::function<void()>;
-
     };
 }
 
@@ -106,7 +105,6 @@ TEST(TestOptionalBind, test_member_function)
         f2(4,5);
         EXPECT_EQ(dummy.m_a, 4U);
         EXPECT_EQ(dummy.m_b, 5U);
-
     }
 
     // Try with a shared_ptr
@@ -186,10 +184,4 @@ TEST(TestOptionalBind, tests)
 
     EXPECT_TRUE((bool)f2);
     EXPECT_FALSE((bool)f3);
-}
-
-
-
-TEST(TestOptionalFunction, test)
-{
 }

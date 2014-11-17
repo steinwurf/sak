@@ -3,8 +3,9 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <gtest/gtest.h>
 #include <sak/is_aligned.hpp>
+
+#include <gtest/gtest.h>
 
 TEST(TestIsAligned, is_aligned8)
 {

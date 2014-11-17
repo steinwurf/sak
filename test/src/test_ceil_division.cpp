@@ -3,9 +3,9 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <gtest/gtest.h>
-
 #include <sak/ceil_division.hpp>
+
+#include <gtest/gtest.h>
 
 TEST(TestCeilDivision, ceil_division)
 {

@@ -3,10 +3,11 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <sak/object_registry.hpp>
+
 #include <functional>
 #include <gtest/gtest.h>
 
-#include <sak/object_registry.hpp>
 #include "test_object_xyz_lib/test_object_xyz_lib_b.hpp"
 
 // ----- BASIC SOCKET TEST -------

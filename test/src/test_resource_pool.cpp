@@ -3,18 +3,18 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <sak/resource_pool.hpp>
+
 #include <cstdint>
 #include <memory>
 #include <type_traits>
 
 #include <gtest/gtest.h>
-#include <sak/resource_pool.hpp>
 
 // Put tests classes in an anonymous namespace to avoid violations of
 // ODF (one-definition-rule) in other translation units
 namespace
 {
-
     // Default constructible dummy object
     struct dummy_one
     {
@@ -219,7 +219,6 @@ TEST(TestResourcePool, PoolDieBeforeObject)
         }
 
         EXPECT_EQ(dummy_one::m_count, 3);
-
     }
 
     EXPECT_EQ(dummy_one::m_count, 0);

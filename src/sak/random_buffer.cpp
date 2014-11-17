@@ -5,11 +5,9 @@
 
 #include "random_buffer.hpp"
 
-#include <ctime>
+#include <cstdint>
 #include <cassert>
-
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
+#include <random>
 
 #include "convert_endian.hpp"
 
@@ -20,10 +18,14 @@ namespace sak
         buffer::resize(size);
 
         // Random generator used to fill the buffer
-        boost::random::mt19937 rng;
-        // Uniform distribution for uint8_t type with range: [0, 255]
-        boost::random::uniform_int_distribution<uint8_t> dist;
-        uint32_t seed = (uint32_t)std::time(0);
+        std::mt19937 rng;
+        // Uniform distribution for uint16_t type with range: [0, 255]
+        // Note: MSVC does not allow uint8_t to be used as an IntType
+        std::uniform_int_distribution<uint16_t> dist(0, 255);
+
+        // Initialize the generator with a new random seed
+        std::random_device random_device;
+        uint32_t seed = (uint32_t)random_device();
         rng.seed(seed);
 
         uint32_t start = 0;
@@ -39,10 +41,9 @@ namespace sak
 
         for (uint32_t i = start; i < size; ++i)
         {
-            buffer[i] = dist(rng);
+            buffer[i] = (uint8_t)dist(rng);
         }
     }
-
 
     bool random_buffer::verify()
     {
@@ -54,10 +55,12 @@ namespace sak
         // Read the random seed from the beginning of the buffer
         uint32_t seed = big_endian::get<uint32_t>(buffer);
 
-        // Random generator used to verify the contents
-        boost::random::mt19937 rng;
-        // Uniform distribution for uint8_t type with range: [0, 255]
-        boost::random::uniform_int_distribution<uint8_t> dist;
+        // Random generator used to verify the buffer contents
+        std::mt19937 rng;
+        // Uniform distribution for uint16_t type with range: [0, 255]
+        // Note: MSVC does not allow uint8_t to be used as an IntType
+        std::uniform_int_distribution<uint16_t> dist(0, 255);
+
         // Use the embedded seed
         rng.seed(seed);
 
@@ -66,7 +69,8 @@ namespace sak
         for (uint32_t i = start; i < size; ++i)
         {
             // Test each byte against the random generated values
-            if (buffer[i] != dist(rng)) return false;
+            if (buffer[i] != dist(rng))
+                return false;
         }
         return true;
     }

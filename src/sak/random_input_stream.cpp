@@ -19,7 +19,7 @@ namespace sak
         m_data.resize(size);
         for (uint32_t i = 0; i < size; ++i)
         {
-            m_data[i] = rand();
+            m_data[i] = std::rand();
         }
     }
 

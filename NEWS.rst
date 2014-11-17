@@ -4,6 +4,15 @@ News for sak
 This file lists the major changes between versions. For a more
 detailed list of every change, see the Git log.
 
+Latest
+------
+* tbd
+
+12.1.0
+------
+* Minor: Added support for Emscripten.
+* Patch: Fixed warnings in unit test.
+
 12.0.0
 ------
 * Major: Updated API for resource_pool.hpp. The pool now also supports
@@ -141,7 +150,7 @@ detailed list of every change, see the Git log.
 
 4.2.0
 -----
-* Added object agregation functionality
+* Added object aggregation functionality
 
 4.1.0
 ------------

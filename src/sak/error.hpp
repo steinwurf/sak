@@ -6,6 +6,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
@@ -33,7 +34,8 @@ namespace sak
         /// 100% compatible, i.e. simply replace the name-spaces.
         class sak_category_impl : public boost::system::error_category
         {
-        public: // From boost::system::error_category
+        // From boost::system::error_category
+        public:
 
             /// @see boost::system::error_category::name()
             const char* name() const;

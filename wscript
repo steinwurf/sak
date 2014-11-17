@@ -2,7 +2,8 @@
 # encoding: utf-8
 
 APPNAME = 'sak'
-VERSION = '12.0.0'
+VERSION = '12.1.0'
+
 
 def recurse_helper(ctx, name):
     if not ctx.has_dependency_path(name):

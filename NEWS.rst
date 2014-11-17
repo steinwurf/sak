@@ -6,8 +6,9 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* Major: Removed boost includes
-* Minor: Fixed includes
+* Major: Removed some boost includes and used alternatives from standard
+  library.
+* Minor: Fixed missing includes
 
 12.1.0
 ------

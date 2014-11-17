@@ -6,7 +6,8 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Removed boost includes
+* Minor: Fixed includes
 
 12.1.0
 ------

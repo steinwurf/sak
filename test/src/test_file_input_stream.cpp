@@ -91,7 +91,7 @@ TEST(TestFileInputStream, ThrowExceptionInOpen)
     EXPECT_EQ(ec, sak::error::failed_open_file);
 }
 
-/// Tests error handling with exception
+/// Tests error handling with error code
 TEST(TestFileInputStream, ReturnErrorCode)
 {
     sak::file_input_stream fs;

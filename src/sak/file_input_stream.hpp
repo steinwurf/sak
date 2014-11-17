@@ -14,7 +14,6 @@
 
 namespace sak
 {
-
     /// A file input stream for reading local
     /// files. Mainly used for testing purposes.
     class file_input_stream : public finite_input_stream
@@ -69,5 +68,4 @@ namespace sak
         /// The size of the file in bytes
         uint32_t m_filesize;
     };
-
 }

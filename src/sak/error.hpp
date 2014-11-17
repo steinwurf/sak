@@ -14,7 +14,6 @@
 
 namespace sak
 {
-
     namespace error
     {
         /// Enumeration of different error codes, we use a bit of
@@ -27,7 +26,6 @@ namespace sak
 #undef      ERROR_TAG
             terminate_tag
         };
-
 
         /// sak errors
         /// @todo: replace with C++0x error handling - should be almost
@@ -77,7 +75,6 @@ namespace boost
 {
     namespace system
     {
-
         template<>
         struct is_error_code_enum<sak::error::error_type>
         {

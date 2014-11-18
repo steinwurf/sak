@@ -7,13 +7,27 @@
 
 #include <gtest/gtest.h>
 
-#include <sak/is_big_endian.hpp>
+namespace
+{
+    // Checks if the platform is big- or little-endian
+    // From a test proposed here:
+    // http://stackoverflow.com/questions/1001307/
+    static bool is_big_endian()
+    {
+        union
+        {
+            uint32_t i;
+            uint8_t c[4];
+        } test = {0x01020304};
+
+        return test.c[0] == 1;
+    }
+}
 
 TEST(ConvertEndian, Convert)
 {
-    // Indicated endianness for debugging purposes
-    SCOPED_TRACE(
-        testing::Message() << "big_endian:" << sak::is_big_endian());
+    // Indicate endianness for debugging purposes
+    SCOPED_TRACE(testing::Message() << "big_endian:" << is_big_endian());
 
     // Test 8-bit integer
     {
@@ -89,8 +103,7 @@ TEST(ConvertEndian, Convert)
 TEST(ConvertEndian, ConvertTemplate)
 {
     // Indicated endianness for debugging purposes
-    SCOPED_TRACE(
-        testing::Message() << "big_endian:" << sak::is_big_endian());
+    SCOPED_TRACE(testing::Message() << "big_endian:" << is_big_endian());
 
     // Test 16-bit integer
     {

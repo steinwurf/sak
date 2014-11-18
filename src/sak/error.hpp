@@ -24,7 +24,7 @@ namespace sak
         {
         public:
 
-            const char* name() const;
+            const char* name() const throw();
 
             std::string message(int ev) const;
         };

@@ -9,7 +9,7 @@ namespace sak
 {
     namespace error
     {
-        const char* sak_category_impl::name() const
+        const char* sak_category_impl::name() const throw()
         {
             return "sak";
         }

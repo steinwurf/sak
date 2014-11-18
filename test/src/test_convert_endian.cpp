@@ -7,29 +7,13 @@
 
 #include <gtest/gtest.h>
 
-// From test proposed here:
-// http://stackoverflow.com/questions/1001307/
-bool is_big_endian()
-{
-    union
-    {
-        uint32_t i;
-        uint8_t c[4];
-    } bint = {0x01020304};
-
-    return bint.c[0] == 1;
-}
-
-TEST(ConvertEndian, CheckEndian)
-{
-    EXPECT_TRUE(is_big_endian() == sak::host_endian::big_endian);
-}
+#include <sak/is_big_endian.hpp>
 
 TEST(ConvertEndian, Convert)
 {
     // Indicated endianness for debugging purposes
     SCOPED_TRACE(
-        testing::Message() << "big_endian:" << sak::host_endian::big_endian);
+        testing::Message() << "big_endian:" << sak::is_big_endian());
 
     // Test 8-bit integer
     {
@@ -106,7 +90,7 @@ TEST(ConvertEndian, ConvertTemplate)
 {
     // Indicated endianness for debugging purposes
     SCOPED_TRACE(
-        testing::Message() << "big_endian:" << sak::host_endian::big_endian);
+        testing::Message() << "big_endian:" << sak::is_big_endian());
 
     // Test 16-bit integer
     {

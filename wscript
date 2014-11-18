@@ -17,10 +17,6 @@ def options(opt):
 
     import waflib.extras.wurf_dependency_bundle as bundle
     import waflib.extras.wurf_dependency_resolve as resolve
-    bundle.add_dependency(opt, resolve.ResolveGitMajorVersion(
-        name='boost',
-        git_repository='github.com/steinwurf/external-boost-light.git',
-        major_version=1))
 
     bundle.add_dependency(opt, resolve.ResolveGitMajorVersion(
         name='gtest',
@@ -49,7 +45,6 @@ def configure(conf):
         conf.load_external_tool('project_gen', 'wurf_project_generator')
         conf.load_external_tool('runners', 'wurf_runner')
 
-        recurse_helper(conf, 'boost')
         recurse_helper(conf, 'gtest')
 
 
@@ -63,7 +58,6 @@ def build(bld):
 
         bld.load('wurf_dependency_bundle')
 
-        recurse_helper(bld, 'boost')
         recurse_helper(bld, 'gtest')
 
         # Only build test are executed from the

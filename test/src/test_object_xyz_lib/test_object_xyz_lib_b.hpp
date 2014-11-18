@@ -9,7 +9,9 @@
 #include <memory>
 
 #include <sak/object_registry.hpp>
+
 #include "test_object_xyz_lib_a.hpp"
+
 
 class bird
 {

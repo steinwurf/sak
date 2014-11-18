@@ -6,9 +6,10 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* Major: Removed some boost includes and used alternatives from standard
-  library.
 * Minor: Fixed missing includes
+* Major: Removed boost dependency and used standard library alternatives
+* Major: Moved ``resource_pool`` to seperate repository "recycle"
+* Major: Replaced ``sak::host_endian::big_endian`` with ``is_big_endian()``
 
 12.1.0
 ------

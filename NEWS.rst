@@ -6,6 +6,10 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+13.0.0
+------
 * Minor: Fixed missing includes
 * Major: Removed boost dependency and used standard library alternatives
 * Major: Moved ``resource_pool`` to the "recycle" repository

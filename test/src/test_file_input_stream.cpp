@@ -3,19 +3,15 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <cstdio>
+#include <sak/file_input_stream.hpp>
 
+#include <cstdio>
 #include <cstdint>
 #include <ctime>
 #include <algorithm>
 #include <fstream>
 
 #include <gtest/gtest.h>
-
-#include <sak/file_input_stream.hpp>
-
-#include <boost/preprocessor/facilities/is_empty.hpp>
-
 
 /// Tests reading a file, the file is crated a priori
 TEST(TestFileInputStream, ReadRandomFile)
@@ -42,7 +38,7 @@ TEST(TestFileInputStream, ReadRandomFile)
     // Now test we can read it back
     sak::file_input_stream fs;
 
-    boost::system::error_code ec;
+    std::error_code ec;
 
     fs.open(file_name, ec);
     ASSERT_FALSE(ec);
@@ -81,13 +77,13 @@ TEST(TestFileInputStream, ReadRandomFile)
 TEST(TestFileInputStream, ThrowExceptionInOpen)
 {
     sak::file_input_stream fs;
-    boost::system::error_code ec;
+    std::error_code ec;
 
     try
     {
         fs.open("strange_file_that_should_not_exist.notfound");
     }
-    catch (const boost::system::system_error& error)
+    catch (const std::system_error& error)
     {
         ec = error.code();
     }
@@ -95,13 +91,12 @@ TEST(TestFileInputStream, ThrowExceptionInOpen)
     EXPECT_EQ(ec, sak::error::failed_open_file);
 }
 
-/// Tests error handling with exception
+/// Tests error handling with error code
 TEST(TestFileInputStream, ReturnErrorCode)
 {
-
     sak::file_input_stream fs;
 
-    boost::system::error_code ec;
+    std::error_code ec;
     fs.open("strange_file_that_should_not_exist.notfound", ec);
 
     EXPECT_EQ(ec, sak::error::failed_open_file);
@@ -110,14 +105,14 @@ TEST(TestFileInputStream, ReturnErrorCode)
 /// Tests error handling with exception in constructor
 TEST(TestFileInputStream, ThrowExceptionInConstructor)
 {
-    boost::system::error_code ec;
+    std::error_code ec;
 
     try
     {
         sak::file_input_stream fs(
             "strange_file_that_should_not_exist.notfound");
     }
-    catch (const boost::system::system_error& error)
+    catch (const std::system_error& error)
     {
         ec = error.code();
     }

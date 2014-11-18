@@ -3,8 +3,10 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <gtest/gtest.h>
 #include <sak/aligned_allocator.hpp>
+
+#include <gtest/gtest.h>
+
 #include <sak/is_aligned.hpp>
 
 TEST(TestAlignedAllocator, construct)

@@ -7,22 +7,9 @@
 
 #include <cstdint>
 #include <cassert>
-#include <boost/detail/endian.hpp>
 
 namespace sak
 {
-    // This struct defines a bool which indicates whether the platform
-    // endianness is big or little. We rely on the macros defined in Boost.
-    struct host_endian
-    {
-        static const bool big_endian =
-#ifdef BOOST_BIG_ENDIAN
-            true;
-#else
-            false;
-#endif
-    };
-
     // Inserts and extracts integers in big-endian format.
     struct big_endian
     {

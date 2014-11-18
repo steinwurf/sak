@@ -5,6 +5,9 @@
 
 #include "test_object_xyz_lib_a.hpp"
 
+#include <memory>
+#include <string>
+
 //
 // Fruit
 //
@@ -24,9 +27,9 @@ std::string apple::color()
 // Apple Factory
 //
 
-boost::shared_ptr<apple> apple_factory::build(sak::object_registry&)
+std::shared_ptr<apple> apple_factory::build(sak::object_registry&)
 {
-    return boost::make_shared<apple>();
+    return std::make_shared<apple>();
 }
 
 
@@ -43,7 +46,7 @@ std::string pear::color()
 // Pear Factory
 //
 
-boost::shared_ptr<pear> pear_factory::build(sak::object_registry&)
+std::shared_ptr<pear> pear_factory::build(sak::object_registry&)
 {
-    return boost::make_shared<pear>();
+    return std::make_shared<pear>();
 }

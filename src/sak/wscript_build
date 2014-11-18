@@ -6,5 +6,4 @@ bld.stlib(
     features='cxx',
     source=bld.path.ant_glob('**/*.cpp'),
     target='sak',
-    export_includes='..',
-    use=['boost_includes'])
+    export_includes='..')

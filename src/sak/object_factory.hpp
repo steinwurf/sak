@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace sak
 {
@@ -16,7 +16,7 @@ namespace sak
     {
     public:
         /// @return an object of the specified type
-        virtual boost::shared_ptr<void> build(object_registry&) = 0;
+        virtual std::shared_ptr<void> build(object_registry&) = 0;
     };
 
 }

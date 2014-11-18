@@ -3,6 +3,8 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
+#include <sak/easy_bind.hpp>
+
 #include <cstdint>
 #include <memory>
 #include <vector>
@@ -10,8 +12,6 @@
 #include <functional>
 
 #include <gtest/gtest.h>
-
-#include <sak/easy_bind.hpp>
 
 namespace
 {
@@ -35,7 +35,6 @@ namespace
 
     struct dummy_class
     {
-
         dummy_class() :
             m_x(0),
             m_y(0)
@@ -154,7 +153,6 @@ TEST(TestEasyBind, test_member_function)
         EXPECT_EQ(1.5, dummy.m_y);
         EXPECT_EQ("test1", dummy.m_str);
     }
-
 }
 
 TEST(TestEasyBind, test_member_function_derived)

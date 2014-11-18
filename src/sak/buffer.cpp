@@ -3,19 +3,18 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <algorithm>
-
 #include "buffer.hpp"
+
+#include <algorithm>
 
 namespace sak
 {
-
-    buffer::buffer()
-        : m_size(0)
+    buffer::buffer() :
+        m_size(0)
     { }
 
-    buffer::buffer(uint32_t capacity)
-        : m_size(0)
+    buffer::buffer(uint32_t capacity) :
+        m_size(0)
     {
         m_vector.resize(capacity);
     }
@@ -81,5 +80,4 @@ namespace sak
     {
         m_size = 0;
     }
-
 }

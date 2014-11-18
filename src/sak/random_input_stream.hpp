@@ -6,11 +6,8 @@
 #pragma once
 
 #include <vector>
-#include <stdint.h>
-
-#include <boost/type_traits/is_pod.hpp>
-#include <boost/type_traits/is_pointer.hpp>
-#include <boost/static_assert.hpp>
+#include <cstdint>
+#include <vector>
 
 #include "finite_input_stream.hpp"
 

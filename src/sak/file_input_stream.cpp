@@ -4,20 +4,20 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include "file_input_stream.hpp"
-#include "error.hpp"
 
-#include <fstream>
 #include <cassert>
+#include <fstream>
+
+#include "error.hpp"
 
 namespace sak
 {
-    file_input_stream::file_input_stream()
-        : m_filesize(0)
-    {
-    }
+    file_input_stream::file_input_stream() :
+        m_filesize(0)
+    { }
 
-    file_input_stream::file_input_stream(const std::string& filename)
-        : m_filesize(0)
+    file_input_stream::file_input_stream(const std::string& filename) :
+        m_filesize(0)
     {
         open(filename);
     }
@@ -26,7 +26,7 @@ namespace sak
     {
         assert(!m_file.is_open());
 
-        boost::system::error_code ec;
+        std::error_code ec;
         open(filename, ec);
 
         // If an error occurs, throw that
@@ -37,7 +37,7 @@ namespace sak
     }
 
     void file_input_stream::open(const std::string& filename,
-                                 boost::system::error_code& ec)
+                                 std::error_code& ec)
     {
         assert(!m_file.is_open());
 
@@ -46,7 +46,7 @@ namespace sak
 
         if (!m_file.is_open())
         {
-            ec = error::make_error_code(error::failed_open_file);
+            ec = error::failed_open_file;
             return;
         }
 

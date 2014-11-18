@@ -6,7 +6,10 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Fixed missing includes
+* Major: Removed boost dependency and used standard library alternatives
+* Major: Moved ``resource_pool`` to the "recycle" repository
+* Major: Removed ``sak::host_endian`` from ``convert_endian.hpp``
 
 12.1.0
 ------

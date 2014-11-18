@@ -14,7 +14,6 @@
 
 namespace sak
 {
-
     /// The idea behind the endian_stream is to provide a stream-like interface
     /// for accessing a fixed-size buffer.
     /// All complexity regarding endianness is encapsulated.
@@ -122,7 +121,5 @@ namespace sak
 
         /// The current position
         uint32_t m_position;
-
     };
-
 }

@@ -8,7 +8,6 @@ project_name = 'sak'
 project_dependencies = [
     'waf-tools',
     'gtest',
-    'boost',
 ]
 
 

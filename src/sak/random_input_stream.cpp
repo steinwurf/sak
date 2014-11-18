@@ -3,20 +3,25 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <cstdlib>
-
 #include "random_input_stream.hpp"
+
+#include <cassert>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
+
+
 
 namespace sak
 {
-    random_input_stream::random_input_stream(uint32_t size)
-        : m_current_pos(0)
+    random_input_stream::random_input_stream(uint32_t size) :
+        m_current_pos(0)
     {
         assert(size > 0);
         m_data.resize(size);
         for (uint32_t i = 0; i < size; ++i)
         {
-            m_data[i] = rand();
+            m_data[i] = std::rand();
         }
     }
 
@@ -41,7 +46,7 @@ namespace sak
         assert(bytes > 0);
         assert(bytes + m_current_pos <= m_data.size());
 
-        memcpy(buffer, &m_data[m_current_pos], bytes);
+        std::memcpy(buffer, &m_data[m_current_pos], bytes);
 
         m_current_pos += bytes;
     }
@@ -60,5 +65,4 @@ namespace sak
     {
         return static_cast<uint32_t>(m_data.size());
     }
-
 }

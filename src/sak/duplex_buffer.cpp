@@ -4,32 +4,32 @@
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
 #include "duplex_buffer.hpp"
+
 #include <cassert>
 
 namespace sak
 {
-
-    duplex_buffer::duplex_buffer(uint32_t size)
-        : m_buffer(size),
-          m_front_capacity(0),
-          m_back_capacity(0),
-          m_data_size(size)
+    duplex_buffer::duplex_buffer(uint32_t size) :
+        m_buffer(size),
+        m_front_capacity(0),
+        m_back_capacity(0),
+        m_data_size(size)
     { }
 
     duplex_buffer::duplex_buffer(uint32_t size,
                                  uint32_t front_capacity,
-                                 uint32_t back_capacity)
-        : m_buffer(size + front_capacity + back_capacity),
-          m_front_capacity(front_capacity),
-          m_back_capacity(back_capacity),
-          m_data_size(size)
+                                 uint32_t back_capacity) :
+        m_buffer(size + front_capacity + back_capacity),
+        m_front_capacity(front_capacity),
+        m_back_capacity(back_capacity),
+        m_data_size(size)
     { }
 
-    duplex_buffer::duplex_buffer(const duplex_buffer& buffer)
-        : m_buffer(buffer.m_buffer),
-          m_front_capacity(buffer.m_front_capacity),
-          m_back_capacity(buffer.m_back_capacity),
-          m_data_size(buffer.m_data_size)
+    duplex_buffer::duplex_buffer(const duplex_buffer& buffer) :
+        m_buffer(buffer.m_buffer),
+        m_front_capacity(buffer.m_front_capacity),
+        m_back_capacity(buffer.m_back_capacity),
+        m_data_size(buffer.m_data_size)
     { }
 
     duplex_buffer& duplex_buffer::operator=(const duplex_buffer& buffer)
@@ -102,8 +102,8 @@ namespace sak
     }
 
     void duplex_buffer::resize(uint32_t size,
-                               uint32_t min_front_capacity,
-                               uint32_t min_back_capacity)
+        uint32_t min_front_capacity,
+        uint32_t min_back_capacity)
     {
         uint32_t total_size = min_front_capacity + size + min_back_capacity;
 
@@ -112,7 +112,8 @@ namespace sak
             m_buffer.resize(total_size);
         }
 
-        uint32_t extra_space = static_cast<uint32_t>(m_buffer.size() - total_size);
+        uint32_t extra_space =
+            static_cast<uint32_t>(m_buffer.size() - total_size);
         m_front_capacity = min_front_capacity;
         m_data_size = size;
         m_back_capacity = min_back_capacity + extra_space;

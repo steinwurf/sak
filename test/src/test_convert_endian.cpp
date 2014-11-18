@@ -3,32 +3,31 @@
 //
 // Distributed under the "BSD License". See the accompanying LICENSE.rst file.
 
-#include <gtest/gtest.h>
 #include <sak/convert_endian.hpp>
 
-// From test proposed here:
-// http://stackoverflow.com/questions/1001307/
-bool is_big_endian()
+#include <gtest/gtest.h>
+
+namespace
 {
-    union
+    // Checks if the platform is big- or little-endian
+    // From a test proposed here:
+    // http://stackoverflow.com/questions/1001307/
+    static bool is_big_endian()
     {
-        uint32_t i;
-        uint8_t c[4];
-    } bint = {0x01020304};
+        union
+        {
+            uint32_t i;
+            uint8_t c[4];
+        } test = {0x01020304};
 
-    return bint.c[0] == 1;
-}
-
-TEST(ConvertEndian, CheckEndian)
-{
-    EXPECT_TRUE(is_big_endian() == sak::host_endian::big_endian);
+        return test.c[0] == 1;
+    }
 }
 
 TEST(ConvertEndian, Convert)
 {
-    // Indicated endianness for debugging purposes
-    SCOPED_TRACE(
-        testing::Message() << "big_endian:" << sak::host_endian::big_endian);
+    // Indicate endianness for debugging purposes
+    SCOPED_TRACE(testing::Message() << "big_endian:" << is_big_endian());
 
     // Test 8-bit integer
     {
@@ -104,8 +103,7 @@ TEST(ConvertEndian, Convert)
 TEST(ConvertEndian, ConvertTemplate)
 {
     // Indicated endianness for debugging purposes
-    SCOPED_TRACE(
-        testing::Message() << "big_endian:" << sak::host_endian::big_endian);
+    SCOPED_TRACE(testing::Message() << "big_endian:" << is_big_endian());
 
     // Test 16-bit integer
     {

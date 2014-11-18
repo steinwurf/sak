@@ -12,10 +12,10 @@ namespace
     struct dummy_class
     {
         // Test method
-        // @throws boost::system::system_error Thrown on failure.
+        // @throws std::system_error Thrown on failure.
         void test()
         {
-            boost::system::error_code ec;
+            std::error_code ec;
             test(ec);
 
             // If an error occurs, throw that
@@ -27,9 +27,9 @@ namespace
 
         // Test method
         // @param ec on error set to indicate the type of error
-        void test(boost::system::error_code& ec)
+        void test(std::error_code& ec)
         {
-            ec = sak::error::make_error_code(sak::error::failed_open_file);
+            ec = sak::error::failed_open_file;
         }
     };
 }
@@ -39,13 +39,13 @@ namespace
 TEST(TestError, ThrowException)
 {
     dummy_class dummy;
-    boost::system::error_code ec;
+    std::error_code ec;
 
     try
     {
         dummy.test();
     }
-    catch (const boost::system::system_error& error)
+    catch (const std::system_error& error)
     {
         ec = error.code();
     }
@@ -58,7 +58,7 @@ TEST(TestError, ReturnErrorCode)
 {
     dummy_class dummy;
 
-    boost::system::error_code ec;
+    std::error_code ec;
     dummy.test(ec);
 
     EXPECT_EQ(ec, sak::error::failed_open_file);

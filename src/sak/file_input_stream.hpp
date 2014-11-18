@@ -5,9 +5,10 @@
 
 #pragma once
 
-#include <fstream>
-#include <string>
 #include <cstdint>
+#include <string>
+#include <fstream>
+#include <system_error>
 
 #include "error.hpp"
 #include "finite_input_stream.hpp"
@@ -24,19 +25,19 @@ namespace sak
         file_input_stream();
 
         /// Constructor that opens the file immediately
-        /// @throws boost::system::system_error Thrown on failure.
+        /// @throws std::system_error Thrown on failure.
         /// @param filename the filename
         file_input_stream(const std::string& filename);
 
         /// Opens the file
-        /// @throws boost::system::system_error Thrown on failure.
+        /// @throws std::system_error Thrown on failure.
         /// @param filename the file name
         void open(const std::string& filename);
 
         /// Opens the file
         /// @param filename the file name
         /// @param ec on error set to indicate the type of error
-        void open(const std::string& filename, boost::system::error_code& ec);
+        void open(const std::string& filename, std::error_code& ec);
 
         /// Closes the file
         void close();

@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: Removed const reference storage helpers.
 
 13.0.0
 ------

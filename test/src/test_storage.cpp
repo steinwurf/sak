@@ -239,3 +239,25 @@ TEST(TestStorage, is_same)
         EXPECT_FALSE(sak::is_same(sak::storage(d1), d2));
     }
 }
+
+
+TEST(TestStorage, strign)
+{
+    {
+        auto text = std::string("text");
+        auto storage = sak::storage(text);
+        (void) storage;
+    }
+
+    {
+        const auto text = std::string("text");
+        auto storage = sak::storage(text);
+        (void) storage;
+    }
+
+    {
+        // Should not be possible.
+        auto storage = sak::storage(std::string("text"));
+        (void) storage;
+    }
+}

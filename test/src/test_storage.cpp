@@ -25,14 +25,6 @@ void test_vector_helper(uint32_t vector_size)
     EXPECT_EQ(ms.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v[0]);
     EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1);
-
-    // Check const
-    const std::vector<PodType>& v_ref = v;
-
-    sak::const_storage const_cs = sak::storage(v_ref);
-    EXPECT_EQ(const_cs.m_size, vector_size * sizeof(PodType));
-    EXPECT_EQ(sak::cast_storage<PodType>(const_cs), &v_ref[0]);
-    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1);
 }
 
 TEST(TestStorage, test_storage_function_vector)
@@ -237,27 +229,5 @@ TEST(TestStorage, is_same)
         d2 += 2;
 
         EXPECT_FALSE(sak::is_same(sak::storage(d1), d2));
-    }
-}
-
-
-TEST(TestStorage, strign)
-{
-    {
-        auto text = std::string("text");
-        auto storage = sak::storage(text);
-        (void) storage;
-    }
-
-    {
-        const auto text = std::string("text");
-        auto storage = sak::storage(text);
-        (void) storage;
-    }
-
-    {
-        // Should not be possible.
-        auto storage = sak::storage(std::string("text"));
-        (void) storage;
     }
 }

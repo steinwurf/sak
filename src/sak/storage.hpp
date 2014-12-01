@@ -268,18 +268,6 @@ namespace sak
         return mutable_storage(data_ptr, size_in_bytes);
     }
 
-    /// Creates a const storage object
-    /// @param v is a std::vector buffer
-    /// @return the storage adapter
-    template<class PodType, class Allocator>
-    inline const_storage storage(const std::vector<PodType, Allocator>& v)
-    {
-        uint32_t size = uint32_t(v.size() * sizeof(PodType));
-        const uint8_t* data = reinterpret_cast<const uint8_t*>(&v[0]);
-
-        return const_storage(data, size);
-    }
-
     /// Creates a mutable storage object
     /// @param v is a std::vector buffer
     /// @return the storage adapter
@@ -290,17 +278,6 @@ namespace sak
         uint8_t* data = reinterpret_cast<uint8_t*>(&v[0]);
 
         return mutable_storage(data, size);
-    }
-
-    /// Creates a const storage object from a string
-    /// @param str is a std::string
-    /// @return the storage adapter
-    inline const_storage storage(const std::string& str)
-    {
-        uint32_t size = (uint32_t)str.size();
-        const uint8_t* data = reinterpret_cast<const uint8_t*>(&str[0]);
-
-        return const_storage(data, size);
     }
 
     /// Creates a mutable storage object from a string

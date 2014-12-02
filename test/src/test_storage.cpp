@@ -52,7 +52,6 @@ void test_buffer_helper(uint32_t vector_size)
     EXPECT_EQ(sak::cast_storage<PodType>(cs), &v_data[0]);
     EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1);
 
-
     sak::mutable_storage ms = sak::storage(v_data, v_size);
     EXPECT_EQ(ms.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v_data[0]);
@@ -229,5 +228,15 @@ TEST(TestStorage, is_same)
         d2 += 2;
 
         EXPECT_FALSE(sak::is_same(sak::storage(d1), d2));
+    }
+}
+
+TEST(TestStorage, string_helper)
+{
+    {
+        std::string str = "test";
+        auto storage = sak::storage(str);
+        EXPECT_EQ(storage.m_size, str.size());
+        EXPECT_EQ(storage.m_data, (uint8_t*)str.c_str());
     }
 }

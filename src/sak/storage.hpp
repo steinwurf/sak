@@ -291,6 +291,20 @@ namespace sak
         return mutable_storage(data, size);
     }
 
+    /// Creates a const storage object from a const string
+    /// @param str is a const std::string
+    /// @return the storage adapter
+    inline const_storage storage(const std::string& str)
+    {
+        uint32_t size = (uint32_t)str.size();
+        const uint8_t* data = reinterpret_cast<const uint8_t*>(str.data());
+
+        return const_storage(data, size);
+    }
+
+    /// We do not allow conversion of temporaries
+    const_storage storage(std::string&&) = delete;
+
     /// Compares two storage objects checks whether they refer to the
     /// same storage i.e. whether data pointer and size are the same.
     /// @param storage_a The first storage object

@@ -25,6 +25,14 @@ void test_vector_helper(uint32_t vector_size)
     EXPECT_EQ(ms.m_size, vector_size * sizeof(PodType));
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v[0]);
     EXPECT_EQ(std::distance(ms.begin(), ms.end()), 1);
+
+    // Check const
+    const std::vector<PodType>& v_ref = v;
+
+    sak::const_storage const_cs = sak::storage(v_ref);
+    EXPECT_EQ(const_cs.m_size, vector_size * sizeof(PodType));
+    EXPECT_EQ(sak::cast_storage<PodType>(const_cs), &v_ref[0]);
+    EXPECT_EQ(std::distance(const_cs.begin(), const_cs.end()), 1);
 }
 
 TEST(TestStorage, test_storage_function_vector)
@@ -231,22 +239,22 @@ TEST(TestStorage, is_same)
     }
 }
 
-TEST(TestStorage, string_helper)
+/// Test that we can convert a non-const std::string to a
+/// sak::mutable_storage object
+TEST(TestStorage, convert_string)
 {
-    {
-        std::string str = "test";
-        auto storage = sak::storage(str);
-        EXPECT_EQ(str.size(), storage.m_size);
-        EXPECT_EQ((uint8_t*)str.c_str(), storage.m_data);
-    }
-    {
-        // Test that we are able to take a mutable storage as a const storage.
-        auto size_of_const_storage = [](sak::const_storage storage)
-        {
-            return storage.m_size;
-        };
-        std::string str = "test";
-        sak::const_storage storage = sak::storage(str);
-        EXPECT_EQ(str.size(), size_of_const_storage(storage));
-    }
+    std::string str("test");
+    sak::mutable_storage m = sak::storage(str);
+    EXPECT_EQ(str.size(), m.m_size);
+    EXPECT_EQ((uint8_t*) str.data(), m.m_data);
+}
+
+/// Test that we can convert a const std::string to sak::const_storage
+/// object
+TEST(TestStorage, convert_const_string)
+{
+    const std::string str("test");
+    sak::const_storage c = sak::storage(str);
+    EXPECT_EQ(str.size(), c.m_size);
+    EXPECT_EQ((uint8_t*) str.data(), c.m_data);
 }

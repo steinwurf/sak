@@ -236,7 +236,17 @@ TEST(TestStorage, string_helper)
     {
         std::string str = "test";
         auto storage = sak::storage(str);
-        EXPECT_EQ(storage.m_size, str.size());
-        EXPECT_EQ(storage.m_data, (uint8_t*)str.c_str());
+        EXPECT_EQ(str.size(), storage.m_size);
+        EXPECT_EQ((uint8_t*)str.c_str(), storage.m_data);
+    }
+    {
+        // Test that we are able to take a mutable storage as a const storage.
+        auto size_of_const_storage = [](sak::const_storage storage)
+        {
+            return storage.m_size;
+        };
+        std::string str = "test";
+        sak::const_storage storage = sak::storage(str);
+        EXPECT_EQ(str.size(), size_of_const_storage(storage));
     }
 }

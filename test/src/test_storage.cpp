@@ -60,7 +60,6 @@ void test_buffer_helper(uint32_t vector_size)
     EXPECT_EQ(sak::cast_storage<PodType>(cs), &v_data[0]);
     EXPECT_EQ(std::distance(cs.begin(), cs.end()), 1);
 
-
     sak::mutable_storage ms = sak::storage(v_data, v_size);
     EXPECT_EQ(ms.m_size, v_size);
     EXPECT_EQ(sak::cast_storage<PodType>(ms), &v_data[0]);
@@ -238,4 +237,24 @@ TEST(TestStorage, is_same)
 
         EXPECT_FALSE(sak::is_same(sak::storage(d1), d2));
     }
+}
+
+/// Test that we can convert a non-const std::string to a
+/// sak::mutable_storage object
+TEST(TestStorage, convert_string)
+{
+    std::string str("test");
+    sak::mutable_storage m = sak::storage(str);
+    EXPECT_EQ(str.size(), m.m_size);
+    EXPECT_EQ((uint8_t*) str.data(), m.m_data);
+}
+
+/// Test that we can convert a const std::string to sak::const_storage
+/// object
+TEST(TestStorage, convert_const_string)
+{
+    const std::string str("test");
+    sak::const_storage c = sak::storage(str);
+    EXPECT_EQ(str.size(), c.m_size);
+    EXPECT_EQ((uint8_t*) str.data(), c.m_data);
 }

@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 # encoding: utf-8
 
-from waflib import Context
-
 bld.program(
     features='cxx test',
     source=['sak_tests.cpp'] + bld.path.ant_glob('src/*.cpp'),

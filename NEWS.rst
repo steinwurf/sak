@@ -8,6 +8,7 @@ Latest
 ------
 * Major: Deleted the r-value reference functions for converting strings and
   vectors to sak storages.
+* Minor: Added version define.
 
 13.0.0
 ------

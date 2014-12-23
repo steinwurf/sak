@@ -7,7 +7,4 @@ bld.program(
     features='cxx test',
     source=['sak_tests.cpp'] + bld.path.ant_glob('src/*.cpp'),
     target='sak_tests',
-    export_defines=[
-        'STEINWURF_{}_VERSION="{}"'.format(
-            Context.g_module.APPNAME.upper(), Context.g_module.VERSION)],
     use=['sak', 'gtest', 'test_object_xyz_lib_b'])

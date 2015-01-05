@@ -6,6 +6,10 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
+* tbd
+
+14.0.0
+------
 * Major: Deleted the r-value reference functions for converting strings and
   vectors to sak storages.
 * Minor: Added version define.

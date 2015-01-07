@@ -1,13 +1,8 @@
 #! /usr/bin/env python
 # encoding: utf-8
 
-from waflib import Context
-
-VERSION = Context.g_module.VERSION
-
 bld.stlib(
     features='cxx',
     source=bld.path.ant_glob('**/*.cpp'),
     target='sak',
-    export_defines=['STEINWURF_SAK_VERSION="{}"'.format(VERSION)],
     export_includes='..')

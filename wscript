@@ -54,6 +54,10 @@ def build(bld):
         export_includes='src',
         name='sak_includes')
 
+    bld.env.append_unique(
+        'DEFINES_STEINWURF_VERSION',
+        'STEINWURF_SAK_VERSION="{}"'.format(VERSION))
+
     if bld.is_toplevel():
 
         bld.load('wurf_dependency_bundle')

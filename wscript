@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 APPNAME = 'sak'
-VERSION = '14.0.0'
+VERSION = '14.0.1'
 
 
 def recurse_helper(ctx, name):

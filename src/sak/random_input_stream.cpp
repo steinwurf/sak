@@ -10,8 +10,6 @@
 #include <cstdlib>
 #include <cstring>
 
-
-
 namespace sak
 {
     random_input_stream::random_input_stream(uint32_t size) :
@@ -54,11 +52,6 @@ namespace sak
     uint32_t random_input_stream::bytes_available()
     {
         return static_cast<uint32_t>(m_data.size() - m_current_pos);
-    }
-
-    bool random_input_stream::stopped()
-    {
-        return true;
     }
 
     uint32_t random_input_stream::size()

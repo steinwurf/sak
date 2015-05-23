@@ -36,12 +36,7 @@ TEST(TestFileInputStream, ReadRandomFile)
     output_file.close();
 
     // Now test we can read it back
-    sak::file_input_stream fs;
-
-    std::error_code ec;
-
-    fs.open(file_name, ec);
-    ASSERT_FALSE(ec);
+    sak::file_input_stream fs(file_name);
 
     EXPECT_EQ(file_size, fs.bytes_available());
     EXPECT_EQ(file_size, fs.size());
@@ -68,8 +63,6 @@ TEST(TestFileInputStream, ReadRandomFile)
             input_buffer.end(), temp.begin(), temp.end());
     }
     EXPECT_EQ(file_size, fs.read_position());
-
-
 
     // Always close the input file stream
     fs.close();
@@ -128,4 +121,6 @@ TEST(TestFileInputStream, ThrowExceptionInConstructor)
     }
 
     EXPECT_EQ(ec, sak::error::failed_open_file);
+    EXPECT_EQ(std::string("Failed to open file"), ec.message());
+    EXPECT_STREQ(ec.category().name(), "sak");
 }

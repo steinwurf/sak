@@ -47,6 +47,9 @@ TEST(TestFileInputStream, ReadRandomFile)
     EXPECT_EQ(file_size, fs.size());
     EXPECT_TRUE(fs.stopped());
 
+    fs.seek(0);
+    EXPECT_EQ(0U, fs.read_position());
+
     uint32_t read_size = 512;
 
     std::vector<char> input_buffer;
@@ -66,9 +69,7 @@ TEST(TestFileInputStream, ReadRandomFile)
     }
     EXPECT_EQ(file_size, fs.read_position());
 
-    fs.seek(0);
-    EXPECT_EQ(0U, fs.read_position());
-    EXPECT_EQ(file_size, fs.bytes_available());
+
 
     // Always close the input file stream
     fs.close();

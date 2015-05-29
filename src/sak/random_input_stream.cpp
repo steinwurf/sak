@@ -30,7 +30,7 @@ namespace sak
 
     void random_input_stream::seek(uint32_t pos)
     {
-        assert(pos >= m_data.size());
+        assert(pos < m_data.size());
         m_current_pos = pos;
     }
 

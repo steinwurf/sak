@@ -5,6 +5,8 @@
 
 #include <sak/buffer.hpp>
 
+#include <algorithm>
+
 #include <gtest/gtest.h>
 
 TEST(TestBuffer, construct)
@@ -78,6 +80,7 @@ TEST(TestBuffer, append_to_initialized)
 
         b.append(&data[0], static_cast<uint32_t>(data.size()));
         EXPECT_EQ(data.size(), b.size());
+        EXPECT_TRUE(std::equal(data.begin(), data.end(), b.data()));
     }
 
     {
@@ -89,6 +92,7 @@ TEST(TestBuffer, append_to_initialized)
 
         b.append(&data[0], &data[0] + data.size());
         EXPECT_EQ(data.size(), b.size());
+        EXPECT_TRUE(std::equal(data.begin(), data.end(), b.data()));
     }
 
     {
@@ -100,6 +104,7 @@ TEST(TestBuffer, append_to_initialized)
 
         b.append(sak::storage(data));
         EXPECT_EQ(data.size(), b.size());
+        EXPECT_TRUE(std::equal(data.begin(), data.end(), b.data()));
     }
 }
 

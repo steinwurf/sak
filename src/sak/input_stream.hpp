@@ -10,7 +10,6 @@
 
 namespace sak
 {
-
     /// Input stream abstraction
     class input_stream
     {
@@ -29,10 +28,10 @@ namespace sak
         /// @return number of bytes available
         virtual uint32_t bytes_available() = 0;
 
-        /// Returns whether no more data will be produced. E.g. in the case
-        /// of an live stream the function will return true once the stream
-        /// closes. In the case of a finite stream e.g. a file, the function
-        /// will always return true.
+        /// Indicates if more data will be produced. For a live stream,
+        /// the function will return true after the stream finishes.
+        /// For a finite stream (e.g. a file) the function will always
+        /// return true.
         virtual bool stopped() = 0;
 
     public:
@@ -48,7 +47,6 @@ namespace sak
             m_ready_read_callback = callback;
         }
 
-
         /// Signal emitted on error
         typedef std::function<void (const std::string&)> error_callback;
 
@@ -58,7 +56,6 @@ namespace sak
         {
             m_error_callback = callback;
         }
-
 
         /// Signal emitted when the stream is stopped
         typedef std::function<void ()> stopped_callback;

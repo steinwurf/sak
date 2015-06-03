@@ -6,7 +6,7 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Minor: Improve unit tests to achieve 100% line coverage.
 
 14.0.1
 ------

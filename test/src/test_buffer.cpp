@@ -5,6 +5,9 @@
 
 #include <sak/buffer.hpp>
 
+#include <algorithm>
+#include <cstring>
+
 #include <gtest/gtest.h>
 
 TEST(TestBuffer, construct)
@@ -66,6 +69,12 @@ TEST(TestBuffer, append_to_empty_with_storage)
     EXPECT_EQ(data.size(), b.size());
 }
 
+static void test_const_buffer(const sak::buffer& buffer,
+                              const std::vector<uint8_t>& data)
+{
+    EXPECT_EQ((uint32_t)data.size(), buffer.size());
+    EXPECT_TRUE(std::equal(data.begin(), data.end(), buffer.data()));
+}
 
 TEST(TestBuffer, append_to_initialized)
 {
@@ -76,8 +85,11 @@ TEST(TestBuffer, append_to_initialized)
         sak::buffer b(10);
         EXPECT_EQ(0U, b.size());
 
-        b.append(&data[0], static_cast<uint32_t>(data.size()));
+        b.append(&data[0], (uint32_t)data.size());
         EXPECT_EQ(data.size(), b.size());
+        EXPECT_TRUE(std::equal(data.begin(), data.end(), b.data()));
+
+        test_const_buffer(b, data);
     }
 
     {
@@ -89,6 +101,9 @@ TEST(TestBuffer, append_to_initialized)
 
         b.append(&data[0], &data[0] + data.size());
         EXPECT_EQ(data.size(), b.size());
+        EXPECT_TRUE(std::equal(data.begin(), data.end(), b.data()));
+
+        test_const_buffer(b, data);
     }
 
     {
@@ -100,6 +115,9 @@ TEST(TestBuffer, append_to_initialized)
 
         b.append(sak::storage(data));
         EXPECT_EQ(data.size(), b.size());
+        EXPECT_TRUE(std::equal(data.begin(), data.end(), b.data()));
+
+        test_const_buffer(b, data);
     }
 }
 

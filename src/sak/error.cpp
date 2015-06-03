@@ -21,7 +21,9 @@ namespace sak
             case error_type::failed_open_file:
                 return "Failed to open file";
             default:
+                // LCOV_EXCL_START This line will not be executed.
                 return "Unknown error";
+                // LCOV_EXCL_STOP
             }
         }
         const std::error_category& sak_category()

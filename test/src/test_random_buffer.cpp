@@ -20,7 +20,14 @@ void test_random_buffer(uint32_t buffer_size)
 
     // Verify the contents of the buffer using the embedded random seed
     bool verified = buffer.verify();
-    EXPECT_EQ(true, verified);
+    EXPECT_TRUE(verified);
+
+    // Change the last byte of the random data
+    uint8_t* last_byte = buffer.data() + buffer_size - 1;
+    *last_byte = *last_byte + 1;
+    // The verification should fail after this tampering
+    verified = buffer.verify();
+    EXPECT_FALSE(verified);
 }
 
 TEST(TestRandomBuffer, fill_and_verify_5)

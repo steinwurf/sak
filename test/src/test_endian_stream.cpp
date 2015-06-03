@@ -19,6 +19,9 @@ TEST(TestEndianStream, create_stream)
     buffer.resize(size);
 
     sak::endian_stream stream(buffer.data(), size);
+
+    EXPECT_EQ(size, stream.size());
+    EXPECT_EQ(0U, stream.position());
 }
 
 TEST(TestEndianStream, create_stream_from_storage)
@@ -31,10 +34,16 @@ TEST(TestEndianStream, create_stream_from_storage)
     // Create endian stream directly from sak::storage
     sak::endian_stream stream(sak::storage(buffer));
 
+    EXPECT_EQ(size, stream.size());
+    EXPECT_EQ(0U, stream.position());
+
     for (uint32_t i = 0; i < elements; i++)
     {
         stream.write(i);
     }
+
+    EXPECT_EQ(size, stream.size());
+    EXPECT_EQ(size, stream.position());
 
     // Go back to the beginning of the stream
     stream.seek(0);

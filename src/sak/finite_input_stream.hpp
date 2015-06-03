@@ -12,7 +12,6 @@
 
 namespace sak
 {
-
     /// The finite input stream is an abstract interface which provides methods
     /// useful for finite data streams.
     class finite_input_stream : public input_stream
@@ -38,7 +37,8 @@ namespace sak
         /// Note, a finite_input_stream will always be stopped since
         /// it has a fixed size and no new data will ever be produced.
         bool stopped()
-        { return true; }
-
+        {
+            return true;
+        }
     };
 }

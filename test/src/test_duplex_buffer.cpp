@@ -46,6 +46,10 @@ TEST(TestDuplexBuffer, resize_and_fill)
     std::fill_n(buffer.data(), buffer.size(), 'b');
     EXPECT_EQ(buffer.size(), 100U);
 
+    buffer.resize_back(50);
+    std::fill_n(buffer.data(), buffer.size(), 'b');
+    EXPECT_EQ(buffer.size(), 50U);
+
     buffer.resize_front(10);
     std::fill_n(buffer.data(), buffer.size(), 'b');
     EXPECT_EQ(buffer.size(), 10U);
@@ -61,4 +65,12 @@ TEST(TestDuplexBuffer, resize_and_fill)
     buffer.resize_front(10);
     std::fill_n(buffer.data(), buffer.size(), 'b');
     EXPECT_EQ(buffer.size(), 10U);
+
+    buffer.resize_front(200);
+    std::fill_n(buffer.data(), buffer.size(), 'b');
+    EXPECT_EQ(buffer.size(), 200U);
+
+    buffer.resize(500, 1000, 1000);
+    std::fill_n(buffer.data(), buffer.size(), 'b');
+    EXPECT_EQ(buffer.size(), 500U);
 }

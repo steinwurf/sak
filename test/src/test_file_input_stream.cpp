@@ -42,7 +42,7 @@ TEST(TestFileInputStream, ReadRandomFile)
     EXPECT_EQ(file_size, fs.size());
     EXPECT_TRUE(fs.stopped());
 
-    //fs.seek(0);
+    fs.seek(0);
     EXPECT_EQ(0U, fs.read_position());
 
     uint32_t read_size = 512;

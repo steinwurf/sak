@@ -12,7 +12,7 @@
 #include <gtest/gtest.h>
 
 template<class PodType>
-void test_vector_helper(uint32_t vector_size)
+static void test_vector_helper(uint32_t vector_size)
 {
     std::vector<PodType> v(vector_size);
 
@@ -48,7 +48,7 @@ TEST(TestStorage, test_storage_function_vector)
 }
 
 template<class PodType>
-void test_buffer_helper(uint32_t vector_size)
+static void test_buffer_helper(uint32_t vector_size)
 {
     std::vector<PodType> v(vector_size);
 
@@ -110,6 +110,9 @@ TEST(TestStorage, test_split_storage)
     {
         EXPECT_EQ(storage_sequence[i].m_size, split);
     }
+
+    EXPECT_EQ(500U, sak::storage_size(storage_sequence.begin(),
+                                      storage_sequence.end()));
 }
 
 TEST(TestStorage, test_offset_storage)
@@ -236,6 +239,43 @@ TEST(TestStorage, is_same)
         d2 += 2;
 
         EXPECT_FALSE(sak::is_same(sak::storage(d1), d2));
+    }
+}
+
+TEST(TestStorage, test_copy_storage)
+{
+    {
+        std::vector<uint8_t> d1(10, 'a');
+        std::vector<uint8_t> d2(10, 'b');
+
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+
+        // Copy the contents of d1 to d2
+        sak::copy_storage(sak::storage(d2), sak::storage(d1));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+        // Zero the contents of d2
+        sak::zero_storage(sak::storage(d2));
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+
+        // d3 will be zero-initialized
+        std::vector<uint8_t> d3(10);
+        EXPECT_TRUE(sak::is_equal(sak::storage(d2), sak::storage(d3)));
+    }
+
+    {
+        std::vector<uint8_t> d1(10, 'x');
+        std::vector<uint8_t> d2(11, 'y');
+
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+
+        // copy_storage should work even though d2 is larger than d1,
+        // but they will not be equal, since their sizes do not match
+        sak::copy_storage(sak::storage(d2), sak::storage(d1));
+        EXPECT_FALSE(sak::is_equal(sak::storage(d1), sak::storage(d2)));
+        // Offset the first byte of d2, so they should be equal
+        sak::zero_storage(sak::storage(d2));
+        sak::copy_storage(sak::storage(d2) + 1, sak::storage(d1));
+        EXPECT_TRUE(sak::is_equal(sak::storage(d1), sak::storage(d2) + 1));
     }
 }
 

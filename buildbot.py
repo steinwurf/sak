@@ -13,4 +13,4 @@ def run_tests(options):
     pass
 
 def coverage_settings(options):
-    options['required_line_coverage'] = 99.8
+    options['required_line_coverage'] = 100.0

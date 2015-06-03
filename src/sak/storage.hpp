@@ -209,7 +209,7 @@ namespace sak
 
     /// Zero the data buffer of a mutable storage object
     /// @param storage the mutable storage buffer
-    inline void zero_storage(mutable_storage& storage)
+    inline void zero_storage(const mutable_storage& storage)
     {
         std::fill_n(storage.m_data, storage.m_size, 0);
     }

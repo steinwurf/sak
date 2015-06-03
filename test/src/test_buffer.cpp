@@ -6,6 +6,7 @@
 #include <sak/buffer.hpp>
 
 #include <algorithm>
+#include <cstring>
 
 #include <gtest/gtest.h>
 
@@ -78,9 +79,11 @@ TEST(TestBuffer, append_to_initialized)
         sak::buffer b(10);
         EXPECT_EQ(0U, b.size());
 
-        b.append(&data[0], static_cast<uint32_t>(data.size()));
+        b.append(&data[0], (uint32_t)data.size());
         EXPECT_EQ(data.size(), b.size());
         EXPECT_TRUE(std::equal(data.begin(), data.end(), b.data()));
+        // Try to copy the data back using the const data pointer
+        std::memcpy(&data[0], b.data(), (uint32_t)data.size());
     }
 
     {

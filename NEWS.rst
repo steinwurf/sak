@@ -7,6 +7,7 @@ detailed list of every change, see the Git log.
 Latest
 ------
 * Minor: Improve unit tests to achieve 100% line coverage.
+* Minor: Updated Doxyfile and fixed doxygen warnings.
 
 14.0.1
 ------

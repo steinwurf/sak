@@ -41,7 +41,7 @@ namespace sak
 
         /// Specify callbacks to allow the caller to determine if
         /// new data has arrived which is ready to be read.
-        /// @param slot the slot to connect
+        /// @param callback the callback function
         void on_ready_read(const ready_read_callback& callback)
         {
             m_ready_read_callback = callback;
@@ -50,8 +50,8 @@ namespace sak
         /// Signal emitted on error
         typedef std::function<void (const std::string&)> error_callback;
 
-        /// Connect to the error signal
-        /// @param slot the function to call
+        /// Specify the callback function that is invoked when an error occurs.
+        /// @param callback the callback function
         void on_error(const error_callback& callback)
         {
             m_error_callback = callback;
@@ -60,8 +60,9 @@ namespace sak
         /// Signal emitted when the stream is stopped
         typedef std::function<void ()> stopped_callback;
 
-        /// Connect to the stopped signal
-        /// @param slot the function to call
+        /// Specify the callback function that is invoked when the stream
+        /// is stopped.
+        /// @param callback the callback function
         void on_stopped(const stopped_callback& callback)
         {
             m_stopped_callback = callback;

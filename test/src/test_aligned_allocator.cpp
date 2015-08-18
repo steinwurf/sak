@@ -12,7 +12,7 @@
 TEST(TestAlignedAllocator, construct)
 {
     sak::aligned_allocator<uint8_t> alloc;
-    EXPECT_EQ(alloc.alignment(), sak::platform::simd_align);
+    EXPECT_EQ(alloc.alignment(), 32U);
 }
 
 TEST(TestAlignedAllocator, vector)

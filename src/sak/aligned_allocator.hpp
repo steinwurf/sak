@@ -11,8 +11,6 @@
 #include <limits>
 #include <type_traits>
 
-#include "platform.hpp"
-
 namespace sak
 {
 
@@ -30,7 +28,7 @@ namespace sak
     /// The allocator is based on the code example from:
     /// The C++ Standard Library - A Tutorial and Reference
     /// by Nicolai M. Josuttis, Addison-Wesley, 1999
-    template<class T, uint32_t Alignment = platform::simd_align>
+    template<class T, uint32_t Alignment = 32>
     class aligned_allocator
     {
     public:

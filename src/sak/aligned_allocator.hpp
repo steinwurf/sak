@@ -11,8 +11,6 @@
 #include <limits>
 #include <type_traits>
 
-#include "platform.hpp"
-
 namespace sak
 {
 
@@ -27,10 +25,13 @@ namespace sak
     ///
     /// std::vector<uint8_t, sak::aligned_allocator<uint8_t> > vector;
     ///
+    /// Defaults to 32bit alignment, the lowest common denominotor on the
+    /// supported platforms.
+    ///
     /// The allocator is based on the code example from:
     /// The C++ Standard Library - A Tutorial and Reference
     /// by Nicolai M. Josuttis, Addison-Wesley, 1999
-    template<class T, uint32_t Alignment = platform::simd_align>
+    template<class T, uint32_t Alignment = 32>
     class aligned_allocator
     {
     public:

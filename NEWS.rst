@@ -8,6 +8,7 @@ Latest
 ------
 * Minor: Improve unit tests to achieve 100% line coverage.
 * Minor: Updated Doxyfile and fixed doxygen warnings.
+* Major: Removed sak::platform.
 
 14.0.1
 ------

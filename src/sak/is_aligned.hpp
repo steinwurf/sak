@@ -12,8 +12,7 @@ namespace sak
 {
 
     /// Checks whether a pointer is aligned to a specific memory boundary
-    inline bool is_aligned(const void* ptr,
-                           uint32_t alignment = 32)
+    inline bool is_aligned(const void* ptr, uint32_t alignment = 32)
     {
         // Is power of 2
         assert(alignment != 0 && ((alignment & (alignment - 1)) == 0));

@@ -25,6 +25,9 @@ namespace sak
     ///
     /// std::vector<uint8_t, sak::aligned_allocator<uint8_t> > vector;
     ///
+    /// Defaults to 32bit alignment, the lowest common denominotor on the
+    /// supported platforms.
+    ///
     /// The allocator is based on the code example from:
     /// The C++ Standard Library - A Tutorial and Reference
     /// by Nicolai M. Josuttis, Addison-Wesley, 1999

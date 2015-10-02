@@ -59,7 +59,7 @@ namespace sak
         auto pos = m_file.tellg();
         assert(pos >= 0);
 
-        m_filesize = (uint32_t) pos;
+        m_filesize = (uint32_t)pos;
 
         m_file.seekg(0, std::ios::beg);
         assert(m_file);
@@ -89,14 +89,16 @@ namespace sak
 
         if (m_file.eof())
         {
+            // LCOV_EXCL_START This line will only be executed on iOS.
             return m_filesize;
+            // LCOV_EXCL_STOP
         }
         else
         {
             std::streamoff pos = m_file.tellg();
             assert(pos >= 0);
 
-            return static_cast<uint32_t>(pos);
+            return (uint32_t)pos;
         }
     }
 
@@ -105,7 +107,7 @@ namespace sak
         assert(m_file.is_open());
         m_file.read(reinterpret_cast<char*>(buffer), bytes);
 
-        assert(bytes == static_cast<uint32_t>(m_file.gcount()));
+        assert(bytes == (uint32_t)m_file.gcount());
     }
 
     uint32_t file_input_stream::bytes_available()

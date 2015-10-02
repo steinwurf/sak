@@ -41,6 +41,9 @@ TEST(TestError, ThrowException)
     dummy_class dummy;
     std::error_code ec;
 
+    // No exception should be thrown for an empty error
+    sak::error::throw_error(ec);
+
     try
     {
         dummy.test();

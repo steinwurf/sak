@@ -12,15 +12,24 @@ TEST(TestDuplexBuffer, construct)
     sak::duplex_buffer buffer;
     EXPECT_EQ(buffer.size(), 0U);
 
+    EXPECT_EQ(buffer.data(), buffer.front());
+    EXPECT_EQ(buffer.data() + buffer.size(), buffer.back());
+
     buffer = sak::duplex_buffer(100);
     EXPECT_EQ(buffer.size(), 100U);
+
+    EXPECT_EQ(buffer.data(), buffer.front());
+    EXPECT_EQ(buffer.data() + buffer.size(), buffer.back());
 
     buffer = sak::duplex_buffer(10, 100, 100);
 
     EXPECT_EQ(buffer.size(), 10U);
 
-    sak::duplex_buffer buffer2(buffer);
+    const sak::duplex_buffer buffer2(buffer);
     EXPECT_EQ(buffer2.size(), 10U);
+
+    EXPECT_EQ(buffer2.data(), buffer2.front());
+    EXPECT_EQ(buffer2.data() + buffer2.size(), buffer2.back());
 }
 
 TEST(TestDuplexBuffer, resize_and_fill)
@@ -37,6 +46,10 @@ TEST(TestDuplexBuffer, resize_and_fill)
     std::fill_n(buffer.data(), buffer.size(), 'b');
     EXPECT_EQ(buffer.size(), 100U);
 
+    buffer.resize_back(50);
+    std::fill_n(buffer.data(), buffer.size(), 'b');
+    EXPECT_EQ(buffer.size(), 50U);
+
     buffer.resize_front(10);
     std::fill_n(buffer.data(), buffer.size(), 'b');
     EXPECT_EQ(buffer.size(), 10U);
@@ -52,4 +65,12 @@ TEST(TestDuplexBuffer, resize_and_fill)
     buffer.resize_front(10);
     std::fill_n(buffer.data(), buffer.size(), 'b');
     EXPECT_EQ(buffer.size(), 10U);
+
+    buffer.resize_front(300);
+    std::fill_n(buffer.data(), buffer.size(), 'b');
+    EXPECT_EQ(buffer.size(), 300U);
+
+    buffer.resize(500, 1000, 1000);
+    std::fill_n(buffer.data(), buffer.size(), 'b');
+    EXPECT_EQ(buffer.size(), 500U);
 }

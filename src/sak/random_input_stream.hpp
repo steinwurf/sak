@@ -13,7 +13,6 @@
 
 namespace sak
 {
-
     /// Buffer input stream is meant for testing purposes. Provides an input
     /// from a buffer with random data.
     class random_input_stream : public finite_input_stream
@@ -46,9 +45,6 @@ namespace sak
         /// @copydoc input_stream::bytes_available()
         uint32_t bytes_available();
 
-        /// @copydoc input_stream::stopped()
-        bool stopped();
-
     protected:
 
         /// Pointer to the buffer
@@ -56,6 +52,5 @@ namespace sak
 
         /// The current read position
         uint32_t m_current_pos;
-
     };
 }

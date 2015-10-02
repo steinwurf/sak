@@ -46,14 +46,14 @@ namespace sak
             assert(m_size > 0);
         }
 
-        /// @return interator to the first element note in this
+        /// @return iterator to the first element note in this
         ///         adapter we always only have one element
         const_iterator begin() const
         {
             return this;
         }
 
-        /// @return interator to the end for this adapter we
+        /// @return iterator to the end for this adapter we
         ///         always only have one element thus the + 1
         const_iterator end() const
         {
@@ -109,7 +109,7 @@ namespace sak
             m_size(size)
         { }
 
-        /// Creates and const storage object from a mutable
+        /// Create a const storage object from a mutable storage
         /// @param s the mutable storage object
         const_storage(const mutable_storage& s) :
             m_data(s.m_data),
@@ -207,10 +207,9 @@ namespace sak
         return size;
     }
 
-    /// Zeros the memory pointed to by a mutable storage
-    /// object
+    /// Zero the data buffer of a mutable storage object
     /// @param storage the mutable storage buffer
-    inline void zero_storage(mutable_storage& storage)
+    inline void zero_storage(const mutable_storage& storage)
     {
         std::fill_n(storage.m_data, storage.m_size, 0);
     }

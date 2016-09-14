@@ -102,8 +102,8 @@ namespace sak
     }
 
     void duplex_buffer::resize(uint32_t size,
-        uint32_t min_front_capacity,
-        uint32_t min_back_capacity)
+                               uint32_t min_front_capacity,
+                               uint32_t min_back_capacity)
     {
         uint32_t total_size = min_front_capacity + size + min_back_capacity;
 

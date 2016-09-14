@@ -39,21 +39,21 @@ namespace
     {
         template<class T>
         static auto bind(T* t) ->
-            decltype(sak::easy_bind(&T::method, t))
+        decltype(sak::easy_bind(&T::method, t))
         {
             return sak::easy_bind(&T::method, t);
         }
 
         template<class T>
         static auto bind(T& t) ->
-            decltype(sak::easy_bind(&T::method, &t))
+        decltype(sak::easy_bind(&T::method, &t))
         {
             return sak::easy_bind(&T::method, &t);
         }
 
         template<class T>
         static auto bind(const std::shared_ptr<T>& t) ->
-            decltype(sak::easy_bind(&T::method, t))
+        decltype(sak::easy_bind(&T::method, t))
         {
             return sak::easy_bind(&T::method, t);
         }
@@ -65,7 +65,7 @@ namespace
     {
         template<class T, class... Args>
         static auto bind(const T* t) ->
-            decltype(sak::easy_bind(&T::const_method, t))
+        decltype(sak::easy_bind(&T::const_method, t))
         {
             return sak::easy_bind(&T::const_method, t);
         }
@@ -77,7 +77,7 @@ namespace
     {
         template<class T>
         static auto bind(T* t) ->
-            decltype(sak::easy_bind(&T::no_method, t))
+        decltype(sak::easy_bind(&T::no_method, t))
         {
             return sak::easy_bind(&T::no_method, t);
         }

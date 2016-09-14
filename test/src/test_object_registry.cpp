@@ -133,7 +133,8 @@ class plant
 
 public:
 
-    plant(Color c): m_color(c) {}
+    plant(Color c) :
+        m_color(c) {}
     Color color() { return m_color; }
 };
 
@@ -141,7 +142,8 @@ class flower: public plant
 {
 public:
 
-    flower(Color c): plant(c) {}
+    flower(Color c) :
+        plant(c) {}
 };
 
 SAK_DEFINE_PARENT(flower, plant)
@@ -151,7 +153,8 @@ class flower_factory
     Color m_color;
 public:
 
-    flower_factory(): m_color(Color::green) {} // use green as default color
+    flower_factory() :
+        m_color(Color::green) {} // use green as default color
 
     void set_color(Color c) { m_color = c; }
 

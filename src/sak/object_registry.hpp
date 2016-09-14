@@ -33,7 +33,7 @@ namespace sak
     namespace sak                                    \
     {                                                \
         template<>                                   \
-            struct sak_type_info<DERIVED_CLASS>      \
+        struct sak_type_info<DERIVED_CLASS>          \
         {                                            \
             typedef BASE_CLASS Base;                 \
         };                                           \

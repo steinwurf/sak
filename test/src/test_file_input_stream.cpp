@@ -66,8 +66,9 @@ TEST(TestFileInputStream, ReadRandomFile)
     // Always close the input file stream
     fs.close();
 
-    bool result = std::equal(
-        input_buffer.begin(), input_buffer.end(), output_buffer.begin());
+    bool result =
+        std::equal(input_buffer.begin(), input_buffer.end(),
+                   output_buffer.begin());
 
     ASSERT_TRUE(result);
 

@@ -52,8 +52,8 @@ namespace sak
 
         template<std::size_t... Is, class F, class... Args>
         inline auto easy_bind(indices<Is...>, F const& f, Args&&... args) ->
-        decltype(std::bind(
-                     f, std::forward<Args>(args)..., placeholder<Is + 1> {} ...))
+            decltype(std::bind(
+                         f, std::forward<Args>(args)..., placeholder<Is + 1> {} ...))
         {
             return std::bind(
                        f, std::forward<Args>(args)..., placeholder<Is + 1> {} ...);
@@ -77,9 +77,9 @@ namespace sak
     ///
     template<class R, class... FArgs, class... Args>
     inline auto easy_bind(std::function<R(FArgs...)> f, Args&&... args) ->
-    decltype(detail::easy_bind(
-                 detail::build_indices<sizeof...(FArgs) - sizeof...(Args)> {},
-                 f, std::forward<Args>(args)...))
+        decltype(detail::easy_bind(
+                     detail::build_indices<sizeof...(FArgs) - sizeof...(Args)> {},
+                     f, std::forward<Args>(args)...))
     {
         return detail::easy_bind(
                    detail::build_indices<sizeof...(FArgs) - sizeof...(Args)> {},
@@ -102,10 +102,10 @@ namespace sak
     ///     auto g = sak::easy_bind(&free_function, 1337);
     ///
     template<class R, class... FArgs, class... Args>
-    inline auto easy_bind(R (*f)(FArgs...), Args&&... args) ->
-    decltype(detail::easy_bind(
-                 detail::build_indices<sizeof...(FArgs) - sizeof...(Args)> {},
-                 f, std::forward<Args>(args)...))
+    inline auto easy_bind(R(*f)(FArgs...), Args&&... args) ->
+        decltype(detail::easy_bind(
+                     detail::build_indices<sizeof...(FArgs) - sizeof...(Args)> {},
+                     f, std::forward<Args>(args)...))
     {
         return detail::easy_bind(
                    detail::build_indices<sizeof...(FArgs) - sizeof...(Args)> {},
@@ -134,10 +134,10 @@ namespace sak
     ///                             1337);
     ///
     template <typename R, typename T, typename... FArgs, typename... Args>
-    inline auto easy_bind(R (T::*mf)(FArgs...), Args&&... args) ->
-    decltype(detail::easy_bind(
-                 detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
-                 mf, std::forward<Args>(args)...))
+    inline auto easy_bind(R(T::*mf)(FArgs...), Args&&... args) ->
+        decltype(detail::easy_bind(
+                     detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
+                     mf, std::forward<Args>(args)...))
     {
         // The extra argument is the object pointer (this)
         static_assert(sizeof...(Args) <= sizeof...(FArgs) + 1,
@@ -150,10 +150,10 @@ namespace sak
 
     /// Bind to const member function
     template <typename R, typename T, typename... FArgs, typename... Args>
-    inline auto easy_bind(R (T::*mf)(FArgs...) const, Args&&... args) ->
-    decltype(detail::easy_bind(
-                 detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
-                 mf, std::forward<Args>(args)...))
+    inline auto easy_bind(R(T::*mf)(FArgs...) const, Args&&... args) ->
+        decltype(detail::easy_bind(
+                     detail::build_indices<(sizeof...(FArgs) + 1) - sizeof...(Args)>(),
+                     mf, std::forward<Args>(args)...))
     {
         // The extra argument is the object pointer (this)
         static_assert(sizeof...(Args) <= sizeof...(FArgs) + 1,

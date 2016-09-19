@@ -28,7 +28,7 @@ namespace sak
 
         template<class B, class F>
         auto optional_bind(F&& f, int) ->
-        decltype(B::bind(std::forward<F>(f)), typename B::result_type())
+            decltype(B::bind(std::forward<F>(f)), typename B::result_type())
         {
             return B::bind(std::forward<F>(f));
         }
@@ -132,7 +132,7 @@ namespace sak
     ///
     template<class B, class F>
     auto optional_bind(F&& f) ->
-    decltype(detail::optional_bind<B>(std::forward<F>(f), 0))
+        decltype(detail::optional_bind<B>(std::forward<F>(f), 0))
     {
         return detail::optional_bind<B>(std::forward<F>(f), 0);
     }

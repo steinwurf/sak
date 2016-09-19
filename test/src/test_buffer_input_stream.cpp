@@ -32,10 +32,10 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         const uint8_t* my_data = reinterpret_cast<const uint8_t*>(&buffer[0]);
 
         sak::const_storage my_stor(my_data,buffer_size);
-        sak::buffer_input_stream input_stream (my_stor);
+        sak::buffer_input_stream input_stream(my_stor);
 
-        ASSERT_TRUE( input_stream.size() == buffer_size );
-        ASSERT_TRUE( input_stream.read_position() == 0 );
+        ASSERT_TRUE(input_stream.size() == buffer_size);
+        ASSERT_TRUE(input_stream.read_position() == 0);
 
         // Second: Implementation through storage conversion function
 
@@ -45,15 +45,15 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         // Conversion from buffer_b to my_storage_2
         sak::const_storage my_storage_2 = sak::storage(buffer_b);
 
-        sak::buffer_input_stream input_stream_2 (my_storage_2);
+        sak::buffer_input_stream input_stream_2(my_storage_2);
 
-        ASSERT_TRUE( input_stream_2.size() == buffer_size );
-        ASSERT_TRUE( input_stream_2.read_position() == 0 );
+        ASSERT_TRUE(input_stream_2.size() == buffer_size);
+        ASSERT_TRUE(input_stream_2.read_position() == 0);
 
         // Reading from first storage
         std::vector<char> buffer_out;
 
-        while ( input_stream.bytes_available() > 0 )
+        while (input_stream.bytes_available() > 0)
         {
             // Random read (always positive thus + 1)
             uint32_t read_request = (rand() % 100) + 1;
@@ -88,7 +88,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         std::vector<char> buffer_out_2;
 
-        while ( input_stream_2.bytes_available() > 0 )
+        while (input_stream_2.bytes_available() > 0)
         {
             // Random read (always positive thus + 1)
             uint32_t read_request_2 = (rand() % 100) + 1;
@@ -112,7 +112,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         //This only checks that the functions has been properly called
         //since finite input streams will always stopped when they are readed
 
-        ASSERT_TRUE( input_stream.stopped() == true );
-        ASSERT_TRUE( input_stream_2.stopped() == true );
+        ASSERT_TRUE(input_stream.stopped() == true);
+        ASSERT_TRUE(input_stream_2.stopped() == true);
     }
 }

@@ -6,7 +6,8 @@ detailed list of every change, see the Git log.
 
 Latest
 ------
-* tbd
+* Major: moved sak::aligned_allocator and sak::is_aligned to the "allocate"
+  repository.
 
 15.0.0
 ------

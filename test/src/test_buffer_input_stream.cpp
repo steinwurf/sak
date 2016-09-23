@@ -99,7 +99,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
             std::vector<char> read_buffer_2(read_2, '\0');
 
             input_stream_2.read(reinterpret_cast<uint8_t*>(
-                                    read_buffer_2.data()),read_2);
+                read_buffer_2.data()),read_2);
 
             buffer_out_2.insert(buffer_out_2.end(), read_buffer_2.begin(),
                                 read_buffer_2.end());

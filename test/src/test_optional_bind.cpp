@@ -14,76 +14,76 @@
 
 namespace
 {
-    struct dummy_class
+struct dummy_class
+{
+    dummy_class() :
+        m_a(0), m_b(0)
+    { }
+
+    void method(uint32_t a, uint32_t b)
     {
-        dummy_class() :
-            m_a(0), m_b(0)
-        { }
+        m_a = a;
+        m_b = b;
+    }
 
-        void method(uint32_t a, uint32_t b)
-        {
-            m_a = a;
-            m_b = b;
-        }
-
-        uint32_t const_method(uint32_t a, uint32_t b) const
-        {
-            return a + b;
-        }
-
-        uint32_t m_a;
-        uint32_t m_b;
-    };
-
-    struct bind_method
+    uint32_t const_method(uint32_t a, uint32_t b) const
     {
-        template<class T>
-        static auto bind(T* t) ->
-            decltype(sak::easy_bind(&T::method, t))
-        {
-            return sak::easy_bind(&T::method, t);
-        }
+        return a + b;
+    }
 
-        template<class T>
-        static auto bind(T& t) ->
-            decltype(sak::easy_bind(&T::method, &t))
-        {
-            return sak::easy_bind(&T::method, &t);
-        }
+    uint32_t m_a;
+    uint32_t m_b;
+};
 
-        template<class T>
-        static auto bind(const std::shared_ptr<T>& t) ->
-            decltype(sak::easy_bind(&T::method, t))
-        {
-            return sak::easy_bind(&T::method, t);
-        }
-
-        using result_type = std::function<void(uint32_t,uint32_t)>;
-    };
-
-    struct bind_const_method
+struct bind_method
+{
+    template<class T>
+    static auto bind(T* t) ->
+        decltype(sak::easy_bind(&T::method, t))
     {
-        template<class T, class... Args>
-        static auto bind(const T* t) ->
-            decltype(sak::easy_bind(&T::const_method, t))
-        {
-            return sak::easy_bind(&T::const_method, t);
-        }
+        return sak::easy_bind(&T::method, t);
+    }
 
-        using result_type = std::function<uint32_t(uint32_t,uint32_t)>;
-    };
-
-    struct bind_no_method
+    template<class T>
+    static auto bind(T& t) ->
+        decltype(sak::easy_bind(&T::method, &t))
     {
-        template<class T>
-        static auto bind(T* t) ->
-            decltype(sak::easy_bind(&T::no_method, t))
-        {
-            return sak::easy_bind(&T::no_method, t);
-        }
+        return sak::easy_bind(&T::method, &t);
+    }
 
-        using result_type = std::function<void()>;
-    };
+    template<class T>
+    static auto bind(const std::shared_ptr<T>& t) ->
+        decltype(sak::easy_bind(&T::method, t))
+    {
+        return sak::easy_bind(&T::method, t);
+    }
+
+    using result_type = std::function<void(uint32_t,uint32_t)>;
+};
+
+struct bind_const_method
+{
+    template<class T, class... Args>
+    static auto bind(const T* t) ->
+        decltype(sak::easy_bind(&T::const_method, t))
+    {
+        return sak::easy_bind(&T::const_method, t);
+    }
+
+    using result_type = std::function<uint32_t(uint32_t,uint32_t)>;
+};
+
+struct bind_no_method
+{
+    template<class T>
+    static auto bind(T* t) ->
+        decltype(sak::easy_bind(&T::no_method, t))
+    {
+        return sak::easy_bind(&T::no_method, t);
+    }
+
+    using result_type = std::function<void()>;
+};
 }
 
 TEST(TestOptionalBind, test_member_function)
@@ -146,17 +146,17 @@ TEST(TestOptionalBind, test_member_function)
 
 namespace
 {
-    template<class T>
-    std::function<void()> return_no_method(T& t)
-    {
-        return sak::optional_bind<bind_no_method>(&t);
-    }
+template<class T>
+std::function<void()> return_no_method(T& t)
+{
+    return sak::optional_bind<bind_no_method>(&t);
+}
 
-    template<class T>
-    std::function<void(uint32_t,uint32_t)> return_method(T& t)
-    {
-        return sak::optional_bind<bind_method>(&t);
-    }
+template<class T>
+std::function<void(uint32_t,uint32_t)> return_method(T& t)
+{
+    return sak::optional_bind<bind_method>(&t);
+}
 }
 
 TEST(TestOptionalBind, test_function_return)

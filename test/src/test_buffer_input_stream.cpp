@@ -32,10 +32,10 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         const uint8_t* my_data = reinterpret_cast<const uint8_t*>(&buffer[0]);
 
         sak::const_storage my_stor(my_data,buffer_size);
-        sak::buffer_input_stream input_stream (my_stor);
+        sak::buffer_input_stream input_stream(my_stor);
 
-        ASSERT_TRUE( input_stream.size() == buffer_size );
-        ASSERT_TRUE( input_stream.read_position() == 0 );
+        ASSERT_TRUE(input_stream.size() == buffer_size);
+        ASSERT_TRUE(input_stream.read_position() == 0);
 
         // Second: Implementation through storage conversion function
 
@@ -45,15 +45,15 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         // Conversion from buffer_b to my_storage_2
         sak::const_storage my_storage_2 = sak::storage(buffer_b);
 
-        sak::buffer_input_stream input_stream_2 (my_storage_2);
+        sak::buffer_input_stream input_stream_2(my_storage_2);
 
-        ASSERT_TRUE( input_stream_2.size() == buffer_size );
-        ASSERT_TRUE( input_stream_2.read_position() == 0 );
+        ASSERT_TRUE(input_stream_2.size() == buffer_size);
+        ASSERT_TRUE(input_stream_2.read_position() == 0);
 
         // Reading from first storage
         std::vector<char> buffer_out;
 
-        while ( input_stream.bytes_available() > 0 )
+        while (input_stream.bytes_available() > 0)
         {
             // Random read (always positive thus + 1)
             uint32_t read_request = (rand() % 100) + 1;
@@ -71,7 +71,7 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
         }
 
         ASSERT_TRUE(std::equal(buffer.begin(), buffer.end(),
-                    buffer_out.begin()));
+                               buffer_out.begin()));
 
         //Check the positions "buffer_size - 2" read from input and output
         //buffer 1 with "seek" function
@@ -88,31 +88,31 @@ TEST(TestBufferInputStream, CreateBufferInputStream)
 
         std::vector<char> buffer_out_2;
 
-        while ( input_stream_2.bytes_available() > 0 )
+        while (input_stream_2.bytes_available() > 0)
         {
             // Random read (always positive thus + 1)
             uint32_t read_request_2 = (rand() % 100) + 1;
 
             uint32_t read_2 = std::min(read_request_2,
-                                     input_stream_2.bytes_available());
+                                       input_stream_2.bytes_available());
 
             std::vector<char> read_buffer_2(read_2, '\0');
 
             input_stream_2.read(reinterpret_cast<uint8_t*>(
-                                read_buffer_2.data()),read_2);
+                read_buffer_2.data()),read_2);
 
             buffer_out_2.insert(buffer_out_2.end(), read_buffer_2.begin(),
-                              read_buffer_2.end());
+                                read_buffer_2.end());
         }
 
         ASSERT_TRUE(std::equal(buffer_b.begin(), buffer_b.end(),
-                    buffer_out_2.begin()));
+                               buffer_out_2.begin()));
 
         //Check that the input streams have "stopped"
         //This only checks that the functions has been properly called
         //since finite input streams will always stopped when they are readed
 
-        ASSERT_TRUE( input_stream.stopped() == true );
-        ASSERT_TRUE( input_stream_2.stopped() == true );
+        ASSERT_TRUE(input_stream.stopped() == true);
+        ASSERT_TRUE(input_stream_2.stopped() == true);
     }
 }

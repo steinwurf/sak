@@ -9,29 +9,29 @@
 
 namespace
 {
-    struct dummy_class
+struct dummy_class
+{
+    // Test method
+    // @throws std::system_error Thrown on failure.
+    void test()
     {
-        // Test method
-        // @throws std::system_error Thrown on failure.
-        void test()
-        {
-            std::error_code ec;
-            test(ec);
+        std::error_code ec;
+        test(ec);
 
-            // If an error occurs, throw that
-            if (ec)
-            {
-                sak::error::throw_error(ec);
-            }
-        }
-
-        // Test method
-        // @param ec on error set to indicate the type of error
-        void test(std::error_code& ec)
+        // If an error occurs, throw that
+        if (ec)
         {
-            ec = sak::error::failed_open_file;
+            sak::error::throw_error(ec);
         }
-    };
+    }
+
+    // Test method
+    // @param ec on error set to indicate the type of error
+    void test(std::error_code& ec)
+    {
+        ec = sak::error::failed_open_file;
+    }
+};
 }
 
 

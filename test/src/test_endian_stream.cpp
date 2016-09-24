@@ -163,22 +163,22 @@ void various_write_read_test(bool pseudorandom)
     {
         switch (i % 4)
         {
-            case 0:
-                values[i] = rand() % std::numeric_limits<uint8_t>::max();
-                stream.write((uint8_t)values[i]);
-                break;
-            case 1:
-                values[i] = rand() % std::numeric_limits<uint16_t>::max();
-                stream.write((uint16_t)values[i]);
-                break;
-            case 2:
-                values[i] = rand() % std::numeric_limits<uint32_t>::max();
-                stream.write((uint32_t)values[i]);
-                break;
-            case 3:
-                values[i] = rand() % std::numeric_limits<uint64_t>::max();
-                stream.write((uint64_t)values[i]);
-                break;
+        case 0:
+            values[i] = rand() % std::numeric_limits<uint8_t>::max();
+            stream.write((uint8_t)values[i]);
+            break;
+        case 1:
+            values[i] = rand() % std::numeric_limits<uint16_t>::max();
+            stream.write((uint16_t)values[i]);
+            break;
+        case 2:
+            values[i] = rand() % std::numeric_limits<uint32_t>::max();
+            stream.write((uint32_t)values[i]);
+            break;
+        case 3:
+            values[i] = rand() % std::numeric_limits<uint64_t>::max();
+            stream.write((uint64_t)values[i]);
+            break;
         }
     }
 
@@ -193,22 +193,22 @@ void various_write_read_test(bool pseudorandom)
     {
         switch (i % 4)
         {
-            case 0:
-                stream.read<uint8_t>(last_u8);
-                EXPECT_EQ(values[i], last_u8);
-                break;
-            case 1:
-                stream.read<uint16_t>(last_u16);
-                EXPECT_EQ(values[i], last_u16);
-                break;
-            case 2:
-                stream.read<uint32_t>(last_u32);
-                EXPECT_EQ(values[i], last_u32);
-                break;
-            case 3:
-                stream.read<uint64_t>(last_u64);
-                EXPECT_EQ(values[i], last_u64);
-                break;
+        case 0:
+            stream.read<uint8_t>(last_u8);
+            EXPECT_EQ(values[i], last_u8);
+            break;
+        case 1:
+            stream.read<uint16_t>(last_u16);
+            EXPECT_EQ(values[i], last_u16);
+            break;
+        case 2:
+            stream.read<uint32_t>(last_u32);
+            EXPECT_EQ(values[i], last_u32);
+            break;
+        case 3:
+            stream.read<uint64_t>(last_u64);
+            EXPECT_EQ(values[i], last_u64);
+            break;
         }
     }
 }

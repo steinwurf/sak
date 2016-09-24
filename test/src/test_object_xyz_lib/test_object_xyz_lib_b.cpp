@@ -16,8 +16,8 @@
 // Duck
 //
 
-duck::duck(sak::object_registry& registry)
-    : m_registry(registry)
+duck::duck(sak::object_registry& registry) :
+    m_registry(registry)
 {
 }
 

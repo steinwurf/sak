@@ -15,67 +15,67 @@
 
 namespace
 {
-    uint32_t global_a = 0;
-    uint32_t global_b = 0;
-    uint32_t global_c = 0;
+uint32_t global_a = 0;
+uint32_t global_b = 0;
+uint32_t global_c = 0;
 
-    void clear_state()
+void clear_state()
+{
+    global_a = 0;
+    global_b = 0;
+    global_c = 0;
+}
+
+void free_function(uint32_t a, uint32_t b, uint32_t c)
+{
+    global_a = a;
+    global_b = b;
+    global_c = c;
+}
+
+struct dummy_class
+{
+    dummy_class() :
+        m_x(0),
+        m_y(0)
+    {}
+
+    uint32_t m_x;
+    double m_y;
+    std::string m_str;
+
+    void method(uint32_t x, double y, std::string str)
     {
-        global_a = 0;
-        global_b = 0;
-        global_c = 0;
+        m_x = x;
+        m_y = y;
+        m_str = str;
     }
 
-    void free_function(uint32_t a, uint32_t b, uint32_t c)
+    uint32_t method2() const
     {
-        global_a = a;
-        global_b = b;
-        global_c = c;
+        return m_x * 32;
+    }
+};
+
+
+struct dummy_parent : public dummy_class
+{
+    using method_function =
+        std::function<void (uint32_t, double, std::string)>;
+
+    using method2_function =
+        std::function<uint32_t ()>;
+
+    method_function bind()
+    {
+        return sak::easy_bind(&dummy_class::method, this);
     }
 
-    struct dummy_class
+    method2_function bind2()
     {
-        dummy_class() :
-            m_x(0),
-            m_y(0)
-        {}
-
-        uint32_t m_x;
-        double m_y;
-        std::string m_str;
-
-        void method(uint32_t x, double y, std::string str)
-        {
-            m_x = x;
-            m_y = y;
-            m_str = str;
-        }
-
-        uint32_t method2() const
-        {
-            return m_x * 32;
-        }
-    };
-
-
-    struct dummy_parent : public dummy_class
-    {
-        using method_function =
-            std::function<void (uint32_t, double, std::string)>;
-
-        using method2_function =
-            std::function<uint32_t ()>;
-
-        method_function bind()
-        {
-            return sak::easy_bind(&dummy_class::method, this);
-        }
-
-        method2_function bind2()
-        {
-            return sak::easy_bind(&dummy_class::method2, this);
-        }
-    };
+        return sak::easy_bind(&dummy_class::method2, this);
+    }
+};
 }
 
 TEST(TestEasyBind, test_free_function)

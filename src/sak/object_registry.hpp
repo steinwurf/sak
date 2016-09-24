@@ -16,18 +16,18 @@
 namespace sak
 {
 
-    /// Type Info template for specifying the base class
-    /// Template must be specialized for all classes that have a base class
-    ///
-    /// Use the following macro to specify the base class:x
-    ///     SAF_DEFINE_PARENT(myClass, myBaseClass)
-    /// Important: This macro must be used in the global namespace!
-    /// Note that multiple inheritance is not supported.
-    template<class T>
-    struct sak_type_info
-    {
-        typedef void Base;
-    };
+/// Type Info template for specifying the base class
+/// Template must be specialized for all classes that have a base class
+///
+/// Use the following macro to specify the base class:x
+///     SAF_DEFINE_PARENT(myClass, myBaseClass)
+/// Important: This macro must be used in the global namespace!
+/// Note that multiple inheritance is not supported.
+template<class T>
+struct sak_type_info
+{
+    typedef void Base;
+};
 
 #define SAK_DEFINE_PARENT(DERIVED_CLASS, BASE_CLASS) \
     namespace sak                                    \
@@ -40,246 +40,246 @@ namespace sak
     }
 
 
-    /// Object registry used to store factories to construct objects of
-    /// the registered types.
-    class object_registry
+/// Object registry used to store factories to construct objects of
+/// the registered types.
+class object_registry
+{
+private:
+
+    /// The object_id that is used to index the registered types
+    typedef std::type_index object_id;
+
+    /// The map associating an object id to an object factory
+    typedef std::map<object_id, std::shared_ptr<object_factory> >
+    factory_map;
+
+    /// The map associating an object id to an object factory
+    typedef std::map<object_id, std::shared_ptr<void> >
+    object_map;
+
+public:
+
+    /// Constructor of the factory registry
+    object_registry()
+    { }
+
+    /// @return a factory stored in the registry
+    template<class Factory>
+    std::shared_ptr<Factory> get_factory()
     {
-    private:
+        auto factory_id = get_object_id<Factory>();
+        auto factory = find(m_lookup_by_factory_id, factory_id);
 
-        /// The object_id that is used to index the registered types
-        typedef std::type_index object_id;
+        assert(factory);
 
-        /// The map associating an object id to an object factory
-        typedef std::map<object_id, std::shared_ptr<object_factory> >
-        factory_map;
+        typedef object_factory_impl<Factory> factory_type;
 
-        /// The map associating an object id to an object factory
-        typedef std::map<object_id, std::shared_ptr<void> >
-        object_map;
+        auto factory_impl =
+            std::dynamic_pointer_cast<factory_type>(factory);
 
-    public:
+        assert(factory_impl);
+        assert(factory_impl->m_factory);
+        return factory_impl->m_factory;
+    }
 
-        /// Constructor of the factory registry
-        object_registry()
-        { }
+    /// Registers an object factory with the object registry
+    /// Important: a new factory instance is automatically created
+    /// Once a factory has been registered, objects can be built
+    template<class Factory, class Object>
+    void set_factory()
+    {
+        auto factory_id = get_object_id<Factory>();
+        auto object_id = get_object_id<Object>();
 
-        /// @return a factory stored in the registry
-        template<class Factory>
-        std::shared_ptr<Factory> get_factory()
+        std::shared_ptr<object_factory> factory =
+            std::make_shared< object_factory_impl<Factory> >();
+
+        m_lookup_by_factory_id[factory_id] = factory;
+        m_lookup_by_object_id[object_id] = factory;
+
+        // If the base class is not void,
+        // then reuse the factory instance for the Base type
+        typedef typename sak_type_info<Object>::Base Base;
+        if (std::is_void< Base >::value == false)
         {
-            auto factory_id = get_object_id<Factory>();
-            auto factory = find(m_lookup_by_factory_id, factory_id);
-
-            assert(factory);
-
-            typedef object_factory_impl<Factory> factory_type;
-
-            auto factory_impl =
-                std::dynamic_pointer_cast<factory_type>(factory);
-
-            assert(factory_impl);
-            assert(factory_impl->m_factory);
-            return factory_impl->m_factory;
+            set_factory< Base >(factory);
         }
+    }
 
-        /// Registers an object factory with the object registry
-        /// Important: a new factory instance is automatically created
-        /// Once a factory has been registered, objects can be built
-        template<class Factory, class Object>
-        void set_factory()
+    /// Registers an object factory instance with the object registry
+    /// Once a factory has been registered, objects can be created
+    /// @param factory the factory instance to be used for the Object type
+    template<class Object>
+    void set_factory(const std::shared_ptr<object_factory>& factory)
+    {
+        auto object_id = get_object_id<Object>();
+
+        m_lookup_by_object_id[object_id] = factory;
+
+        // If the base class is not void,
+        // then reuse the factory instance for the Base type
+        typedef typename sak_type_info<Object>::Base Base;
+
+        if (std::is_void< Base >::value == false)
         {
-            auto factory_id = get_object_id<Factory>();
-            auto object_id = get_object_id<Object>();
-
-            std::shared_ptr<object_factory> factory =
-                std::make_shared< object_factory_impl<Factory> >();
-
-            m_lookup_by_factory_id[factory_id] = factory;
-            m_lookup_by_object_id[object_id] = factory;
-
-            // If the base class is not void,
-            // then reuse the factory instance for the Base type
-            typedef typename sak_type_info<Object>::Base Base;
-            if (std::is_void< Base >::value == false)
-            {
-                set_factory< Base >(factory);
-            }
+            set_factory< Base >(factory);
         }
+    }
 
-        /// Registers an object factory instance with the object registry
-        /// Once a factory has been registered, objects can be created
-        /// @param factory the factory instance to be used for the Object type
-        template<class Object>
-        void set_factory(const std::shared_ptr<object_factory>& factory)
+    /// Registers an object factory function with the object registry
+    /// Once a factory function has been registered, objects can be created
+    /// @param func the factory function to be used for the Object type
+    template<class Object>
+    void set_factory(const std::function <
+                     std::shared_ptr<Object>(object_registry&) > & func)
+    {
+        auto object_id = get_object_id<Object>();
+
+        std::shared_ptr<object_factory> factory =
+            std::make_shared< object_factory_function >(func);
+
+        m_lookup_by_object_id[object_id] = factory;
+
+        // If the base class is not void,
+        // then reuse the factory instance for the Base type
+        typedef typename sak_type_info<Object>::Base Base;
+
+        if (std::is_void< Base >::value == false)
         {
-            auto object_id = get_object_id<Object>();
-
-            m_lookup_by_object_id[object_id] = factory;
-
-            // If the base class is not void,
-            // then reuse the factory instance for the Base type
-            typedef typename sak_type_info<Object>::Base Base;
-
-            if (std::is_void< Base >::value == false)
-            {
-                set_factory< Base >(factory);
-            }
+            set_factory< Base >(factory);
         }
+    }
 
-        /// Registers an object factory function with the object registry
-        /// Once a factory function has been registered, objects can be created
-        /// @param func the factory function to be used for the Object type
-        template<class Object>
-        void set_factory(const std::function <
-                         std::shared_ptr<Object>(object_registry&) > & func)
+    /// Registers an Object type with the object registry.
+    /// Important: a new instance of the Object type is created
+    template<class Object>
+    void set_object()
+    {
+        auto object_id = get_object_id<Object>();
+
+        auto object = std::make_shared<Object>();
+
+        m_lookup_by_shared_object_id[object_id] = object;
+
+        // If the base class is not void,
+        // then also register the Base type
+        typedef typename sak_type_info<Object>::Base Base;
+
+        if (std::is_void< Base >::value == false)
         {
-            auto object_id = get_object_id<Object>();
-
-            std::shared_ptr<object_factory> factory =
-                std::make_shared< object_factory_function >(func);
-
-            m_lookup_by_object_id[object_id] = factory;
-
-            // If the base class is not void,
-            // then reuse the factory instance for the Base type
-            typedef typename sak_type_info<Object>::Base Base;
-
-            if (std::is_void< Base >::value == false)
-            {
-                set_factory< Base >(factory);
-            }
+            set_object< Base >(object);
         }
+    }
 
-        /// Registers an Object type with the object registry.
-        /// Important: a new instance of the Object type is created
-        template<class Object>
-        void set_object()
+    /// Explicitly registers an Object instance with the object registry
+    /// without creating a default instance of the Object type.
+    /// @param object the Object instance to be used for the Object type
+    template<class Object>
+    void set_object(const std::shared_ptr<Object>& object)
+    {
+        auto object_id = get_object_id<Object>();
+
+        m_lookup_by_shared_object_id[object_id] = object;
+
+        // If the base class is not void,
+        // then also register the Base type
+        typedef typename sak_type_info<Object>::Base Base;
+
+        if (std::is_void< Base >::value == false)
         {
-            auto object_id = get_object_id<Object>();
-
-            auto object = std::make_shared<Object>();
-
-            m_lookup_by_shared_object_id[object_id] = object;
-
-            // If the base class is not void,
-            // then also register the Base type
-            typedef typename sak_type_info<Object>::Base Base;
-
-            if (std::is_void< Base >::value == false)
-            {
-                set_object< Base >(object);
-            }
+            set_object< Base >(object);
         }
+    }
 
-        /// Explicitly registers an Object instance with the object registry
-        /// without creating a default instance of the Object type.
-        /// @param object the Object instance to be used for the Object type
-        template<class Object>
-        void set_object(const std::shared_ptr<Object>& object)
-        {
-            auto object_id = get_object_id<Object>();
+    /// Returns a shared pointer to an explicitly registered Object.
+    /// @return a factory stored in the registry
+    template<class Object>
+    std::shared_ptr<Object> get_object()
+    {
+        auto object_id = get_object_id<Object>();
+        auto object = find(m_lookup_by_shared_object_id, object_id);
 
-            m_lookup_by_shared_object_id[object_id] = object;
+        assert(object);
+        return std::static_pointer_cast<Object>(object);
+    }
 
-            // If the base class is not void,
-            // then also register the Base type
-            typedef typename sak_type_info<Object>::Base Base;
+    /// Clears all registered factories
+    void clear_factories()
+    {
+        m_lookup_by_factory_id.clear();
+        m_lookup_by_object_id.clear();
+        m_lookup_by_shared_object_id.clear();
+    }
 
-            if (std::is_void< Base >::value == false)
-            {
-                set_object< Base >(object);
-            }
-        }
+    /// Builds an Object with the registered factories
+    /// @return a shared pointer to the new Object
+    template<class Object>
+    std::shared_ptr<Object> build()
+    {
+        // Have you forgotten to register the parent class for Object?
+        assert(has_object_id(m_lookup_by_object_id, get_object_id<Object>()));
 
-        /// Returns a shared pointer to an explicitly registered Object.
-        /// @return a factory stored in the registry
-        template<class Object>
-        std::shared_ptr<Object> get_object()
-        {
-            auto object_id = get_object_id<Object>();
-            auto object = find(m_lookup_by_shared_object_id, object_id);
+        auto factory = find(m_lookup_by_object_id, get_object_id<Object>());
 
-            assert(object);
-            return std::static_pointer_cast<Object>(object);
-        }
+        assert(factory);
 
-        /// Clears all registered factories
-        void clear_factories()
-        {
-            m_lookup_by_factory_id.clear();
-            m_lookup_by_object_id.clear();
-            m_lookup_by_shared_object_id.clear();
-        }
+        auto obj = factory->build(*this);
 
-        /// Builds an Object with the registered factories
-        /// @return a shared pointer to the new Object
-        template<class Object>
-        std::shared_ptr<Object> build()
-        {
-            // Have you forgotten to register the parent class for Object?
-            assert(has_object_id(m_lookup_by_object_id, get_object_id<Object>()));
+        return std::static_pointer_cast<Object>(obj);
+    }
 
-            auto factory = find(m_lookup_by_object_id, get_object_id<Object>());
+private:
 
-            assert(factory);
+    /// Checks if an object id is registered in a specific category
+    /// @param map the map in which the object_id is stored or not
+    /// @param id the object_id to find
+    /// @return true if the object is registered
+    template<class Map>
+    bool has_object_id(const Map& map, const object_id& id) const
+    {
+        return map.find(id) != map.end();
+    }
 
-            auto obj = factory->build(*this);
+    /// Returns the object_id for a type using C++ typeid
+    /// @return the object id of the Object type
+    template<class Object>
+    object_id get_object_id() const
+    {
+        return std::type_index(typeid(Object));
+    }
 
-            return std::static_pointer_cast<Object>(obj);
-        }
+    /// Finds and returns an object factory in the given map with a
+    /// "compatible" object_id.
+    /// @param map the map in which the object_id is stored
+    /// @param id the object_id to find
+    std::shared_ptr<object_factory>
+    find(const factory_map& map, const object_id& id) const
+    {
+        assert(has_object_id(map, id));
+        return map.at(id);
+    }
 
-    private:
+    /// Finds and returns an object factory in the given map with a
+    /// "compatible" object_id.
+    /// @param map the map in which the object_id is stored
+    /// @param id the object_id to find
+    std::shared_ptr<void>
+    find(const object_map& map, const object_id& id) const
+    {
+        assert(has_object_id(map, id));
+        return map.at(id);
+    }
 
-        /// Checks if an object id is registered in a specific category
-        /// @param map the map in which the object_id is stored or not
-        /// @param id the object_id to find
-        /// @return true if the object is registered
-        template<class Map>
-        bool has_object_id(const Map& map, const object_id& id) const
-        {
-            return map.find(id) != map.end();
-        }
+private:
 
-        /// Returns the object_id for a type using C++ typeid
-        /// @return the object id of the Object type
-        template<class Object>
-        object_id get_object_id() const
-        {
-            return std::type_index(typeid(Object));
-        }
+    /// Map allowing a factory to be found based on an object's object id
+    factory_map m_lookup_by_object_id;
 
-        /// Finds and returns an object factory in the given map with a
-        /// "compatible" object_id.
-        /// @param map the map in which the object_id is stored
-        /// @param id the object_id to find
-        std::shared_ptr<object_factory>
-        find(const factory_map& map, const object_id& id) const
-        {
-            assert(has_object_id(map, id));
-            return map.at(id);
-        }
+    /// Map allowing a shared object to be found based on an object's object id
+    object_map m_lookup_by_shared_object_id;
 
-        /// Finds and returns an object factory in the given map with a
-        /// "compatible" object_id.
-        /// @param map the map in which the object_id is stored
-        /// @param id the object_id to find
-        std::shared_ptr<void>
-        find(const object_map& map, const object_id& id) const
-        {
-            assert(has_object_id(map, id));
-            return map.at(id);
-        }
-
-    private:
-
-        /// Map allowing a factory to be found based on an object's object id
-        factory_map m_lookup_by_object_id;
-
-        /// Map allowing a shared object to be found based on an object's object id
-        object_map m_lookup_by_shared_object_id;
-
-        /// Map allowing a factory to be found based on a factory's object id
-        factory_map m_lookup_by_factory_id;
-    };
+    /// Map allowing a factory to be found based on a factory's object id
+    factory_map m_lookup_by_factory_id;
+};
 
 }

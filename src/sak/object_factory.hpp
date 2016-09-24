@@ -9,14 +9,14 @@
 
 namespace sak
 {
-    class object_registry;
+class object_registry;
 
-    /// Base class for an object factory
-    class object_factory
-    {
-    public:
-        /// @return an object of the specified type
-        virtual std::shared_ptr<void> build(object_registry&) = 0;
-    };
+/// Base class for an object factory
+class object_factory
+{
+public:
+    /// @return an object of the specified type
+    virtual std::shared_ptr<void> build(object_registry&) = 0;
+};
 
 }

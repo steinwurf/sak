@@ -88,27 +88,27 @@ TEST(ObjectFactory, set_get_object)
 // ----- NAMESPACE TEST -------
 namespace foobar
 {
-    class magic_socket : public rate_socket
+class magic_socket : public rate_socket
+{
+public:
+
+    std::string write()
     {
-    public:
+        return std::string("magic_socket write");
+    }
+};
 
-        std::string write()
-        {
-            return std::string("magic_socket write");
-        }
-    };
+class magic_socket_factory
+{
+public:
 
-    class magic_socket_factory
+    typedef rate_socket object_type;
+
+    std::shared_ptr<magic_socket> build(sak::object_registry&)
     {
-    public:
-
-        typedef rate_socket object_type;
-
-        std::shared_ptr<magic_socket> build(sak::object_registry&)
-        {
-            return std::make_shared<magic_socket>();
-        }
-    };
+        return std::make_shared<magic_socket>();
+    }
+};
 }
 SAK_DEFINE_PARENT(foobar::magic_socket, rate_socket)
 
